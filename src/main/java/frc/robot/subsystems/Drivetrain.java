@@ -57,9 +57,9 @@ public class Drivetrain extends SubsystemBase {
           m_rearRight.getPosition()
       });
     
-          // Load the RobotConfig from the GUI settings. You should probably
-    // store this in your Constants file
-    RobotConfig config;
+  // Load the RobotConfig from the GUI settings. You should probably
+  // store this in your Constants file
+  RobotConfig config;
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {

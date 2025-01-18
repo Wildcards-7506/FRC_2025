@@ -7,6 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DrivetrainTeleopCommand;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -14,10 +17,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+  // Modes
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  // Controllers
+  public static final XboxController controller0 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
+  public static final XboxController controller1 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
+
+  // Subsystems
+  public final static Drivetrain drivetrain = new Drivetrain();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -72,7 +83,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
+  }
 
   /** This function is called periodically during operator control. */
   @Override

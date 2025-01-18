@@ -22,6 +22,38 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class IOConstants {
+      //Controller Assignments
+      public static final int DRIVER_CONTROLLER_0 = 0;
+      public static final int DRIVER_CONTROLLER_1 = 1;
+      
+      //Control Axes
+      public static final int LEFT_STICK_X = 0;
+      public static final int LEFT_STICK_Y = 1;
+      public static final int RIGHT_STICK_X = 2;
+      public static final int RIGHT_STICK_Y = 3;
+
+      //Control D-Pad
+      public static final int DPAD_X = 2;
+      public static final int DPAD_Y = 3;
+
+      //Control Buttons
+      public static final int BUTTON_A = 2;
+      public static final int BUTTON_B = 3;
+      public static final int BUTTON_X = 1;
+      public static final int BUTTON_Y = 4;
+      public static final int LEFT_BUMPER = 5;
+      public static final int RIGHT_BUMPER = 6;
+
+      public static final int LEFT_TRIGGER = 7;
+      public static final int RIGHT_TRIGGER = 8;
+
+      public static final int BUTTON_BACK = 9;
+      public static final int BUTTON_START = 10;
+      public static final int LEFT_JOYSTICK_BUTTON = 11;
+      public static final int RIGHT_JOYSTICK_BUTTON = 12;
+  }
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
