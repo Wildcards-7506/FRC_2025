@@ -43,7 +43,9 @@ public class Claw extends SubsystemBase {
         gripperConfig = new SparkMaxConfig();
         gripperPID = gripperMotor.getClosedLoopController();
 
-        wristMotor = new 
+        wristMotor = new SparkMax(CANIDS.WRIST, MotorType.kBrushless);
+        wristConfig = new SparkMaxConfig();
+        wristPID = wristMotor.getClosedLoopController();
 
         gripperConfig
             .idleMode(IdleMode.kBrake);
@@ -56,6 +58,19 @@ public class Claw extends SubsystemBase {
             .pid(0.001, 0.0, 0.0);
             
         gripperMotor.configure(gripperConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    
+        wristConfig
+            .idleMode(IdleMode.kBrake);
+        wristConfig.encoder
+        // TODO: Ratio needs to be changed
+            .positionConversionFactor(ClawConstants.kWristEncoderDistancePerPulse)
+            .velocityConversionFactor(ClawConstants.kWristEncoderDistancePerPulse);
+        wristConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.001, 0.0, 0.0);
+            
+        wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    
     }
 
     /**

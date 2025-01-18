@@ -46,7 +46,7 @@ public final class Constants {
     
     // TODO: Ratio needs to be changed
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
-    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4;
+    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
     
     // pull from the .bak
     // public static final double kArmExtensionMaxspeedMPS = 4.8;
