@@ -65,7 +65,7 @@ public class DrivetrainTeleopCommand extends Command {
             // When robotRelative is false, the robot will drive relative to the field's current heading
             Robot.drivetrain.drive(yInputSpeed, xInputSpeed, inputRot, !PlayerConfigs.robotRelative);
         } else {
-            Robot.drivetrain.setX();
+            // Robot.drivetrain.setX();
         }
     }
     
