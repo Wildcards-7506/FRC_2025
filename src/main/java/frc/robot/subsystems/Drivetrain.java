@@ -72,6 +72,7 @@ public class Drivetrain extends SubsystemBase {
       e.printStackTrace();
     }
 
+    System.out.println("Auto stuff in drivetrain.java needs to be moved to autoroutines.java or something in the future.");
     // Configure AutoBuilder last
     AutoBuilder.configure(
             this::getPose, // Robot pose supplier
@@ -158,6 +159,19 @@ public class Drivetrain extends SubsystemBase {
             m_gyro.getRotation2d())
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     setStates(swerveModuleStates);
+  }
+
+  /**
+   * Method to snap robot heading to a specific angle.
+   * The robot's angle is considered to be zero when it is facing directly 
+   * away from the alliance station wall. Remember that this should be CCW positive
+   * 
+   * @param angle The desired angle in degrees.
+   */
+  public void snap(double angle) {
+    SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Rotation2d.fromDegrees(angle)));
+    setStates(targetStates);
   }
 
   public void setStates(SwerveModuleState[] targetStates) {
