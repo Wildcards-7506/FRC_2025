@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,6 +19,7 @@ import frc.robot.players.PlayerConfigs;
 import frc.robot.players.drivers.Ricardo;
 import frc.robot.players.drivers.TestController;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Logger;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -79,7 +81,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Skip Non-Path Commands", false);
     SmartDashboard.putData(m_field);
 
-    // Logger.info("SYSTEM","Robot Started");
+    Logger.info("SYSTEM","Robot Started");
   }
   
   /**
@@ -90,7 +92,12 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    SmartDashboard.putNumber("Match Time",Timer.getMatchTime());
+    // SmartDashboard.putNumber("POV", controller1.getPOV());
+    // SmartDashboard.putNumber("Left Climber Position", Robot.climbers.getClimberLEncoder());
+    // SmartDashboard.putNumber("Right Climber Position", Robot.climbers.getClimberREncoder());
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -135,7 +142,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Logger.flush();
+  }
 
   /** This function is called periodically when disabled. */
   @Override

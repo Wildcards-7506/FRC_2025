@@ -23,20 +23,21 @@ public class Logger{
     // Singleton instance
     private static Logger instance = new Logger();
 
+    // TODO: May want to convert to BufferedWriter for efficiency. 
     private FileWriter writer;
     private int id = 100000;
     private boolean empty = true;
     private boolean flushed = true;
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    private Logger(){
+    private Logger() {
         try{    
             // "/U" is the default directory for RoboRIO flash drives
             File logFile = new File("U/logs/" + id + ".txt");
 
             // If there is already a log file at the specified id, rename it
             // to its id before creating a new one.
-            while(logFile.exists()){
+            while(logFile.exists()) {
                 id++;
                 File saved = new File("U/logs/" + id + ".txt");
                 logFile.renameTo(saved);
@@ -45,7 +46,7 @@ public class Logger{
             logFile.createNewFile();
             
             writer = new FileWriter(logFile);
-        }catch(IOException e){
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
@@ -55,12 +56,12 @@ public class Logger{
      * @param tag Message importance tag
      * @param message Message to be logged
      */
-    private void log(String tag, String message){
+    private void log(String tag, String message) {
         try{
             // Write the log id to the first line of the file.
-            if(empty){
+            if(empty) {
                 empty = false;
-                writer.write(++id + "\r\n");
+                writer.write(id++ + "\r\n");
             }
             
             // Use StringBuilder for efficiency.
@@ -75,9 +76,9 @@ public class Logger{
 
             writer.write(msgBuilder.toString());
             flushed = false;
-        }catch(IOException e){
+        } catch(IOException e) {
             e.printStackTrace();
-        }catch(NullPointerException e){
+        } catch(NullPointerException e) {
             try{
                 // If the file does not exist (aka there is no USB drive),
                 // use the roboRIO's file system instead.
@@ -85,7 +86,7 @@ public class Logger{
                 logFile.createNewFile();
                 
                 writer = new FileWriter(logFile);
-            }catch(IOException e1){
+            } catch(IOException e1) {
                 e.printStackTrace();
             }
         }
@@ -94,7 +95,7 @@ public class Logger{
     /**
      * Log message at the INFO importance level.
      */
-    public static void info(String subsystem_or_function, String message){
+    public static void info(String subsystem_or_function, String message) {
         if(message.isEmpty())
             return;
         instance.log(subsystem_or_function, message);
@@ -103,34 +104,35 @@ public class Logger{
     /**
      * Log a message at the WARN importance level.
      */
-    public static void warn(String message){
+    public static void warn(String message) {
         if(message.isEmpty())
             return;
         instance.log("WARN", message);
+        flush();
     }
 
     /**
      * Log a message at the SEVERE importance level.
      */
-    public static void severe(String message){
+    public static void severe(String message) {
         if(message.isEmpty())
             return;
         instance.log("SEVERE", message);
+        flush();
     }
 
     /**
      * Flushes the FileWriter if it has been written to since last call.
      */
-    public static void flush(){
+    public static void flush() {
         if(instance.flushed)
             return;
 
         try{
             instance.writer.flush();
             instance.flushed = true;
-        }catch(IOException e){
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }
-
 }

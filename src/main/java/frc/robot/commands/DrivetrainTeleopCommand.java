@@ -23,7 +23,7 @@ public class DrivetrainTeleopCommand extends Command {
     @Override
     public void execute() {
         //Reset Gyro
-        if(PlayerConfigs.zeroGyro){
+        if(PlayerConfigs.zeroGyro) {
             Robot.drivetrain.zeroHeading();
         }
 
@@ -33,7 +33,7 @@ public class DrivetrainTeleopCommand extends Command {
         inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
 
         //Snap or align if needed, set drive if joystick inputs available, otherwise X
-        if(PlayerConfigs.snapUp){
+        if(PlayerConfigs.snapUp) {
             double angle = Robot.teamColor.get() == Alliance.Red ? 180 : 0;
             Robot.drivetrain.snap(angle);
         } else if(PlayerConfigs.snapRight) {
@@ -42,7 +42,7 @@ public class DrivetrainTeleopCommand extends Command {
         } else if(PlayerConfigs.snapDown) {
             double angle = Robot.teamColor.get() == Alliance.Red ? 0 : 90;
             Robot.drivetrain.snap(angle);
-        } else if(PlayerConfigs.snapLeft){
+        } else if(PlayerConfigs.snapLeft) {
             double angle = Robot.teamColor.get() == Alliance.Red ? -90 : 90;
             Robot.drivetrain.snap(angle);
         } else if (Math.abs(PlayerConfigs.xMovement) > IOConstants.XY_DEADBAND || 

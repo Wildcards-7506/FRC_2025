@@ -147,7 +147,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   //@Logged(name = "Chassis Speed")
-  public ChassisSpeeds getRobotRelativeSpeeds(){
+  public ChassisSpeeds getRobotRelativeSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
                                                            m_frontRight.getState(),
                                                            m_rearLeft.getState(),
