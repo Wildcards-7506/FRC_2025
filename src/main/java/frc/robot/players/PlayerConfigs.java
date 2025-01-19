@@ -1,5 +1,9 @@
 package frc.robot.players;
 
+/**
+ * This class is used to store the configurations for the drivers and operators.
+ * Values are set in the getDriverConfig and getOperatorConfig methods.
+ */
 public abstract class PlayerConfigs {
     // Constants
     public static double fullTurnSpeed;
@@ -45,7 +49,13 @@ public abstract class PlayerConfigs {
     // Climbers
     // public static double climberEngage;
 
+    /**
+     * This method updates the controller values for the driver.
+     */
     public void getDriverConfig(){}
 
+    /**
+     * This method updates the controller values for the operator.
+     */
     public void getOperatorConfig(){}
 }

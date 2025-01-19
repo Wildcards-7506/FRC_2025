@@ -4,54 +4,57 @@ import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
 public class Ricardo extends PlayerConfigs {
+    @Override
     public void getDriverConfig() {
         //Constants
-        PlayerConfigs.fullTurnSpeed = 0.40;
-        PlayerConfigs.fullDriveSpeed = 0.30;
-        PlayerConfigs.setupTurnSpeed = 1;
-        PlayerConfigs.setupDriveSpeed = 1;
-        PlayerConfigs.fineTurnSpeed = 0.1;
-        PlayerConfigs.fineDriveSpeed = 0.1;
-
+        fullTurnSpeed = 0.40;
+        fullDriveSpeed = 0.30;
+        setupTurnSpeed = 1;
+        setupDriveSpeed = 1;
+        fineTurnSpeed = 0.1;
+        fineDriveSpeed = 0.1;
+        
         //Driving and rotation
-        PlayerConfigs.xMovement = -Robot.controller0.getLeftX();
-        PlayerConfigs.yMovement = Robot.controller0.getLeftY();
-        PlayerConfigs.turnMovement = -Robot.controller0.getRightX();
-        PlayerConfigs.setupControlToggle = Robot.controller0.getRightTriggerAxis() > 0.2;
-        PlayerConfigs.fineControlToggle = Robot.controller0.getLeftTriggerAxis() > 0.2;
-        PlayerConfigs.snapUp = Robot.controller0.getPOV() == 0;
-        PlayerConfigs.snapRight = Robot.controller0.getPOV() == 90;
-        PlayerConfigs.snapDown = Robot.controller0.getPOV() == 180;
-        PlayerConfigs.snapLeft = Robot.controller0.getPOV() == 270;
-        PlayerConfigs.robotRelative = Robot.controller0.getRightBumperButton();
+        // TODO: Update these to match the actual controls
+        xMovement = -Robot.controller0.getLeftX();
+        yMovement = Robot.controller0.getLeftY();
+        turnMovement = -Robot.controller0.getRightX();
+        setupControlToggle = Robot.controller0.getRightTriggerAxis() > 0.2;
+        fineControlToggle = Robot.controller0.getLeftTriggerAxis() > 0.2;
+        snapUp = Robot.controller0.getPOV() == 0;
+        snapRight = Robot.controller0.getPOV() == 90;
+        snapDown = Robot.controller0.getPOV() == 180;
+        snapLeft = Robot.controller0.getPOV() == 270;
+        robotRelative = Robot.controller0.getRightBumperButton();
 
         //Scoring
-        // PlayerConfigs.fire = Robot.controller0.getRightBumper();
+        // fire = Robot.controller0.getRightBumper();
         
         //Gyro Reset
-        PlayerConfigs.zeroGyro = Robot.controller0.getAButton();
+        zeroGyro = Robot.controller0.getAButton();
     } 
 
+    @Override
     public void getOperatorConfig() {
         //Intake
-        // PlayerConfigs.ground = Robot.controller1.getPOV() == 0;
-        // PlayerConfigs.amp = Robot.controller1.getPOV() == 90;
-        // PlayerConfigs.stow = Robot.controller1.getPOV() == 180;
+        // ground = Robot.controller1.getPOV() == 0;
+        // amp = Robot.controller1.getPOV() == 90;
+        // stow = Robot.controller1.getPOV() == 180;
         
         // Grabbing and rejecting objects
-        // PlayerConfigs.intake = Robot.controller1.getXButton();
-        // PlayerConfigs.reject = Robot.controller1.getBButton();
+        // intake = Robot.controller1.getXButton();
+        // reject = Robot.controller1.getBButton();
 
         //Intake Fine Control
-        PlayerConfigs.fineControlEnable = Robot.controller1.getStartButton();
-        PlayerConfigs.fineControlElbow = Robot.controller1.getLeftY();
-        PlayerConfigs.fineControlWrist = Robot.controller1.getRightY();
+        fineControlEnable = Robot.controller1.getStartButton();
+        fineControlElbow = Robot.controller1.getLeftY();
+        fineControlWrist = Robot.controller1.getRightY();
 
         //Shooter Spin up
-        // PlayerConfigs.armScoringMechanism = Robot.controller1.getAButton();
-        // PlayerConfigs.shooterActive = Robot.controller1.getBackButton();
+        // armScoringMechanism = Robot.controller1.getAButton();
+        // shooterActive = Robot.controller1.getBackButton();
         
         //Climbers
-        // PlayerConfigs.climberEngage = Robot.controller1.getRightTriggerAxis();
+        // climberEngage = Robot.controller1.getRightTriggerAxis();
     }
 }

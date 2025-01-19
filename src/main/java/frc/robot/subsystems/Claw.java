@@ -2,7 +2,6 @@
 //This will be the control for the claw on the robot
 package frc.robot.subsystems;
 
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -13,11 +12,9 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Configs;
 import frc.robot.Constants.CANIDS;
-import frc.robot.Constants.ClawConstants;;
+import frc.robot.Constants.ClawConstants;
 
 public class Claw extends SubsystemBase {
     // private final AbsoluteEncoder m_turningEncoder;
