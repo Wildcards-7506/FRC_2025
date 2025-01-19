@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DrivetrainTeleopCommand;
+import frc.robot.commands.autonomous.AutoRoutines;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.players.drivers.Ricardo;
 import frc.robot.players.drivers.TestController;
@@ -24,15 +25,22 @@ import frc.robot.subsystems.Drivetrain;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  // Modes
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  // Modes & people
+  private AutoRoutines autoMode;
+  public PlayerConfigs driver;
+  public PlayerConfigs operator;
+  public static boolean skipNonPath;
+
+  public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
+  public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
+  // private static final String kDefaultAuto = "Default";
+  // private static final String kCustomAuto = "My Auto";
+  // private String m_autoSelected;
+  // private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   // Drivers
   public static PlayerConfigs ricardo = new Ricardo();
-  public static PlayerConfigs testController = new TestController();
+  public static PlayerConfigs test = new TestController();
 
   // Field Information
   public static Optional<Alliance> teamColor;
@@ -50,9 +58,28 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto", kCustomAuto);
+    // SmartDashboard.putData("Auto choices", m_chooser);
+    
+    //Auto Chooser
+    autoMode = new AutoRoutines();
+
+    // // Driver choosers
+    driver_chooser.setDefaultOption("Ricardo", ricardo);
+    driver_chooser.addOption("Test", test);       
+
+    // Operator choosers
+    operator_chooser.setDefaultOption("Test", test);
+    operator_chooser.addOption("Ricardo", ricardo);
+
+    // Put the choosers on the dashboard
+    SmartDashboard.putData("Driver",driver_chooser);
+    SmartDashboard.putData("Operator",operator_chooser);
+    SmartDashboard.putBoolean("Skip Non-Path Commands", false);
+    SmartDashboard.putData(m_field);
+
+    // Logger.info("SYSTEM","Robot Started");
   }
   
   /**
@@ -77,23 +104,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    // m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    // switch (m_autoSelected) {
+    //   case kCustomAuto:
+    //     // Put custom auto code here
+    //     break;
+    //   case kDefaultAuto:
+    //   default:
+    //     // Put default auto code here
+    //     break;
+    // }
   }
 
   /** This function is called once when teleop is enabled. */
