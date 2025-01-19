@@ -23,7 +23,7 @@ public class Logger{
     // Singleton instance
     private static Logger instance = new Logger();
 
-    // TODO: May want to convert to BufferedWriter for efficiency. 
+    // TODO: May want to convert to BufferedWrtier for efficiency.
     private FileWriter writer;
     private int id = 100000;
     private boolean empty = true;
@@ -61,7 +61,7 @@ public class Logger{
             // Write the log id to the first line of the file.
             if(empty) {
                 empty = false;
-                writer.write(id++ + "\r\n");
+                writer.write(++id + "\r\n");
             }
             
             // Use StringBuilder for efficiency.
