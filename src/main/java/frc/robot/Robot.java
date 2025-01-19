@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DrivetrainTeleopCommand;
+import frc.robot.players.PlayerConfigs;
+import frc.robot.players.drivers.Ricardo;
+import frc.robot.players.drivers.TestController;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -26,6 +29,10 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  // Drivers
+  public static PlayerConfigs ricardo = new Ricardo();
+  public static PlayerConfigs testController = new TestController();
 
   // Field Information
   public static Optional<Alliance> teamColor;
@@ -47,7 +54,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
-
+  
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.

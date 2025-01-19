@@ -88,6 +88,14 @@ public final class Constants {
     //Control D-Pad
     public static final int DPAD_X = 2;
     public static final int DPAD_Y = 3;
+    public static final int DPAD_UP = 0;
+    public static final int DPAD_UP_RIGHT = 45;
+    public static final int DPAD_RIGHT = 90;
+    public static final int DPAD_DOWN_RIGHT = 135;
+    public static final int DPAD_DOWN = 180;
+    public static final int DPAD_DOWN_LEFT = 225;
+    public static final int DPAD_LEFT = 270;
+    public static final int DPAD_UP_LEFT = 315;
 
     //Control Buttons
     public static final int BUTTON_A = 2;
@@ -106,7 +114,8 @@ public final class Constants {
     public static final int RIGHT_JOYSTICK_BUTTON = 12;
 
     // Thresholds
-    public static final double DEADZONE = 0.05;
+    public static final double XY_DEADBAND = 0.05;
+    public static final double TRIGGER_DEADBAND = 0.2;
   }
 
   public static final class DriveConstants {
