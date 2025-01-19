@@ -28,21 +28,9 @@ public class DrivetrainTeleopCommand extends Command {
         }
 
         //Joystick Inputs
-        xInputSpeed = PlayerConfigs.fineControlToggle ? 
-            PlayerConfigs.fineDriveSpeed * PlayerConfigs.xMovement :
-            PlayerConfigs.setupControlToggle ?
-            PlayerConfigs.setupDriveSpeed * PlayerConfigs.xMovement :
-            PlayerConfigs.fullDriveSpeed * PlayerConfigs.xMovement;
-        yInputSpeed = PlayerConfigs.fineControlToggle ? 
-            -PlayerConfigs.fineDriveSpeed * PlayerConfigs.yMovement : 
-            PlayerConfigs.setupControlToggle ?
-            -PlayerConfigs.setupDriveSpeed * PlayerConfigs.yMovement :
-            -PlayerConfigs.fullDriveSpeed * PlayerConfigs.yMovement;
-        inputRot = PlayerConfigs.fineControlToggle ? 
-            PlayerConfigs.fineTurnSpeed * PlayerConfigs.turnMovement : 
-            PlayerConfigs.setupControlToggle ?
-            PlayerConfigs.setupTurnSpeed * PlayerConfigs.turnMovement :
-            PlayerConfigs.fullTurnSpeed * PlayerConfigs.turnMovement;
+        xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
+        yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
+        inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
 
         //Snap or align if needed, set drive if joystick inputs available, otherwise X
         if(PlayerConfigs.snapUp){
@@ -57,16 +45,33 @@ public class DrivetrainTeleopCommand extends Command {
         } else if(PlayerConfigs.snapLeft){
             double angle = Robot.teamColor.get() == Alliance.Red ? -90 : 90;
             Robot.drivetrain.snap(angle);
-        } else if (Math.abs(PlayerConfigs.xMovement) > IOConstants.DEADZONE || 
-                   Math.abs(PlayerConfigs.yMovement) > IOConstants.DEADZONE || 
-                   Math.abs(PlayerConfigs.turnMovement) > IOConstants.DEADZONE) {
+        } else if (Math.abs(PlayerConfigs.xMovement) > IOConstants.XY_DEADBAND || 
+                   Math.abs(PlayerConfigs.yMovement) > IOConstants.XY_DEADBAND || 
+                   Math.abs(PlayerConfigs.turnMovement) > IOConstants.XY_DEADBAND) {
             // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
             // When robotRelative is true, the robot will drive relative to the robot's current heading
             // When robotRelative is false, the robot will drive relative to the field's current heading
             Robot.drivetrain.drive(yInputSpeed, xInputSpeed, inputRot, !PlayerConfigs.robotRelative);
         } else {
-            Robot.drivetrain.setX();
+            // Do nothing
+            // Robot.drivetrain.setX();
         }
+    }
+
+    private double getDriveSpeed(double input) {
+        return PlayerConfigs.fineControlToggle ? 
+        PlayerConfigs.fineDriveSpeed * input :
+        PlayerConfigs.boostToggle ?
+        PlayerConfigs.boostDriveSpeed * input :
+        PlayerConfigs.fullDriveSpeed * input;
+    }
+
+    private double getTurnSpeed(double input) {
+        return PlayerConfigs.fineControlToggle ? 
+        PlayerConfigs.fineTurnSpeed * input : 
+        PlayerConfigs.boostToggle ?
+        PlayerConfigs.boostTurnSpeed * input :
+        PlayerConfigs.fullTurnSpeed * input;
     }
     
     // Called once the command ends or is interrupted.

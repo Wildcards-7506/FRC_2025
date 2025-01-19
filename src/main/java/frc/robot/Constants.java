@@ -22,6 +22,58 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class CANIDS {
+    // SPARK MAX CAN IDs
+    public static final int LEFT_FRONT_TURN = 1;
+    public static final int LEFT_FRONT_DRIVE = 2;
+    public static final int RIGHT_FRONT_TURN = 3;
+    public static final int RIGHT_FRONT_DRIVE = 4;
+    public static final int RIGHT_REAR_TURN = 5;
+    public static final int RIGHT_REAR_DRIVE = 6;
+    public static final int LEFT_REAR_TURN = 7;
+    public static final int LEFT_REAR_DRIVE = 8;
+
+    // Claw: consists of gripper (grabby grabby) and wrist
+    public static final int GRIPPER = 9;
+    public static final int WRIST = 10;
+  }
+
+  public static final class ClawConstants{
+    public static final double kGripperMaxspeedMPS = 4.8;
+    public static final double kGripperAngularSpeed  =  2 * Math.PI;
+    public static final double kGripperTopSpeed = 1.0;
+    public static final double kGripperTopAngularSpeed = 1.0;
+    
+    // TODO: Ratio needs to be changed
+    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
+    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+    
+    // pull from the .bak
+    // public static final double kArmExtensionMaxspeedMPS = 4.8;
+    // public static final double kArmRotationAngularSpeed = 2 * Math.PI;
+    // public static final double kArmExtensionTopSpeed = 1.0;
+    // public static final double kArmRotationTopSpeed = 1.0;
+    
+    // 2023 constants.java
+    // public static final int kRotateCurrentLimit = 30;
+    // public static final double kRotateEncoderDistancePerPulse = 1.0/125 * 12.0/15 * 360;
+    // public static final double kMotorKP = 0.007;
+    // public static final double kMotorSingleSub = 40;
+    // public static final double kMotorGroundClear = 15.0;
+    // public static final double kMotorGround = -5.0;
+    // public static final double kMotorHi = 160.0;
+    // public static final double kMotorMid = 165.0;
+    // public static final double kMotorDoubleSub = 85.0;
+    // public static final double kMotorDoubleCubeOffset = -30;
+    // public static final double kMotorSingleCubeOffset = -20;
+    // public static final double kMotorVertical = 115.0;
+    // public static final double kMotorClosed = 0.0;
+    // public static final double MotorHorizontalOffset = 60;
+  }
+
+  public static final class ArmConstants {
+  }
+
   public static final class IOConstants {
     //Controller Assignments
     public static final int DRIVER_CONTROLLER_0 = 0;
@@ -36,6 +88,14 @@ public final class Constants {
     //Control D-Pad
     public static final int DPAD_X = 2;
     public static final int DPAD_Y = 3;
+    public static final int DPAD_UP = 0;
+    public static final int DPAD_UP_RIGHT = 45;
+    public static final int DPAD_RIGHT = 90;
+    public static final int DPAD_DOWN_RIGHT = 135;
+    public static final int DPAD_DOWN = 180;
+    public static final int DPAD_DOWN_LEFT = 225;
+    public static final int DPAD_LEFT = 270;
+    public static final int DPAD_UP_LEFT = 315;
 
     //Control Buttons
     public static final int BUTTON_A = 2;
@@ -54,7 +114,8 @@ public final class Constants {
     public static final int RIGHT_JOYSTICK_BUTTON = 12;
 
     // Thresholds
-    public static final double DEADZONE = 0.05;
+    public static final double XY_DEADBAND = 0.05;
+    public static final double TRIGGER_DEADBAND = 0.2;
   }
 
   public static final class DriveConstants {
@@ -81,18 +142,6 @@ public final class Constants {
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
-
-    // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 1;
-    public static final int kFrontLeftTurningCanId = 2;
-    public static final int kRearLeftDrivingCanId = 3;
-    public static final int kRearLeftTurningCanId = 4;
-    public static final int kFrontRightDrivingCanId = 5;
-    public static final int kFrontRightTurningCanId = 6;
-    public static final int kRearRightDrivingCanId = 7;
-    public static final int kRearRightTurningCanId = 8;
-
-
     public static final boolean kGyroReversed = false;
   }
 
