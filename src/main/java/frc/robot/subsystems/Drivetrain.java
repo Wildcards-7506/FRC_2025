@@ -137,30 +137,24 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Method to snap robot heading to a specific angle.
    * The robot's angle is considered to be zero when it is facing directly 
-   * away from the alliance station wall. Remember that this should be CCW positive
+   * away from the alliance station wall. Remember that this should be CCW positive.
+   * 
+   * Flips 180 degrees if alliance color is red.
    * 
    * @param angle The desired angle in degrees.
    */
   public void snap(double angle) {
+    // If alliance color is red then add 180 to the angle then subtract 360 if the angle is greater than 180
+    // Default color is blue, so 0 is up, then clockwise, 90 is right, 180 is down, 270 is left
+    if (Robot.teamColor.get() == Alliance.Red) {
+      angle += 180;
+    }
+    if (angle > 180) angle -= 360;
+    if (angle < -180) angle += 360;
+    angle = -angle; // DPAD is CW positive, but robot is CCW positive
     SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Rotation2d.fromDegrees(angle)));
     setStates(targetStates);
-  }
-
-  public void snapUp() {
-    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? 180 : 0);
-  }
-
-  public void snapDown() {
-    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? 0 : 180);
-  }
-
-  public void snapLeft() {
-    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? -90 : 90);
-  }
-
-  public void snapRight() {
-    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? 90 : -90);
   }
 
   public void setStates(SwerveModuleState[] targetStates) {

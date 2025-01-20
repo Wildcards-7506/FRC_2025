@@ -33,10 +33,10 @@ public class DrivetrainTeleopCommand extends Command {
 
         // Default is stop, input priority: joystick > snap > stop
         Robot.drivetrain.stop();
-        if(PlayerConfigs.snapUp) Robot.drivetrain.snapUp();
-        if(PlayerConfigs.snapRight) Robot.drivetrain.snapRight();
-        if(PlayerConfigs.snapDown) Robot.drivetrain.snapDown();
-        if(PlayerConfigs.snapLeft) Robot.drivetrain.snapLeft();
+        if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
+        if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);
+        if(PlayerConfigs.snapDown) Robot.drivetrain.snap(IOConstants.DPAD_DOWN);
+        if(PlayerConfigs.snapLeft) Robot.drivetrain.snap(IOConstants.DPAD_LEFT);
         // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
         // When robotRelative is true, the robot will drive relative to the robot's current heading
         // When robotRelative is false, the robot will drive relative to the field's current heading
