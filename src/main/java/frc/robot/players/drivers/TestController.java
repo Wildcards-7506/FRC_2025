@@ -19,7 +19,7 @@ public class TestController extends PlayerConfigs {
         // TODO: Update these to match the actual controls
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
-        turnMovement = -Robot.controller0.getRightX();
+        turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         snapUp = Robot.controller0.getPOV() == IOConstants.DPAD_UP;
@@ -29,7 +29,7 @@ public class TestController extends PlayerConfigs {
         robotRelative = Robot.controller0.getRightBumperButton();
         
         //Gyro Reset
-        zeroGyro = Robot.controller0.getAButton();
+        zeroGyro = Robot.controller0.getBButton();
     }
 
     @Override
