@@ -4,10 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,30 +14,32 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
-      DriveConstants.kFrontLeftDrivingCanId,
-      DriveConstants.kFrontLeftTurningCanId,
+      CANIDS.LEFT_FRONT_DRIVE,
+      CANIDS.LEFT_FRONT_TURN,
       DriveConstants.kFrontLeftChassisAngularOffset);
 
   private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
-      DriveConstants.kFrontRightDrivingCanId,
-      DriveConstants.kFrontRightTurningCanId,
+      CANIDS.RIGHT_FRONT_DRIVE,
+      CANIDS.RIGHT_FRONT_TURN,
       DriveConstants.kFrontRightChassisAngularOffset);
 
   private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
-      DriveConstants.kRearLeftDrivingCanId,
-      DriveConstants.kRearLeftTurningCanId,
+      CANIDS.LEFT_REAR_DRIVE,
+      CANIDS.LEFT_REAR_TURN,
       DriveConstants.kBackLeftChassisAngularOffset);
 
   private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
-      DriveConstants.kRearRightDrivingCanId,
-      DriveConstants.kRearRightTurningCanId,
+      CANIDS.RIGHT_REAR_DRIVE,
+      CANIDS.RIGHT_REAR_TURN,
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
@@ -56,46 +55,9 @@ public class Drivetrain extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
       });
-    
-          // Load the RobotConfig from the GUI settings. You should probably
-    // store this in your Constants file
-    RobotConfig config;
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
-        // All other subsystem initialization
-    // ...
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
-
-    // Configure AutoBuilder last
-    AutoBuilder.configure(
-            this::getPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),
-            config, // The robot configuration
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return false;
-            },
-            this // Reference to this subsystem to set requirements
-    );
   }
 
   @Override
@@ -108,7 +70,9 @@ public class Drivetrain extends SubsystemBase {
             m_frontRight.getPosition(),
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
-        });
+    });
+
+    Robot.m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
   /**
@@ -160,6 +124,39 @@ public class Drivetrain extends SubsystemBase {
     setStates(swerveModuleStates);
   }
 
+  /**
+   * Stops the robot.
+   *
+   * 
+   * @param angle
+   */
+  public void stop() {
+    drive(0, 0, 0, false);
+  }
+
+  /**
+   * Method to snap robot heading to a specific angle.
+   * The robot's angle is considered to be zero when it is facing directly 
+   * away from the alliance station wall. Remember that this should be CCW positive.
+   * 
+   * Flips 180 degrees if alliance color is red.
+   * 
+   * @param angle The desired angle in degrees.
+   */
+  public void snap(double angle) {
+    // If alliance color is red then add 180 to the angle then subtract 360 if the angle is greater than 180
+    // Default color is blue, so 0 is up, then clockwise, 90 is right, 180 is down, 270 is left
+    if (Robot.teamColor.get() == Alliance.Red) {
+      angle += 180;
+    }
+    if (angle > 180) angle -= 360;
+    if (angle < -180) angle += 360;
+    angle = -angle; // DPAD is CW positive, but robot is CCW positive
+    SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Rotation2d.fromDegrees(angle)));
+    setStates(targetStates);
+  }
+
   public void setStates(SwerveModuleState[] targetStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, DriveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(targetStates[0]);
@@ -175,7 +172,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   //@Logged(name = "Chassis Speed")
-  public ChassisSpeeds getRobotRelativeSpeeds(){
+  public ChassisSpeeds getRobotRelativeSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
                                                            m_frontRight.getState(),
                                                            m_rearLeft.getState(),
@@ -212,6 +209,13 @@ public class Drivetrain extends SubsystemBase {
     m_rearLeft.resetEncoders();
     m_frontRight.resetEncoders();
     m_rearRight.resetEncoders();
+  }
+
+  public void idleSwerve(IdleMode mode) {
+    m_frontLeft.idleModule(mode);
+    m_frontRight.idleModule(mode);
+    m_rearLeft.idleModule(mode);
+    m_rearRight.idleModule(mode);
   }
 
   /** Zeroes the heading of the robot. */

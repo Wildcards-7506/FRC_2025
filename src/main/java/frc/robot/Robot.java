@@ -4,9 +4,26 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DrivetrainTeleopCommand;
+import frc.robot.commands.autonomous.AutoRoutines;
+import frc.robot.players.PlayerConfigs;
+import frc.robot.players.drivers.Ricardo;
+import frc.robot.players.drivers.TestController;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Logger;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -14,21 +31,63 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  // Modes & people
+  private AutoRoutines autoMode;
+  public PlayerConfigs driver;
+  public PlayerConfigs operator;
+  public static boolean skipNonPath;
+
+  public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
+  public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
+  // private static final String kDefaultAuto = "Default";
+  // private static final String kCustomAuto = "My Auto";
+  // private String m_autoSelected;
+  // private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  // Drivers
+  public static PlayerConfigs ricardo = new Ricardo();
+  public static PlayerConfigs test = new TestController();
+
+  // Field Information
+  public static Optional<Alliance> teamColor;
+  public final static Field2d m_field = new Field2d();
+
+  // Controllers
+  public static final XboxController controller0 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
+  public static final XboxController controller1 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
+
+  // Subsystems
+  public final static Drivetrain drivetrain = new Drivetrain();
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public Robot() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-  }
+    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto", kCustomAuto);
+    // SmartDashboard.putData("Auto choices", m_chooser);
+    
+    //Auto Chooser
+    autoMode = new AutoRoutines();
 
+    // // Driver choosers
+    driver_chooser.setDefaultOption("Ricardo", ricardo);
+    driver_chooser.addOption("Test", test);       
+
+    // Operator choosers
+    operator_chooser.setDefaultOption("Test", test);
+    operator_chooser.addOption("Ricardo", ricardo);
+
+    // Put the choosers on the dashboard
+    SmartDashboard.putData("Driver",driver_chooser);
+    SmartDashboard.putData("Operator",operator_chooser);
+    SmartDashboard.putBoolean("Skip Non-Path Commands", false);
+    SmartDashboard.putData(m_field);
+
+    Logger.info("SYSTEM","Robot Started");
+  }
+  
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
@@ -37,7 +96,12 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+    // SmartDashboard.putNumber("POV", controller1.getPOV());
+    // SmartDashboard.putNumber("Left Climber Position", Robot.climbers.getClimberLEncoder());
+    // SmartDashboard.putNumber("Right Climber Position", Robot.climbers.getClimberREncoder());
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -51,36 +115,60 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    Logger.info("SYSTEM","Autonomous Program Started");
+    CommandScheduler.getInstance().cancelAll();
+
+    // Set robot state
+    teamColor = DriverStation.getAlliance();
+    autoMode.resetAutoHeading();
+    autoMode.getAutonomousCommand().schedule();
+    drivetrain.idleSwerve(IdleMode.kBrake);
+    skipNonPath = SmartDashboard.getBoolean("Skip Non-Path Commands", false);
+    // m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    Logger.info("SYSTEM","Teleop Started");
+    CommandScheduler.getInstance().cancelAll();
+
+    // Get the selected drivers
+    driver = driver_chooser.getSelected();
+    operator = operator_chooser.getSelected();
+    teamColor = DriverStation.getAlliance();
+
+    // Subsystem default commands
+    drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
+
+    // Default subsystem states
+    drivetrain.idleSwerve(IdleMode.kBrake);
+  }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
+    driver.getDriverConfig();
+    operator.getOperatorConfig();
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Logger.info("SYSTEM", "Robot Disabled");
+    Logger.flush();
+    CommandScheduler.getInstance().cancelAll();
+    drivetrain.idleSwerve(IdleMode.kCoast);
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -88,11 +176,20 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    Logger.info("SYSTEM","Test Program Started");
+    CommandScheduler.getInstance().cancelAll();
+    driver = driver_chooser.getSelected();
+    operator = operator_chooser.getSelected();
+    // What we want to do in test mode
+  }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    CommandScheduler.getInstance().run();
+    operator.getOperatorConfig();
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
