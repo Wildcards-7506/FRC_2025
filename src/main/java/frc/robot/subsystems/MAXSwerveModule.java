@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -106,6 +107,21 @@ public class MAXSwerveModule {
     m_turningClosedLoopController.setReference(correctedDesiredState.angle.getRadians(), ControlType.kPosition);
 
     m_desiredState = desiredState;
+  }
+
+  /**
+   * Sets the desired state for the module.
+   * 
+   * @param mode Brake or coast mode.
+   */
+  public void idleModule(IdleMode mode) {
+    // TODO: Check if idleModule works
+    m_drivingSpark.configure(Configs.MAXSwerveModule.drivingConfig.idleMode(mode), 
+                             ResetMode.kResetSafeParameters, 
+                             PersistMode.kPersistParameters);
+    m_turningSpark.configure(Configs.MAXSwerveModule.turningConfig.idleMode(mode), 
+                             ResetMode.kResetSafeParameters, 
+                             PersistMode.kPersistParameters);
   }
 
   /** Zeroes all the SwerveModule encoders. */

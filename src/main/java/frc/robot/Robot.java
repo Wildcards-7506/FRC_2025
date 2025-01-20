@@ -6,12 +6,16 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DrivetrainTeleopCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
@@ -93,7 +97,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Match Time",Timer.getMatchTime());
+    SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
     // SmartDashboard.putNumber("POV", controller1.getPOV());
     // SmartDashboard.putNumber("Left Climber Position", Robot.climbers.getClimberLEncoder());
     // SmartDashboard.putNumber("Right Climber Position", Robot.climbers.getClimberREncoder());
@@ -111,6 +115,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Logger.info("SYSTEM","Autonomous Program Started");
+    CommandScheduler.getInstance().cancelAll();
+
+    // Set robot state
+    teamColor = DriverStation.getAlliance();
+    autoMode.resetAutoHeading();
+    autoMode.getAutonomousCommand().schedule();
+    drivetrain.idleSwerve(IdleMode.kBrake);
+    skipNonPath = SmartDashboard.getBoolean("Skip Non-Path Commands", false);
     // m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     // System.out.println("Auto selected: " + m_autoSelected);
@@ -119,31 +132,42 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // switch (m_autoSelected) {
-    //   case kCustomAuto:
-    //     // Put custom auto code here
-    //     break;
-    //   case kDefaultAuto:
-    //   default:
-    //     // Put default auto code here
-    //     break;
-    // }
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    Logger.info("SYSTEM","Teleop Started");
+    CommandScheduler.getInstance().cancelAll();
+
+    // Get the selected drivers
+    driver = driver_chooser.getSelected();
+    operator = operator_chooser.getSelected();
+    teamColor = DriverStation.getAlliance();
+
+    // Subsystem default commands
     drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
+
+    // Default subsystem states
+    drivetrain.idleSwerve(IdleMode.kBrake);
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
+    driver.getDriverConfig();
+    operator.getOperatorConfig();
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
+    Logger.info("SYSTEM", "Robot Disabled");
     Logger.flush();
+    CommandScheduler.getInstance().cancelAll();
+    drivetrain.idleSwerve(IdleMode.kCoast);
   }
 
   /** This function is called periodically when disabled. */
@@ -152,11 +176,20 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    Logger.info("SYSTEM","Test Program Started");
+    CommandScheduler.getInstance().cancelAll();
+    driver = driver_chooser.getSelected();
+    operator = operator_chooser.getSelected();
+    // What we want to do in test mode
+  }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    CommandScheduler.getInstance().run();
+    operator.getOperatorConfig();
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override

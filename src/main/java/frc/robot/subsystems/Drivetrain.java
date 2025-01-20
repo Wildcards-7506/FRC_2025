@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -67,7 +69,9 @@ public class Drivetrain extends SubsystemBase {
             m_frontRight.getPosition(),
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
-        });
+    });
+
+    Robot.m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
   /**
@@ -184,6 +188,13 @@ public class Drivetrain extends SubsystemBase {
     m_rearLeft.resetEncoders();
     m_frontRight.resetEncoders();
     m_rearRight.resetEncoders();
+  }
+
+  public void idleSwerve(IdleMode mode) {
+    m_frontLeft.idleModule(mode);
+    m_frontRight.idleModule(mode);
+    m_rearLeft.idleModule(mode);
+    m_rearRight.idleModule(mode);
   }
 
   /** Zeroes the heading of the robot. */

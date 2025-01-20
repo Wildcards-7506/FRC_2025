@@ -61,9 +61,8 @@ public final class AutoRoutines {
             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
             var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-            }
+            if (alliance.isPresent())
+              return alliance.get() == DriverStation.Alliance.Red;
             return false;
         },
         Robot.drivetrain // Reference to this subsystem to set requirements
