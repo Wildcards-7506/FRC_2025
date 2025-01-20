@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
@@ -19,7 +18,7 @@ public class DrivetrainTeleopCommand extends Command {
     @Override
     public void initialize() {}
     
-    // Called every time the scheduler runs while the command is scheduled.
+    // Called every time the scheduler runs (every ~20 ms) while the command is scheduled.
     @Override
     public void execute() {
         //Reset Gyro
@@ -27,11 +26,12 @@ public class DrivetrainTeleopCommand extends Command {
             Robot.drivetrain.zeroHeading();
         }
 
-        //Joystick Inputs
+        // Joystick Inputs
         xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
         yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
         inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
 
+        // Default is stop, input priority: joystick > snap > stop
         Robot.drivetrain.stop();
         if(PlayerConfigs.snapUp) Robot.drivetrain.snapUp();
         if(PlayerConfigs.snapRight) Robot.drivetrain.snapRight();
