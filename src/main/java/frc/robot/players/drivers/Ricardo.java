@@ -42,7 +42,7 @@ public class Ricardo extends PlayerConfigs {
         shelfReef = Robot.controller1.getXButton();
         gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX()); // Fine control wrist
-        fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftX()); // Fine control elbow
+        fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftY()); // Fine control elbow
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
         
