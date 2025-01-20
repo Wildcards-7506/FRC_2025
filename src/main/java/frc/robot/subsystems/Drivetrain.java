@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
@@ -124,6 +125,16 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * Stops the robot.
+   *
+   * 
+   * @param angle
+   */
+  public void stop() {
+    drive(0, 0, 0, false);
+  }
+
+  /**
    * Method to snap robot heading to a specific angle.
    * The robot's angle is considered to be zero when it is facing directly 
    * away from the alliance station wall. Remember that this should be CCW positive
@@ -134,6 +145,22 @@ public class Drivetrain extends SubsystemBase {
     SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Rotation2d.fromDegrees(angle)));
     setStates(targetStates);
+  }
+
+  public void snapUp() {
+    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? 180 : 0);
+  }
+
+  public void snapDown() {
+    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? 0 : 180);
+  }
+
+  public void snapLeft() {
+    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? -90 : 90);
+  }
+
+  public void snapRight() {
+    Robot.drivetrain.snap(Robot.teamColor.get() == Alliance.Red ? 90 : -90);
   }
 
   public void setStates(SwerveModuleState[] targetStates) {

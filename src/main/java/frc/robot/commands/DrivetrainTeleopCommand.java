@@ -32,30 +32,22 @@ public class DrivetrainTeleopCommand extends Command {
         yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
         inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
 
-        //Snap or align if needed, set drive if joystick inputs available, otherwise X
-        if(PlayerConfigs.snapUp) {
-            double angle = Robot.teamColor.get() == Alliance.Red ? 180 : 0;
-            Robot.drivetrain.snap(angle);
-        } else if(PlayerConfigs.snapRight) {
-            double angle = Robot.teamColor.get() == Alliance.Red ? 90 : -90;
-            Robot.drivetrain.snap(angle);
-        } else if(PlayerConfigs.snapDown) {
-            double angle = Robot.teamColor.get() == Alliance.Red ? 0 : 90;
-            Robot.drivetrain.snap(angle);
-        } else if(PlayerConfigs.snapLeft) {
-            double angle = Robot.teamColor.get() == Alliance.Red ? -90 : 90;
-            Robot.drivetrain.snap(angle);
-        } else if (Math.abs(PlayerConfigs.xMovement) > IOConstants.XY_DEADBAND || 
-                   Math.abs(PlayerConfigs.yMovement) > IOConstants.XY_DEADBAND || 
-                   Math.abs(PlayerConfigs.turnMovement) > IOConstants.XY_DEADBAND) {
-            // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
-            // When robotRelative is true, the robot will drive relative to the robot's current heading
-            // When robotRelative is false, the robot will drive relative to the field's current heading
+        Robot.drivetrain.stop();
+        if(PlayerConfigs.snapUp) Robot.drivetrain.snapUp();
+        if(PlayerConfigs.snapRight) Robot.drivetrain.snapRight();
+        if(PlayerConfigs.snapDown) Robot.drivetrain.snapDown();
+        if(PlayerConfigs.snapLeft) Robot.drivetrain.snapLeft();
+        // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
+        // When robotRelative is true, the robot will drive relative to the robot's current heading
+        // When robotRelative is false, the robot will drive relative to the field's current heading
+        if(joystickHasInput())
             Robot.drivetrain.drive(yInputSpeed, xInputSpeed, inputRot, !PlayerConfigs.robotRelative);
-        } else {
-            // Do nothing
-            // Robot.drivetrain.setX();
-        }
+    }
+
+    private boolean joystickHasInput() {
+        return Math.abs(PlayerConfigs.xMovement)    > IOConstants.XY_DEADBAND || 
+               Math.abs(PlayerConfigs.yMovement)    > IOConstants.XY_DEADBAND || 
+               Math.abs(PlayerConfigs.turnMovement) > IOConstants.XY_DEADBAND;
     }
 
     private double getDriveSpeed(double input) {
