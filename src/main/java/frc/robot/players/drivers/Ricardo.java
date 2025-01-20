@@ -16,7 +16,6 @@ public class Ricardo extends PlayerConfigs {
         fineDriveSpeed = 0.1;
         
         //Driving and rotation
-        // TODO: Update these to match the actual controls
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
         turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());

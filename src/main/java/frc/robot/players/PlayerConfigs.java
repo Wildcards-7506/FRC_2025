@@ -47,16 +47,6 @@ public abstract class PlayerConfigs {
     
     public static boolean fineControlEnable; // Fine control enable
     public static boolean climberOnline; // Climber engage
-    
-    // Shooter
-    // public static boolean armScoringMechanism;
-    // public static boolean shooterActive;
-    // public static boolean fire;
-    // public static boolean reject;
-    // public static boolean intake;
-
-    // Climbers
-    // public static double climberEngage;
 
     /**
      * This helper method is used to get the joystick value after deadbanding.
