@@ -34,8 +34,7 @@ public abstract class PlayerConfigs {
 
     // Arm
     public static boolean lowPickup;
-    public static boolean station; // Likely same button as lowReef
-    public static boolean lowReef; // Likely same button as station
+    public static boolean stationOrLowReef; // Likely same button as lowReef
     public static boolean midReef;
     public static boolean highReef;
     public static boolean shelfReef;

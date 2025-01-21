@@ -35,8 +35,7 @@ public class Ricardo extends PlayerConfigs {
     @Override
     public void getOperatorConfig() {
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
-        station = Robot.controller1.getAButton(); // Likely same button as lowReef
-        lowReef = station; // Likely same button as station
+        stationOrLowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
         shelfReef = Robot.controller1.getXButton();
