@@ -26,6 +26,13 @@ public abstract class PlayerConfigs {
     public static boolean snapRight;
     public static boolean snapDown;
     public static boolean snapLeft;
+
+    // Reef snaps
+    public static boolean snapUpRight;
+    public static boolean snapDownRight;
+    public static boolean snapDownLeft;
+    public static boolean snapUpLeft;
+
     public static boolean zeroGyro;
     // robotRelative instead of fieldRelative because fieldRelative is default
     // When robotRelative is true, the robot will drive relative to the robot's current heading

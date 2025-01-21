@@ -119,6 +119,12 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
+    // Snap constants for reef
+    public static final double SNAP_UP_LEFT = -30;
+    public static final double SNAP_UP_RIGHT = 30;
+    public static final double SNAP_DOWN_LEFT = -150;
+    public static final double SNAP_DOWN_RIGHT = 150;
+
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;

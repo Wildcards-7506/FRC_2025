@@ -25,6 +25,13 @@ public class Ricardo extends PlayerConfigs {
         snapRight = Robot.controller0.getPOV() == IOConstants.DPAD_RIGHT;
         snapDown = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN;
         snapLeft = Robot.controller0.getPOV() == IOConstants.DPAD_LEFT;
+
+        // Reef snaps
+        snapUpRight = Robot.controller0.getPOV() == IOConstants.DPAD_UP_RIGHT;
+        snapDownRight = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_RIGHT;
+        snapDownLeft = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_LEFT;
+        snapUpLeft = Robot.controller0.getPOV() == IOConstants.DPAD_UP_LEFT;
+
         robotRelative = Robot.controller0.getRightBumperButton();
         
         //Gyro Reset
