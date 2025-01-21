@@ -11,7 +11,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,17 +36,6 @@ public class Robot extends TimedRobot {
   public PlayerConfigs operator;
   public static boolean skipNonPath;
 
-  public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
-  public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
-  // private static final String kDefaultAuto = "Default";
-  // private static final String kCustomAuto = "My Auto";
-  // private String m_autoSelected;
-  // private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  // Drivers
-  public static PlayerConfigs ricardo = new Ricardo();
-  public static PlayerConfigs test = new TestController();
-
   // Field Information
   public static Optional<Alliance> teamColor;
   public final static Field2d m_field = new Field2d();
@@ -55,6 +43,12 @@ public class Robot extends TimedRobot {
   // Controllers
   public static final XboxController controller0 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
   public static final XboxController controller1 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
+
+  // Drivers
+  public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
+  public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
+  public static PlayerConfigs ricardo = new Ricardo();
+  public static PlayerConfigs test = new TestController();
 
   // Subsystems
   public final static Drivetrain drivetrain = new Drivetrain();

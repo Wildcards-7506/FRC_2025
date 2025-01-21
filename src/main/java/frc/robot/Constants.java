@@ -120,6 +120,7 @@ public final class Constants {
 
   public static final class DriveConstants {
     // Snap constants for reef
+    // Angles are relative to the DPAD (CW +), will be inverted in snap method to drive robot (CCW +)
     public static final double SNAP_UP_LEFT = -30;
     public static final double SNAP_UP_RIGHT = 30;
     public static final double SNAP_DOWN_LEFT = -150;

@@ -211,6 +211,11 @@ public class Drivetrain extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
+  /**
+   * Returns the current swerve state to either brake or coast.
+   * 
+   * @param mode Either brake or coast.
+   */
   public void idleSwerve(IdleMode mode) {
     m_frontLeft.idleModule(mode);
     m_frontRight.idleModule(mode);
