@@ -26,7 +26,7 @@
           },
           "3,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -37,9 +37,9 @@
               "_showGlyph": false
             }
           },
-          "4,3": {
+          "5,3": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -79,19 +79,6 @@
               "_showGlyph": false
             }
           },
-          "5,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Match Time",
-              "_title": "/SmartDashboard/Match Time",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "7,0": {
             "size": [
               3,
@@ -118,7 +105,7 @@
               "_showGlyph": false
             }
           },
-          "6,3": {
+          "6,2": {
             "size": [
               1,
               1
@@ -131,7 +118,7 @@
               "_showGlyph": false
             }
           },
-          "5,3": {
+          "5,2": {
             "size": [
               1,
               1
@@ -175,10 +162,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data//SmartDashboard/Field/Robot[0]": true,
-              "Visible data//SmartDashboard/Field/Robot[1]": true,
-              "Visible data//SmartDashboard/Field/Robot[2]": true
+              "Y-axis/Unit": "ul"
             }
           },
           "3,1": {
@@ -387,9 +371,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.857142925262451,
-    "y": -6.857142925262451,
-    "width": 1476.5714111328125,
-    "height": 880.0
+    "x": 0.5714285969734192,
+    "y": 0.5714285969734192,
+    "width": 1461.7142333984375,
+    "height": 865.1428833007812
   }
 }

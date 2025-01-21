@@ -64,9 +64,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
-    // SmartDashboard.putData("Auto choices", m_chooser);
+    Logger.info("SYSTEM","Robot Started");
     
     //Auto Chooser
     autoMode = new AutoRoutines();
@@ -84,8 +82,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Operator",operator_chooser);
     SmartDashboard.putBoolean("Skip Non-Path Commands", false);
     SmartDashboard.putData(m_field);
-
-    Logger.info("SYSTEM","Robot Started");
   }
   
   /**
@@ -96,12 +92,7 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
-    SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
-    // SmartDashboard.putNumber("POV", controller1.getPOV());
-    // SmartDashboard.putNumber("Left Climber Position", Robot.climbers.getClimberLEncoder());
-    // SmartDashboard.putNumber("Right Climber Position", Robot.climbers.getClimberREncoder());
-  }
+  public void robotPeriodic() {}
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -124,9 +115,6 @@ public class Robot extends TimedRobot {
     autoMode.getAutonomousCommand().schedule();
     drivetrain.idleSwerve(IdleMode.kBrake);
     skipNonPath = SmartDashboard.getBoolean("Skip Non-Path Commands", false);
-    // m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    // System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /** This function is called periodically during autonomous. */
