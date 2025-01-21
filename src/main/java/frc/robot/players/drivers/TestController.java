@@ -16,20 +16,26 @@ public class TestController extends PlayerConfigs {
         fineDriveSpeed = 0.1;
         
         //Driving and rotation
-        // TODO: Update these to match the actual controls
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
-        turnMovement = -Robot.controller0.getRightX();
+        turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         snapUp = Robot.controller0.getPOV() == IOConstants.DPAD_UP;
         snapRight = Robot.controller0.getPOV() == IOConstants.DPAD_RIGHT;
         snapDown = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN;
         snapLeft = Robot.controller0.getPOV() == IOConstants.DPAD_LEFT;
+
+        // Reef snaps
+        snapUpRight = Robot.controller0.getPOV() == IOConstants.DPAD_UP_RIGHT;
+        snapDownRight = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_RIGHT;
+        snapDownLeft = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_LEFT;
+        snapUpLeft = Robot.controller0.getPOV() == IOConstants.DPAD_UP_LEFT;
+
         robotRelative = Robot.controller0.getRightBumperButton();
         
         //Gyro Reset
-        zeroGyro = Robot.controller0.getAButton();
+        zeroGyro = Robot.controller0.getBButton();
     }
 
     @Override
@@ -41,7 +47,7 @@ public class TestController extends PlayerConfigs {
         shelfReef = Robot.controller1.getXButton();
         gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX()); // Fine control wrist
-        fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftX()); // Fine control elbow
+        fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftY()); // Fine control elbow
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
         
