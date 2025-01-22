@@ -14,9 +14,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
-import frc.robot.Constants.ClawConstants;
+import frc.robot.Constants.CraneConstants;
 
-public class Claw extends SubsystemBase {
+public class Crane extends SubsystemBase {
     // private final AbsoluteEncoder m_turningEncoder;
     // Gripper
     // private final RelativeEncoder gripperEncoder;
@@ -33,8 +33,21 @@ public class Claw extends SubsystemBase {
     public double wristSetpoint;
     public boolean wristScoreState = false;
 
+    // Arm: Elbow and Extender
 
-    public Claw() {
+    // Elbow
+    private final SparkMax elbowMotor;
+    private final SparkMaxConfig elbowConfig;
+    public final SparkClosedLoopController elbowPID;
+    public double elbowSetpoint;
+
+    //Extender
+    private final SparkMax extenderMotor;
+    private final SparkMaxConfig extenderConfig;
+    public final SparkClosedLoopController extenderPID;
+    public double extenderSetpoint;
+
+    public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
         gripperMotor = new SparkMax(CANIDS.GRIPPER, MotorType.kBrushless);
         gripperConfig = new SparkMaxConfig();
@@ -44,12 +57,20 @@ public class Claw extends SubsystemBase {
         wristConfig = new SparkMaxConfig();
         wristPID = wristMotor.getClosedLoopController();
 
+        elbowMotor = new SparkMax(CANIDS.ELBOW, MotorType.kBrushless);
+        elbowConfig = new SparkMaxConfig();
+        elbowPID = elbowMotor.getClosedLoopController();
+
+        extenderMotor = new SparkMax(CANIDS.EXTENDER, MotorType.kBrushless);
+        extenderConfig = new SparkMaxConfig();
+        extenderPID = extenderMotor.getClosedLoopController();
+
         gripperConfig
             .idleMode(IdleMode.kBrake);
         gripperConfig.encoder
         // TODO: Ratio needs to be changed
-            .positionConversionFactor(ClawConstants.kGripperEncoderDistancePerPulse)
-            .velocityConversionFactor(ClawConstants.kGripperEncoderDistancePerPulse);
+            .positionConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse);
         gripperConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.001, 0.0, 0.0);
@@ -60,14 +81,37 @@ public class Claw extends SubsystemBase {
             .idleMode(IdleMode.kBrake);
         wristConfig.encoder
         // TODO: Ratio needs to be changed
-            .positionConversionFactor(ClawConstants.kWristEncoderDistancePerPulse)
-            .velocityConversionFactor(ClawConstants.kWristEncoderDistancePerPulse);
+            .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.001, 0.0, 0.0);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
+
+        elbowConfig
+            .idleMode(IdleMode.kBrake);
+        elbowConfig.encoder
+        // TODO: Ratio needs to be changed
+            .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
+        elbowConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.001, 0.0, 0.0);
+            
+        elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        extenderConfig
+            .idleMode(IdleMode.kBrake);
+        extenderConfig.encoder
+        // TODO: Ratio needs to be changed
+            .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
+        extenderConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.001, 0.0, 0.0);
+            
+        extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     /**
@@ -77,5 +121,14 @@ public class Claw extends SubsystemBase {
      */
     public void setGripperPosition(double setPoint) {
         gripperPID.setReference(setPoint, ControlType.kPosition);
+    }
+
+    /**
+     * Sets the position of the wrist relative to its starting position
+     * 
+     * @param setPoint The desired position of the wrist motor
+     */
+    public void setWristPosition(double setPoint) {
+        wristPID.setReference(setPoint, ControlType.kPosition);
     }
 }

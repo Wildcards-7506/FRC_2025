@@ -16,11 +16,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.CraneTeleopCommand;
 import frc.robot.commands.DrivetrainTeleopCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.players.drivers.Ricardo;
 import frc.robot.players.drivers.TestController;
+import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Logger;
 
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
 
   // Subsystems
   public final static Drivetrain drivetrain = new Drivetrain();
+  public final static Crane crane = new Crane();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -130,6 +133,7 @@ public class Robot extends TimedRobot {
 
     // Subsystem default commands
     drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
+    crane.setDefaultCommand(new CraneTeleopCommand());
 
     // Default subsystem states
     drivetrain.idleSwerve(IdleMode.kBrake);

@@ -36,9 +36,11 @@ public final class Constants {
     // Claw: consists of gripper (grabby grabby) and wrist
     public static final int GRIPPER = 9;
     public static final int WRIST = 10;
+    public static final int ELBOW = 11;
+    public static final int EXTENDER = 12;
   }
 
-  public static final class ClawConstants{
+  public static final class CraneConstants{
     public static final double kGripperMaxspeedMPS = 4.8;
     public static final double kGripperAngularSpeed  =  2 * Math.PI;
     public static final double kGripperTopSpeed = 1.0;
@@ -47,6 +49,8 @@ public final class Constants {
     // TODO: Ratio needs to be changed
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+    public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4;
+    public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
     
     // pull from the .bak
     // public static final double kArmExtensionMaxspeedMPS = 4.8;
