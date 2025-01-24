@@ -18,9 +18,10 @@ import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
 
 public class Crane extends SubsystemBase {
-    // private final AbsoluteEncoder m_turningEncoder;
+    // Crane vars
+    public int craneState = 0; // 0 is stow/default/starting configuration
+
     // Gripper
-    // private final RelativeEncoder gripperEncoder;
     private final SparkMax gripperMotor;
     private final SparkMaxConfig gripperConfig;
     public final SparkClosedLoopController gripperPID;
