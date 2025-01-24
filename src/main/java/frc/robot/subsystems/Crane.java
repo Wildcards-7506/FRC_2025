@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.fasterxml.jackson.core.util.Separators;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -120,6 +121,7 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the gripper Motor
      */
     public void setGripperPosition(double setPoint) {
+        gripperSetpoint = setPoint;
         gripperPID.setReference(setPoint, ControlType.kPosition);
     }
 
@@ -129,6 +131,27 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the wrist motor
      */
     public void setWristPosition(double setPoint) {
+        wristSetpoint = setPoint;
         wristPID.setReference(setPoint, ControlType.kPosition);
+    }
+
+    /**
+     * Sets the position of the elbow relative to its starting position
+     * 
+     * @param setPoint The desired position of the elbow motor
+     */
+    public void setElbowPosition(double setPoint) {
+        elbowSetpoint = setPoint;
+        elbowPID.setReference(setPoint, ControlType.kPosition);
+    }
+
+    /**
+     * Sets the position of the extender relative to its starting position
+     * 
+     * @param setPoint The desired position of the extender motor
+     */
+    public void setExtenderPosition(double setPoint) {
+        extenderSetpoint = setPoint;
+        extenderPID.setReference(setPoint, ControlType.kPosition);
     }
 }
