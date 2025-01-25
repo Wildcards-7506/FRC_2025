@@ -42,12 +42,16 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
-
+    public double elbowSoftLimitHardDeck = -20;
+    public double elbowSoftLimitCeiling = -290;
+    
     //Extender
     private final SparkMax extenderMotor;
     private final SparkMaxConfig extenderConfig;
     public final SparkClosedLoopController extenderPID;
     public double extenderSetpoint;
+    public double extenderSoftLimitHardDeck = 360 * 5;
+    public double extenderSoftLimitCeiling = 0;
 
     public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
@@ -99,7 +103,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.001, 0.0, 0.0);
+            .pid(0.01, 0.0, 0.1);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -111,7 +115,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
         extenderConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.001, 0.0, 0.0);
+            .pid(0.01, 0.0, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -144,9 +148,11 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the elbow motor
      */
     public void setElbowPosition(double setPoint) {
-        elbowSetpoint = setPoint;
-        elbowPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Elbow Setpoint", setPoint);
+        // Check motor direction shaft is CCW +
+        // Up is negative in this 2025 robot, okay?
+        elbowSetpoint = getSetPointInRange(setPoint, elbowSoftLimitHardDeck, elbowSoftLimitCeiling);
+        elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
+        SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
 
     /**
@@ -155,8 +161,34 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the extender motor
      */
     public void setExtenderPosition(double setPoint) {
-        extenderSetpoint = setPoint;
-        extenderPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Extender Setpoint", setPoint);
+        // Check motor direction shaft is CCW +
+        // Up is negative in this 2025 robot, okay?
+        extenderSetpoint = getSetPointInRange(setPoint, extenderSoftLimitHardDeck, extenderSoftLimitCeiling);
+        extenderPID.setReference(extenderSetpoint, ControlType.kPosition);
+        SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
+    }
+    
+    private double getSetPointInRange(double setPoint, double hardDeck, double ceiling) {
+        if(setPoint > hardDeck)
+            setPoint = hardDeck;
+        else if(setPoint < ceiling)
+            setPoint = ceiling;
+        return setPoint;
+    }
+
+    public double getElbowPosition() {
+        return elbowMotor.getEncoder().getPosition();
+    }
+
+    public double getExtenderPosition() {
+        return extenderMotor.getEncoder().getPosition();
+    }
+
+    public double getGripperMotor() {
+        return gripperMotor.getEncoder().getPosition();
+    }
+
+    public double getWristPosition() {
+        return wristMotor.getEncoder().getPosition();
     }
 }

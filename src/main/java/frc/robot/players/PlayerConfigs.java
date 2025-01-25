@@ -41,10 +41,10 @@ public abstract class PlayerConfigs {
 
     // Arm
     public static boolean lowPickup;
+    public static boolean shelfReef;
     public static boolean stationOrLowReef; // Likely same button as lowReef
     public static boolean midReef;
     public static boolean highReef;
-    public static boolean shelfReef;
     public static boolean gripperOpen;
     public static double fineControlWrist; // Fine control wrist
     public static double fineControlElbow; // Fine control elbow

@@ -49,8 +49,10 @@ public final class Constants {
     // TODO: Ratio needs to be changed
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
-    public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4;
-    public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+    public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3;
+    public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/4; // Tested as of 1/25/2025
+
+    public static final double kExtenderFixSetpoint = -130;
     
     // pull from the .bak
     // public static final double kArmExtensionMaxspeedMPS = 4.8;
@@ -118,7 +120,7 @@ public final class Constants {
     public static final int RIGHT_JOYSTICK_BUTTON = 12;
 
     // Thresholds
-    public static final double XY_DEADBAND = 0.05;
+    public static final double XY_DEADBAND = 0.1;
     public static final double TRIGGER_DEADBAND = 0.2;
   }
 

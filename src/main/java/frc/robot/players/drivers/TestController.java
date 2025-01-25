@@ -41,10 +41,10 @@ public class TestController extends PlayerConfigs {
     @Override
     public void getOperatorConfig() {
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
+        shelfReef = Robot.controller1.getXButton();
         stationOrLowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
-        shelfReef = Robot.controller1.getXButton();
         gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX()); // Fine control wrist
         fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftY()); // Fine control elbow
