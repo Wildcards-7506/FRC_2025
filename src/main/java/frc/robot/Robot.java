@@ -167,7 +167,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
-    // What we want to do in test mode
+    crane.setDefaultCommand(new CraneTeleopCommand());
   }
 
   /** This function is called periodically during test mode. */

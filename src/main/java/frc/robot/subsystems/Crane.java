@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
@@ -123,6 +124,7 @@ public class Crane extends SubsystemBase {
     public void setGripperPosition(double setPoint) {
         gripperSetpoint = setPoint;
         gripperPID.setReference(setPoint, ControlType.kPosition);
+        SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
 
     /**
@@ -133,6 +135,7 @@ public class Crane extends SubsystemBase {
     public void setWristPosition(double setPoint) {
         wristSetpoint = setPoint;
         wristPID.setReference(setPoint, ControlType.kPosition);
+        SmartDashboard.putNumber("Wrist Setpoint", setPoint);
     }
 
     /**
@@ -143,6 +146,7 @@ public class Crane extends SubsystemBase {
     public void setElbowPosition(double setPoint) {
         elbowSetpoint = setPoint;
         elbowPID.setReference(setPoint, ControlType.kPosition);
+        SmartDashboard.putNumber("Elbow Setpoint", setPoint);
     }
 
     /**
@@ -153,5 +157,6 @@ public class Crane extends SubsystemBase {
     public void setExtenderPosition(double setPoint) {
         extenderSetpoint = setPoint;
         extenderPID.setReference(setPoint, ControlType.kPosition);
+        SmartDashboard.putNumber("Extender Setpoint", setPoint);
     }
 }

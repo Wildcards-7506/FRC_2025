@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
@@ -20,7 +21,7 @@ public class CraneTeleopCommand extends Command {
     @Override
     public void initialize() {}
 
-    // Called every time the scheduler runs while the command is scheduled.
+    // Called every time (~20 ms) the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         if(PlayerConfigs.gripperOpen)
@@ -59,15 +60,21 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setExtenderPosition(0);
         }
         // */
-        // TODO: TEST THIS BEFORE THE ABOVE CODE, 
+        // TODO: TEST THIS BEFORE THE ABOVE CODE
         if(PlayerConfigs.fineControlEnable) { // fine control
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
         }
+
+        SmartDashboard.putNumber("Crane State", Robot.crane.craneState);
+        SmartDashboard.putBoolean("Fine Control", PlayerConfigs.fineControlEnable);
+        SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
+        SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
     }
     
     /**
-     * Updates the crane state based on the button pressed.
+     * Updates the crane state based on the button pressed. Holds the state of
+     * the crane until more buttons are pressed.
      * <ul>
      * <li>Button A is pressed, state = 1, A pressed again, state = 0.</li>
      * <li>Button A is pressed, B is pressed, state = 2.</li>
