@@ -6,11 +6,11 @@ import frc.robot.players.PlayerConfigs;
 
 public class CraneTeleopCommand extends Command {
     private boolean resetState = false, // reset state for same button resets to stow
-                    lowPickupState = false,
-                    shelfReefState = false,
-                    stationOrLowReefState = false,
-                    midReefState = false,
-                    highReefState = false;
+                    prevLowPickupState = false,
+                    prevShelfReefState = false,
+                    prevStationOrLowReefState = false,
+                    prevMidReefState = false,
+                    prevHighReefState = false;
 
     public CraneTeleopCommand() {
         addRequirements(Robot.crane);
@@ -76,11 +76,11 @@ public class CraneTeleopCommand extends Command {
      * </ul>
      */
     private void updateCraneState() {
-        lowPickupState = updateButtonState(PlayerConfigs.lowPickup, lowPickupState, 1);
-        shelfReefState = updateButtonState(PlayerConfigs.shelfReef, shelfReefState, 2);
-        stationOrLowReefState = updateButtonState(PlayerConfigs.stationOrLowReef, stationOrLowReefState, 3);
-        midReefState = updateButtonState(PlayerConfigs.midReef, midReefState, 4);
-        highReefState = updateButtonState(PlayerConfigs.highReef, highReefState, 5);
+        prevLowPickupState = updateButtonState(PlayerConfigs.lowPickup, prevLowPickupState, 1);
+        prevShelfReefState = updateButtonState(PlayerConfigs.shelfReef, prevShelfReefState, 2);
+        prevStationOrLowReefState = updateButtonState(PlayerConfigs.stationOrLowReef, prevStationOrLowReefState, 3);
+        prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, 4);
+        prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, 5);
     }
 
     /**
