@@ -2,12 +2,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
 public class CraneTeleopCommand extends Command {
-    private boolean resetState = false, // reset state for same button resets to stow
-                    prevLowPickupState = false,
+    private boolean prevLowPickupState = false,
                     prevShelfReefState = false,
                     prevStationOrLowReefState = false,
                     prevMidReefState = false,
@@ -29,41 +29,55 @@ public class CraneTeleopCommand extends Command {
         else
             Robot.crane.setGripperPosition(0);
 
-        updateCraneState(); // verify this first
-        // TODO: COMMENT OUT the following code BEFORE TESTING, VERIFY button state update works, THEN TEST FINE CONTROL
-        // /*
-        if(Robot.crane.craneState == 1) { // low pickup
-            // TODO: implement low pickup logic, CHECK BOUNDS: bumper, claw dimensions, have MARGIN OF ERROR
-            // We can pickup from front or back, dunno what to do yet until CAD done.
-            Robot.crane.setWristPosition(0); // +/-(wiring) 180, or 0 based on pickup from front or back
-        }
-        if(Robot.crane.craneState == 2) { // shelf reef
-            // TODO: implement shelf reef logic
-            Robot.crane.setWristPosition(0);
-        }
-        if(Robot.crane.craneState == 3) { // station or low reef
-            // TODO: implement station or low reef logic
-            Robot.crane.setWristPosition(0);
-        }
-        if(Robot.crane.craneState == 4) { // mid reef
-            // TODO: implement mid reef logic
-            Robot.crane.setWristPosition(0);
-        }
-        if(Robot.crane.craneState == 5) { // high reef
-            // TODO: implement high reef logic
-            Robot.crane.setWristPosition(0);
-        }
-        if(Robot.crane.craneState == 0) { // stow
-            // TODO: implement stow logic, put an offset to not damage itself
-            Robot.crane.setWristPosition(0);
-            Robot.crane.setElbowPosition(0);
-            Robot.crane.setExtenderPosition(0);
-        }
-        // */
+        updateCraneState();
+        
         // TODO: TEST THIS BEFORE THE ABOVE CODE
         if(PlayerConfigs.fineControlEnable) { // fine control
-            Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
+            // Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
+
+            // TODO: Remove or comment out after we get positional data
+            // Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlElbow * 0.5);
+        } else {
+            // TODO: COMMENT OUT the following code BEFORE TESTING, THEN TEST FINE CONTROL
+            // /*
+            if(Robot.crane.craneState == 1) { // low pickup
+                // TODO: implement low pickup logic, CHECK BOUNDS: bumper, claw dimensions, have MARGIN OF ERROR
+                // We can pickup from front or back, dunno what to do yet until CAD done.
+                if(Robot.crane.getElbowPosition() > Constants.CraneConstants.kExtenderFixSetpoint) {
+                    if(Robot.crane.getExtenderPosition() < 360) {
+                        Robot.crane.setExtenderPosition(360);
+                    } else {
+                        Robot.crane.setElbowPosition(Constants.CraneConstants.kExtenderFixSetpoint);
+                    }
+                }
+                // } else if(Robot.crane.getElbowPosition() > ) {
+
+                // }
+            }
+            if(Robot.crane.craneState == 2) { // shelf reef
+                // TODO: implement shelf reef logic
+                Robot.crane.setWristPosition(0);
+            }
+            if(Robot.crane.craneState == 3) { // station or low reef
+                // TODO: implement station or low reef logic
+                Robot.crane.setWristPosition(0);
+            }
+            if(Robot.crane.craneState == 4) { // mid reef
+                // TODO: implement mid reef logic
+                Robot.crane.setWristPosition(0);
+            }
+            if(Robot.crane.craneState == 5) { // high reef
+                // TODO: implement high reef logic
+                Robot.crane.setWristPosition(0);
+            }
+            if(Robot.crane.craneState == 0) { // stow
+                // TODO: implement stow logic, put an offset to not damage itself
+                Robot.crane.setWristPosition(0);
+                Robot.crane.setElbowPosition(Robot.crane.elbowSoftLimitHardDeck);
+                Robot.crane.setExtenderPosition(Robot.crane.extenderSoftLimitCeiling);
+            }
+            // */
         }
 
         SmartDashboard.putNumber("Crane State", Robot.crane.craneState);
@@ -99,12 +113,10 @@ public class CraneTeleopCommand extends Command {
      */
     private boolean updateButtonState(boolean buttonPressed, boolean prevState, int craneState) {
         if(buttonPressed && !prevState) {
-            if(!resetState || Robot.crane.craneState != craneState) {
+            if(Robot.crane.craneState != craneState) {
                 Robot.crane.craneState = craneState;
-                resetState = true;
             } else {
                 Robot.crane.craneState = 0;
-                resetState = false;
             }
         }
         return buttonPressed;
