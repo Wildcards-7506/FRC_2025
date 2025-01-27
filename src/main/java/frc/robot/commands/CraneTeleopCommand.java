@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import frc.robot.Constants.CraneConstants;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
@@ -12,6 +12,9 @@ public class CraneTeleopCommand extends Command {
                     prevStationOrLowReefState = false,
                     prevMidReefState = false,
                     prevHighReefState = false;
+    
+    /** Degree of offset so that the crane can progress to the next position. */
+    private double offset = 2.5;
 
     public CraneTeleopCommand() {
         addRequirements(Robot.crane);
@@ -25,13 +28,12 @@ public class CraneTeleopCommand extends Command {
     @Override
     public void execute() {
         if(PlayerConfigs.gripperOpen)
-            Robot.crane.setGripperPosition(-90);
+            Robot.crane.setGripperPosition(90);
         else
             Robot.crane.setGripperPosition(0);
 
         updateCraneState();
         
-        // TODO: TEST THIS BEFORE THE ABOVE CODE
         if(PlayerConfigs.fineControlEnable) { // fine control
             // Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
@@ -39,21 +41,29 @@ public class CraneTeleopCommand extends Command {
             // TODO: Remove or comment out after we get positional data
             // Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlElbow * 0.5);
         } else {
-            // TODO: COMMENT OUT the following code BEFORE TESTING, THEN TEST FINE CONTROL
-            // /*
             if(Robot.crane.craneState == 1) { // low pickup
-                // TODO: implement low pickup logic, CHECK BOUNDS: bumper, claw dimensions, have MARGIN OF ERROR
-                // We can pickup from front or back, dunno what to do yet until CAD done.
-                if(Robot.crane.getElbowPosition() > Constants.CraneConstants.kExtenderFixSetpoint) {
-                    if(Robot.crane.getExtenderPosition() < 360) {
-                        Robot.crane.setExtenderPosition(360);
+                // TODO: CHECK BOUNDS: bumper, claw dimensions, have MARGIN OF ERROR
+                // If we want to go to elbow pause, we must retract extender, then we rotate elbow to pause position
+                Robot.crane.setWristPosition(0);
+                if(Robot.crane.getElbowPosition() + offset < CraneConstants.kElbowPause) {
+                    if(Robot.crane.getExtenderPosition() - offset > CraneConstants.kExtenderLimit1
+                       || Robot.crane.getExtenderPosition() + offset < CraneConstants.kExtenderLimit1) {
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit1);
                     } else {
-                        Robot.crane.setElbowPosition(Constants.CraneConstants.kExtenderFixSetpoint);
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowPause);
                     }
+                // If we want to go to elbow ceiling (low pickup), we must retract even more, then we rotate to elbow ceiling
+                } else if(Robot.crane.getElbowPosition() + offset < CraneConstants.kElbowCeiling) {
+                    if(Robot.crane.getExtenderPosition() - offset > CraneConstants.kExtenderLimit2
+                       || Robot.crane.getExtenderPosition() + offset < CraneConstants.kExtenderLimit2) {
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit2);
+                    } else {
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowCeiling);
+                    }
+                } else { // If elbow is at ceiling, then we extend the extender to pick up the coral
+                    Robot.crane.setElbowPosition(CraneConstants.kElbowCeiling);
+                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderCeiling);
                 }
-                // } else if(Robot.crane.getElbowPosition() > ) {
-
-                // }
             }
             if(Robot.crane.craneState == 2) { // shelf reef
                 // TODO: implement shelf reef logic
@@ -74,8 +84,26 @@ public class CraneTeleopCommand extends Command {
             if(Robot.crane.craneState == 0) { // stow
                 // TODO: implement stow logic, put an offset to not damage itself
                 Robot.crane.setWristPosition(0);
-                Robot.crane.setElbowPosition(Robot.crane.elbowSoftLimitHardDeck);
-                Robot.crane.setExtenderPosition(Robot.crane.extenderSoftLimitCeiling);
+                // If we want to go to elbow pause, we must retract extender, then we rotate elbow to pause position
+                if(Robot.crane.getElbowPosition() - offset > CraneConstants.kElbowPause) {
+                    if(Robot.crane.getExtenderPosition() - offset > CraneConstants.kExtenderLimit2
+                       || Robot.crane.getExtenderPosition() + offset < CraneConstants.kExtenderLimit2) {
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit2);
+                    } else {
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowPause);
+                    }
+                // If we want to go to elbow ceiling (low pickup), we must retract even more, then we rotate to elbow ceiling
+                } else if(Robot.crane.getElbowPosition() - offset > CraneConstants.kElbowHardDeck) {
+                    if(Robot.crane.getExtenderPosition() - offset > CraneConstants.kExtenderLimit1
+                       || Robot.crane.getExtenderPosition() + offset < CraneConstants.kExtenderLimit1) {
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit1);
+                    } else {
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
+                    }
+                } else { // If elbow is at ceiling, then we extend the extender to pick up the coral
+                    Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
+                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderCeiling - 360);
+                }
             }
             // */
         }
