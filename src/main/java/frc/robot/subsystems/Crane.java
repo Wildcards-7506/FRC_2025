@@ -70,6 +70,7 @@ public class Crane extends SubsystemBase {
         gripperConfig
             .idleMode(IdleMode.kBrake);
         gripperConfig.encoder
+            .inverted(true)
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse);
@@ -94,6 +95,7 @@ public class Crane extends SubsystemBase {
         elbowConfig
             .idleMode(IdleMode.kBrake);
         elbowConfig.encoder
+            .inverted(true)
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
@@ -122,8 +124,6 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the gripper Motor
      */
     public void setGripperPosition(double setPoint) {
-        // Invert so that CW is positive
-        gripperSetpoint = -setPoint;
         gripperPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
@@ -145,10 +145,9 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the elbow motor
      */
     public void setElbowPosition(double setPoint) {
-        // After the inversion, negative setpoint will drive motors CW+ upwards
-        elbowSetpoint = -filterSetPoint(setPoint, 
-                                        CraneConstants.kElbowHardDeck, 
-                                        CraneConstants.kElbowCeiling);
+        elbowSetpoint = filterSetPoint(setPoint, 
+                                       CraneConstants.kElbowHardDeck, 
+                                       CraneConstants.kElbowCeiling);
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
@@ -187,8 +186,7 @@ public class Crane extends SubsystemBase {
 
     /** Relative to the chassis up from starting is positive. */
     public double getElbowPosition() {
-        // Invert so that up is positive
-        return -elbowMotor.getEncoder().getPosition();
+        return elbowMotor.getEncoder().getPosition();
     }
 
     /** Relative to the elbow joint, 0 is fully retracted, ceiling is fully extended. */
@@ -197,7 +195,7 @@ public class Crane extends SubsystemBase {
     }
 
     public double getGripperMotor() {
-        return -gripperMotor.getEncoder().getPosition();
+        return gripperMotor.getEncoder().getPosition();
     }
 
     public double getWristPosition() {
