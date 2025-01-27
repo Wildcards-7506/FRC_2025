@@ -94,24 +94,24 @@ public class Crane extends SubsystemBase {
         elbowConfig
             .idleMode(IdleMode.kBrake);
         elbowConfig.encoder
-        // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.01, 0.01, 0.5);
+            // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
+            .pid(0.0025, 0.01, 0.5);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         extenderConfig
             .idleMode(IdleMode.kBrake);
         extenderConfig.encoder
-        // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
         extenderConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.01, 0.01, 0.1);
+            // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.1
+            .pid(0.0025, 0.01, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
