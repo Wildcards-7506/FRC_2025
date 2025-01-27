@@ -26,14 +26,14 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig gripperConfig;
     public final SparkClosedLoopController gripperPID;
     public double gripperSetpoint;
-    public boolean gripState = true; // gripToggle = true: means gripping coral, false: means open
+    // public boolean gripState = true; // gripToggle = true: means gripping coral, false: means open
 
     // Wrist
     private final SparkMax wristMotor;
     private final SparkMaxConfig wristConfig;
     public final SparkClosedLoopController wristPID;
     public double wristSetpoint;
-    public boolean wristScoreState = false;
+    // public boolean wristScoreState = false;
 
     // Arm: Elbow and Extender
 
@@ -42,16 +42,12 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
-    public double elbowSoftLimitHardDeck = -20;
-    public double elbowSoftLimitCeiling = -290;
     
     //Extender
     private final SparkMax extenderMotor;
     private final SparkMaxConfig extenderConfig;
     public final SparkClosedLoopController extenderPID;
     public double extenderSetpoint;
-    public double extenderSoftLimitHardDeck = 360 * 5;
-    public double extenderSoftLimitCeiling = 0;
 
     public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
@@ -103,7 +99,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.01, 0.0, 0.1);
+            .pid(0.01, 0.01, 0.5);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -115,18 +111,19 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
         extenderConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.01, 0.0, 0.1);
+            .pid(0.01, 0.01, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     /**
-     * Sets the position of the gripper relative to its starting position
+     * Sets the position of the gripper relative to its starting position, CW+.
      * 
      * @param setPoint The desired position of the gripper Motor
      */
     public void setGripperPosition(double setPoint) {
-        gripperSetpoint = setPoint;
+        // Invert so that CW is positive
+        gripperSetpoint = -setPoint;
         gripperPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
@@ -143,49 +140,64 @@ public class Crane extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the elbow relative to its starting position
+     * Sets the position of the elbow relative to its starting position, CW+.
      * 
      * @param setPoint The desired position of the elbow motor
      */
     public void setElbowPosition(double setPoint) {
-        // Check motor direction shaft is CCW +
-        // Up is negative in this 2025 robot, okay?
-        elbowSetpoint = getSetPointInRange(setPoint, elbowSoftLimitHardDeck, elbowSoftLimitCeiling);
+        // After the inversion, negative setpoint will drive motors CW+ upwards
+        elbowSetpoint = -filterSetPoint(setPoint, 
+                                        CraneConstants.kElbowHardDeck, 
+                                        CraneConstants.kElbowCeiling);
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
 
     /**
-     * Sets the position of the extender relative to its starting position
+     * Sets the position of the extender relative to its starting position.
+     * Full extension is setpoint = ceiling, motor = 0.
+     * Full retraction is setpoint = 0, motor = ceiling.
      * 
      * @param setPoint The desired position of the extender motor
      */
     public void setExtenderPosition(double setPoint) {
-        // Check motor direction shaft is CCW +
-        // Up is negative in this 2025 robot, okay?
-        extenderSetpoint = getSetPointInRange(setPoint, extenderSoftLimitHardDeck, extenderSoftLimitCeiling);
+        // Full extension is setpoint = ceiling, motor = 0
+        // Full retraction is setpoint = 0, motor = ceiling
+        extenderSetpoint = filterSetPoint(CraneConstants.kExtenderCeiling - setPoint, 
+                                          CraneConstants.kExtenderHardDeck, 
+                                          CraneConstants.kExtenderCeiling);
         extenderPID.setReference(extenderSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
     }
     
-    private double getSetPointInRange(double setPoint, double hardDeck, double ceiling) {
-        if(setPoint > hardDeck)
+    /**
+     * Returns the ceiling if the setpoint is above it, or the hard deck if the setpoint is below it.
+     * Otherwise, returns the setpoint.
+     * 
+     * @param setPoint The desired state of the crane.
+     * @param hardDeck The hard deck of the crane.
+     */
+    private double filterSetPoint(double setPoint, double hardDeck, double ceiling) {
+        if(setPoint < hardDeck)
             setPoint = hardDeck;
-        else if(setPoint < ceiling)
+        if(setPoint > ceiling)
             setPoint = ceiling;
         return setPoint;
     }
 
+    /** Relative to the chassis up from starting is positive. */
     public double getElbowPosition() {
-        return elbowMotor.getEncoder().getPosition();
+        // Invert so that up is positive
+        return -elbowMotor.getEncoder().getPosition();
     }
 
+    /** Relative to the elbow joint, 0 is fully retracted, ceiling is fully extended. */
     public double getExtenderPosition() {
-        return extenderMotor.getEncoder().getPosition();
+        return CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition();
     }
 
     public double getGripperMotor() {
-        return gripperMotor.getEncoder().getPosition();
+        return -gripperMotor.getEncoder().getPosition();
     }
 
     public double getWristPosition() {

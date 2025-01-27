@@ -49,10 +49,25 @@ public final class Constants {
     // TODO: Ratio needs to be changed
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
-    public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3;
+    public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/4; // Tested as of 1/25/2025
 
-    public static final double kExtenderFixSetpoint = -130;
+    // Limits
+    // TODO: Pully diameter may be incorrect, change 3 inches to match a better value
+    public static final double kPullyCircumferenceInches = 3 * Math.PI;
+    public static final double kExtensionCap = 360 * (17 / kPullyCircumferenceInches); // 17 in. to degrees
+    // Elbow bounds
+    public static final double kElbowHardDeck = 20;
+    public static final double kElbowCeiling = 290;
+    public static final double kElbowPause = 170;
+    // Extender bounds
+    public static final double kExtenderHardDeck = 0;
+    // TODO: Update 40 inches to match extender length, update pully circumference
+    public static final double kExtenderCeiling = 360 * (40 / kPullyCircumferenceInches);
+    /** Limit extension from hard deck to elbow pause */
+    public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap;
+    /** Limit extension from elbow pause to scoring/coral pickup */
+    public static final double kExtenderLimit2 = kExtensionCap;
     
     // pull from the .bak
     // public static final double kArmExtensionMaxspeedMPS = 4.8;
