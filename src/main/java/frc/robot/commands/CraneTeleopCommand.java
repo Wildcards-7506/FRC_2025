@@ -101,8 +101,9 @@ public class CraneTeleopCommand extends Command {
                         Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
                     }
                 } else { // If elbow is at ceiling, then we extend the extender to pick up the coral
+                    Robot.crane.setWristPosition(0);
                     Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
-                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderCeiling - 360);
+                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderCeiling - 360); // Keep slightly retracted to improve stability
                 }
             }
             // */
