@@ -52,16 +52,12 @@ public final class Constants {
     public static final double kGripperHardDeck = 0;
     public static final double kGripperCeiling = 50;
 
-    // Elbow limits
-    public static final double kElbowHardDeck = 10;
-    public static final double kElbowStation = 25;
-    public static final double kElbowHigh = 140;
-    public static final double kElbowPause = 150;
-    public static final double kElbowMid = 160;
-    /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 200;
-    public static final double kElbowShelf = 247.5;
-    public static final double kElbowCeiling = 290;
+    // Wrist limits
+    public static final double kWristHardDeck = -45;
+    public static final double kWristHorizontal = 0;
+    public static final double kWristHorizontal180 = 180;
+    public static final double kWristVertical = 90;
+    public static final double kWristCeiling = 225;
     
     // Extender limits
     // Extender specifics are measured from or end to end, or center of elbow on piece to edge of extender piece without Claw
@@ -71,6 +67,7 @@ public final class Constants {
     public static final double kExtenderMid = 10.5;
     public static final double kExtenderLow = 3.75;
     public static final double kExtenderShelf = 10.5;
+    public static final double kExtenderPickup = 23.25;
     // TODO: Update 40 inches to match extender length, update pully circumference
     public static final double kExtenderCeiling = 40;
     public static final double kExtensionCap = 17; // 17 inches
@@ -84,6 +81,17 @@ public final class Constants {
     /** Limit extension from elbow pause to scoring/coral pickup, measured from claw tip to 17 in. extention limit. */
     public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset;
     public static final double kExtenderStart = kExtenderCeiling - 5; // extender butt pokes out by how much?
+
+    // Elbow limits
+    public static final double kElbowHardDeck = 10;
+    public static final double kElbowStation = 25;
+    public static final double kElbowHigh = 140;
+    public static final double kElbowPause = 150;
+    public static final double kElbowMid = 160;
+    /** This is for low reef, not ground/low pickup. */
+    public static final double kElbowLow = 200;
+    public static final double kElbowShelf = 247.5;
+    public static final double kElbowCeiling = 290;
     
     // pull from the .bak
     // public static final double kGripperMaxspeedMPS = 4.8;

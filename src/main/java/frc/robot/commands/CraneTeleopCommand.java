@@ -41,12 +41,12 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.5);
         } else {
             if(Robot.crane.craneState == 1) { // station
-                // TODO: implement station logic
+                // TODO: VERIFY station logic
                 if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    Robot.crane.setWristPosition(CraneConstants.kGripperCeiling);
+                    Robot.crane.setWristPosition(CraneConstants.kWristVertical);
                     if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
                        && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
-                        Robot.crane.setWristPosition(0); // may need to rotate 180 degrees
+                        Robot.crane.setWristPosition(CraneConstants.kWristVertical);
                         Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
                         Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
                     }
@@ -55,41 +55,73 @@ public class CraneTeleopCommand extends Command {
             if(Robot.crane.craneState == 2) { // low pickup
             // TODO: CHECK LIMITS: bumper, claw dimensions, have MARGIN OF ERROR
                 if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
-                    Robot.crane.setWristPosition(0);
+                    Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
                     if(upToElbowPosition(CraneConstants.kElbowCeiling, CraneConstants.kExtenderLimit2)) {
                         // If elbow is at ceiling, then we extend the extender to pick up the coral
-                        Robot.crane.setWristPosition(0); // may need to rotate 180 degrees
+                        Robot.crane.setWristPosition(CraneConstants.kWristHorizontal); // may need to rotate 180 degrees
                         Robot.crane.setElbowPosition(CraneConstants.kElbowCeiling);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderCeiling);
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderPickup);
                     }
                 }
             }
             if(Robot.crane.craneState == 3) { // shelf reef
-                // TODO: implement shelf reef logic
-                Robot.crane.setWristPosition(0);
+                // TODO: VERIFY shelf reef logic
+                if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
+                    Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
+                    if(upToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit2)
+                       && downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit2)) {
+                        Robot.crane.setWristPosition(CraneConstants.kWristHorizontal); // may need to rotate 180 degrees
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowShelf);
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderShelf);
+                    }
+                }
             }
             if(Robot.crane.craneState == 4) { // low reef
-                // TODO: implement low reef logic
-                Robot.crane.setWristPosition(0);
+                // TODO: VERIFY low reef logic
+                if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
+                    Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+                    if(upToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit2)
+                       && downToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit2)) {
+                        Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowLow);
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLow);
+                    }
+                }
             }
             if(Robot.crane.craneState == 5) { // mid reef
-                // TODO: implement mid reef logic
-                Robot.crane.setWristPosition(0);
+                // TODO: VERIFY mid reef logic
+                if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
+                    Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+                    if(upToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit2)
+                       && downToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit2)) {
+                        Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowMid);
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderMid);
+                    }
+                }
             }
             if(Robot.crane.craneState == 6) { // high reef
-                // TODO: implement high reef logic
-                Robot.crane.setWristPosition(0);
+                // TODO: VERIFY high reef logic
+                if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+                    if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+                        if(downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit2 + 10)) {
+                            Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+                            Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
+                            Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
+                        }
+                    }
+                }
             }
             if(Robot.crane.craneState == 0) { // stow
                 // TODO: Test stow logic
                 // If we want to go to elbow pause, we must retract extender, then we rotate elbow to pause position
                 if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    Robot.crane.setWristPosition(0);
+                    Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
                     if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
                         // If elbow is at hard deck, then we slightly retract the extender for stability
-                        Robot.crane.setWristPosition(0);
+                        Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
                         Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderCeiling - 360); // Keep slightly retracted to improve stability
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit1); // Keep slightly retracted to improve stability
                     }
                 }
             }
