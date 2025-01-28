@@ -55,10 +55,10 @@ public class CraneTeleopCommand extends Command {
             if(Robot.crane.craneState == 2) { // low pickup
             // TODO: CHECK LIMITS: bumper, claw dimensions, have MARGIN OF ERROR
                 if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
-                    Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
+                    Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
                     if(upToElbowPosition(CraneConstants.kElbowCeiling, CraneConstants.kExtenderLimit2)) {
                         // If elbow is at ceiling, then we extend the extender to pick up the coral
-                        Robot.crane.setWristPosition(CraneConstants.kWristHorizontal); // may need to rotate 180 degrees
+                        Robot.crane.setWristPosition(CraneConstants.kWristOrigin); // may need to rotate 180 degrees
                         Robot.crane.setElbowPosition(CraneConstants.kElbowCeiling);
                         Robot.crane.setExtenderPosition(CraneConstants.kExtenderPickup);
                     }
@@ -67,10 +67,10 @@ public class CraneTeleopCommand extends Command {
             if(Robot.crane.craneState == 3) { // shelf reef
                 // TODO: VERIFY shelf reef logic
                 if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
-                    Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
+                    Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
                     if(upToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit2)
                        && downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit2)) {
-                        Robot.crane.setWristPosition(CraneConstants.kWristHorizontal); // may need to rotate 180 degrees
+                        Robot.crane.setWristPosition(CraneConstants.kWristOrigin); // may need to rotate 180 degrees
                         Robot.crane.setElbowPosition(CraneConstants.kElbowShelf);
                         Robot.crane.setExtenderPosition(CraneConstants.kExtenderShelf);
                     }
@@ -116,10 +116,10 @@ public class CraneTeleopCommand extends Command {
                 // TODO: Test stow logic
                 // If we want to go to elbow pause, we must retract extender, then we rotate elbow to pause position
                 if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
+                    Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
                     if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
                         // If elbow is at hard deck, then we slightly retract the extender for stability
-                        Robot.crane.setWristPosition(CraneConstants.kWristHorizontal);
+                        Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
                         Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
                         Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit1); // Keep slightly retracted to improve stability
                     }

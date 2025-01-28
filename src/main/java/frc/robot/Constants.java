@@ -54,8 +54,8 @@ public final class Constants {
 
     // Wrist limits
     public static final double kWristHardDeck = -45;
-    public static final double kWristHorizontal = 0;
-    public static final double kWristHorizontal180 = 180;
+    public static final double kWristOrigin = 0;
+    public static final double kWristOrigin180 = 180;
     public static final double kWristVertical = 90;
     public static final double kWristCeiling = 225;
     
