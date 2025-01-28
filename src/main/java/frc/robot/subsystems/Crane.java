@@ -88,7 +88,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.01, 0.01, 0.5);
+            .pid(0.0025, 0.01, 0.5);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -137,7 +137,9 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the wrist motor
      */
     public void setWristPosition(double setPoint) {
-        wristSetpoint = setPoint;
+        wristSetpoint = filterSetPoint(setPoint, 
+                                       CraneConstants.kWristHardDeck, 
+                                       CraneConstants.kWristCeiling);
         wristPID.setReference(wristSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Wrist Setpoint", setPoint);
     }
