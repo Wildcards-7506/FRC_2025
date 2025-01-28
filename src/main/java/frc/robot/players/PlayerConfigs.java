@@ -46,8 +46,9 @@ public abstract class PlayerConfigs {
     public static boolean midReef;
     public static boolean highReef;
     public static boolean gripperOpen;
-    public static double fineControlWrist; // Fine control wrist
-    public static double fineControlElbow; // Fine control elbow
+    public static double fineControlWrist;
+    public static double fineControlElbow;
+    public static double fineControlExtender;
     public static boolean climberActivate;
     public static boolean climberDeactivate;
     

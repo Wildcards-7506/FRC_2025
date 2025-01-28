@@ -35,9 +35,9 @@ public class CraneTeleopCommand extends Command {
         updateCraneState();
         
         if(PlayerConfigs.fineControlEnable) { // fine control
-            // Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
+            Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
-            // Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlElbow * 0.5);
+            Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.5);
         } else {
             if(Robot.crane.craneState == 1) { // low pickup
                 // TODO: CHECK BOUNDS: bumper, claw dimensions, have MARGIN OF ERROR

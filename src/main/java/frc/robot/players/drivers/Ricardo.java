@@ -46,8 +46,9 @@ public class Ricardo extends PlayerConfigs {
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
         gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX()); // Fine control wrist
-        fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftX()); // Fine control elbow
+        fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
+        fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
+        fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
         
