@@ -41,35 +41,56 @@ public final class Constants {
   }
 
   public static final class CraneConstants{
-    public static final double kGripperMaxspeedMPS = 4.8;
-    public static final double kGripperAngularSpeed  =  2 * Math.PI;
-    public static final double kGripperTopSpeed = 1.0;
-    public static final double kGripperTopAngularSpeed = 1.0;
-    
+    // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     // TODO: Ratio needs to be changed
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/4; // Tested as of 1/25/2025
+    
+    // Gripper limits
+    public static final double kGripperHardDeck = 0;
+    public static final double kGripperCeiling = 50;
 
-    // Limits
-    // TODO: Pully diameter may be incorrect, change 3 inches to match a better value
-    public static final double kPullyCircumferenceInches = 3 * Math.PI;
-    public static final double kExtensionCap = 360 * (17 / kPullyCircumferenceInches); // 17 in. to degrees
-    // Elbow bounds
-    public static final double kElbowHardDeck = 20;
+    // Elbow limits
+    public static final double kElbowHardDeck = 10;
+    public static final double kElbowStation = 25;
+    public static final double kElbowHigh = 140;
+    public static final double kElbowPause = 150;
+    public static final double kElbowMid = 160;
+    /** This is for low reef, not ground/low pickup. */
+    public static final double kElbowLow = 200;
+    public static final double kElbowShelf = 247.5;
     public static final double kElbowCeiling = 290;
-    public static final double kElbowPause = 170;
-    // Extender bounds
-    public static final double kExtenderHardDeck = 0;
+    
+    // Extender limits
+    // Extender specifics are measured from or end to end, or center of elbow on piece to edge of extender piece without Claw
+    public static final double kExtenderHardDeck = 3;
+    public static final double kExtenderStation = 27.5;
+    public static final double kExtenderHigh = 32.75;
+    public static final double kExtenderMid = 10.5;
+    public static final double kExtenderLow = 3.75;
+    public static final double kExtenderShelf = 10.5;
     // TODO: Update 40 inches to match extender length, update pully circumference
-    public static final double kExtenderCeiling = 360 * (40 / kPullyCircumferenceInches);
-    /** Limit extension from hard deck to elbow pause */
+    public static final double kExtenderCeiling = 40;
+    public static final double kExtensionCap = 17; // 17 inches
+    // TODO: Update 10 inches to match extender Claw offset
+    public static final double kExtenderClawOffset = 10; // 10 inches from Claw to the end of extender
+    // TODO: Pully diameter may be incorrect, change 3 inches to match a better value
+    public static final double kPullyCircumferenceInches = 3 * Math.PI; // 3 inches diameter
+    // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
+    /** Limit extension from hard deck to elbow pause, measured from butt of extender to 17 in. extention limit. */
     public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap;
-    /** Limit extension from elbow pause to scoring/coral pickup */
-    public static final double kExtenderLimit2 = kExtensionCap;
+    /** Limit extension from elbow pause to scoring/coral pickup, measured from claw tip to 17 in. extention limit. */
+    public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset;
+    public static final double kExtenderStart = kExtenderCeiling - 5; // extender butt pokes out by how much?
     
     // pull from the .bak
+    // public static final double kGripperMaxspeedMPS = 4.8;
+    // public static final double kGripperAngularSpeed  =  2 * Math.PI;
+    // public static final double kGripperTopSpeed = 1.0;
+    // public static final double kGripperTopAngularSpeed = 1.0;
+
     // public static final double kArmExtensionMaxspeedMPS = 4.8;
     // public static final double kArmRotationAngularSpeed = 2 * Math.PI;
     // public static final double kArmExtensionTopSpeed = 1.0;

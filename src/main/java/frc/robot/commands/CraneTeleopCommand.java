@@ -7,9 +7,10 @@ import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
 public class CraneTeleopCommand extends Command {
-    private boolean prevLowPickupState = false,
+    private boolean prevStationPickupState = false,
+                    prevLowPickupState = false,
                     prevShelfReefState = false,
-                    prevStationOrLowReefState = false,
+                    prevlowReefState = false,
                     prevMidReefState = false,
                     prevHighReefState = false;
     
@@ -39,8 +40,20 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.5);
         } else {
-            if(Robot.crane.craneState == 1) { // low pickup
-                // TODO: CHECK BOUNDS: bumper, claw dimensions, have MARGIN OF ERROR
+            if(Robot.crane.craneState == 1) { // station
+                // TODO: implement station logic
+                if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+                    Robot.crane.setWristPosition(CraneConstants.kGripperCeiling);
+                    if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
+                       && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                        Robot.crane.setWristPosition(0); // may need to rotate 180 degrees
+                        Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
+                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
+                    }
+                }
+            }
+            if(Robot.crane.craneState == 2) { // low pickup
+            // TODO: CHECK LIMITS: bumper, claw dimensions, have MARGIN OF ERROR
                 if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
                     Robot.crane.setWristPosition(0);
                     if(upToElbowPosition(CraneConstants.kElbowCeiling, CraneConstants.kExtenderLimit2)) {
@@ -51,7 +64,7 @@ public class CraneTeleopCommand extends Command {
                     }
                 }
             }
-            if(Robot.crane.craneState == 2) { // shelf reef
+            if(Robot.crane.craneState == 3) { // shelf reef
                 // TODO: implement shelf reef logic
                 Robot.crane.setWristPosition(0);
             }
@@ -59,11 +72,11 @@ public class CraneTeleopCommand extends Command {
                 // TODO: implement station or low reef logic
                 Robot.crane.setWristPosition(0);
             }
-            if(Robot.crane.craneState == 4) { // mid reef
+            if(Robot.crane.craneState == 5) { // mid reef
                 // TODO: implement mid reef logic
                 Robot.crane.setWristPosition(0);
             }
-            if(Robot.crane.craneState == 5) { // high reef
+            if(Robot.crane.craneState == 6) { // high reef
                 // TODO: implement high reef logic
                 Robot.crane.setWristPosition(0);
             }
@@ -91,13 +104,14 @@ public class CraneTeleopCommand extends Command {
     /**
      * Rotate elbow upwards (CEILING direction) with extender retracted to a limit.
      * 
-     * @param elbowPosition
-     * @param extenderLimit
+     * @param elbowPosition The target elbow position in degrees.
+     * @param extenderLimit The target extender position in inches.
      * @return True if the elbow is at the desired position.
      */
     private boolean upToElbowPosition(double elbowPosition, double extenderLimit) {
         // If we want to go to elbow position, we must retract extender, then we rotate elbow
         if(Robot.crane.getElbowPosition() + offset < elbowPosition) {
+            extenderLimit = inchesToDegrees(extenderLimit);
             if(Robot.crane.getExtenderPosition() - offset > extenderLimit
                || Robot.crane.getExtenderPosition() + offset < extenderLimit) {
                 Robot.crane.setExtenderPosition(extenderLimit);
@@ -112,13 +126,14 @@ public class CraneTeleopCommand extends Command {
     /**
      * Rotate elbow upwards (HARD DECK direction) with extender retracted to a limit.
      * 
-     * @param elbowPosition
-     * @param extenderLimit
+     * @param elbowPosition The target elbow position in degrees.
+     * @param extenderLimit The target extender position in inches.
      * @return True if the elbow is at the desired position.
      */
     private boolean downToElbowPosition(double elbowPosition, double extenderLimit) {
         // If we want to go to elbow position, we must retract extender, then we rotate elbow
         if(Robot.crane.getElbowPosition() - offset > elbowPosition) {
+            extenderLimit = inchesToDegrees(extenderLimit);
             if(Robot.crane.getExtenderPosition() - offset > extenderLimit
                || Robot.crane.getExtenderPosition() + offset < extenderLimit) {
                 Robot.crane.setExtenderPosition(extenderLimit);
@@ -128,6 +143,10 @@ public class CraneTeleopCommand extends Command {
             return false;
         }
         return true;
+    }
+
+    private double inchesToDegrees(double inches) {
+        return inches * 360 / CraneConstants.kPullyCircumferenceInches;
     }
     
     /**
@@ -141,11 +160,12 @@ public class CraneTeleopCommand extends Command {
      * </ul>
      */
     private void updateCraneState() {
-        prevLowPickupState = updateButtonState(PlayerConfigs.lowPickup, prevLowPickupState, 1);
-        prevShelfReefState = updateButtonState(PlayerConfigs.shelfReef, prevShelfReefState, 2);
-        prevStationOrLowReefState = updateButtonState(PlayerConfigs.stationOrLowReef, prevStationOrLowReefState, 3);
-        prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, 4);
-        prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, 5);
+        prevStationPickupState = updateButtonState(PlayerConfigs.stationPickup, prevStationPickupState, 1);
+        prevLowPickupState = updateButtonState(PlayerConfigs.lowPickup, prevLowPickupState, 2);
+        prevShelfReefState = updateButtonState(PlayerConfigs.shelfReef, prevShelfReefState, 3);
+        prevlowReefState = updateButtonState(PlayerConfigs.lowReef, prevlowReefState, 4);
+        prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, 5);
+        prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, 6);
     }
 
     /**
