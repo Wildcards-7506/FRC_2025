@@ -68,8 +68,8 @@ public class CraneTeleopCommand extends Command {
                 // TODO: implement shelf reef logic
                 Robot.crane.setWristPosition(0);
             }
-            if(Robot.crane.craneState == 3) { // station or low reef
-                // TODO: implement station or low reef logic
+            if(Robot.crane.craneState == 4) { // low reef
+                // TODO: implement low reef logic
                 Robot.crane.setWristPosition(0);
             }
             if(Robot.crane.craneState == 5) { // mid reef
