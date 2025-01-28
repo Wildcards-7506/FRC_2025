@@ -40,9 +40,10 @@ public class TestController extends PlayerConfigs {
 
     @Override
     public void getOperatorConfig() {
+        stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
         shelfReef = Robot.controller1.getXButton();
-        stationOrLowReef = Robot.controller1.getAButton();
+        lowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
         gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;

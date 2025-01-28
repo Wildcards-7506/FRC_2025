@@ -88,7 +88,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.001, 0.0, 0.0);
+            .pid(0.01, 0.01, 0.5);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -124,7 +124,10 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired position of the gripper Motor
      */
     public void setGripperPosition(double setPoint) {
-        gripperPID.setReference(setPoint, ControlType.kPosition);
+        gripperSetpoint = filterSetPoint(setPoint,
+                                         CraneConstants.kGripperHardDeck,
+                                         CraneConstants.kGripperCeiling);
+        gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
 
@@ -135,7 +138,7 @@ public class Crane extends SubsystemBase {
      */
     public void setWristPosition(double setPoint) {
         wristSetpoint = setPoint;
-        wristPID.setReference(setPoint, ControlType.kPosition);
+        wristPID.setReference(wristSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Wrist Setpoint", setPoint);
     }
 

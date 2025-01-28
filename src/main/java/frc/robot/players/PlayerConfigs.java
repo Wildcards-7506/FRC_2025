@@ -40,9 +40,10 @@ public abstract class PlayerConfigs {
     public static boolean robotRelative;
 
     // Arm
+    public static boolean stationPickup;
     public static boolean lowPickup;
     public static boolean shelfReef;
-    public static boolean stationOrLowReef; // Likely same button as lowReef
+    public static boolean lowReef; // Likely same button as lowReef
     public static boolean midReef;
     public static boolean highReef;
     public static boolean gripperOpen;
