@@ -67,10 +67,12 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
+        extenderSetpoint = CraneConstants.kExtenderCeiling;
+
         gripperConfig
             .idleMode(IdleMode.kBrake);
         gripperConfig.encoder
-            .inverted(true)
+            // .inverted(true)
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse);
@@ -88,20 +90,20 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.0025, 0.01, 0.5);
+            .pid(0.01, 0.0, 0.0);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elbowConfig
             .idleMode(IdleMode.kBrake);
         elbowConfig.encoder
-            .inverted(true)
+            // .inverted(true)
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
-            .pid(0.0025, 0.01, 0.5);
+            .pid(0.01, 0.0, 0.5);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -113,7 +115,7 @@ public class Crane extends SubsystemBase {
         extenderConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.1
-            .pid(0.0025, 0.01, 0.1);
+            .pid(0.01, 0.0, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -127,7 +129,7 @@ public class Crane extends SubsystemBase {
         gripperSetpoint = filterSetPoint(setPoint,
                                          CraneConstants.kGripperHardDeck,
                                          CraneConstants.kGripperCeiling);
-        gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
+        gripperPID.setReference(-gripperSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
 
@@ -153,7 +155,8 @@ public class Crane extends SubsystemBase {
         elbowSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
-        elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
+        System.out.println(elbowSetpoint);
+        elbowPID.setReference(-elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
 
@@ -167,11 +170,18 @@ public class Crane extends SubsystemBase {
     public void setExtenderPosition(double setPoint) {
         // Full extension is setpoint = ceiling, motor = 0
         // Full retraction is setpoint = 0, motor = ceiling
-        extenderSetpoint = filterSetPoint(CraneConstants.kExtenderCeiling - setPoint, 
+        extenderSetpoint = filterSetPoint(setPoint, 
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
-        extenderPID.setReference(extenderSetpoint, ControlType.kPosition);
+        setPoint = CraneConstants.kExtenderCeiling - extenderSetpoint;
+        System.out.println("Extender: " + extenderSetpoint);
+        setPoint = inchesToDegrees(setPoint);
+        extenderPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
+    }
+
+    private double inchesToDegrees(double inches) {
+        return inches * 360 / CraneConstants.kPullyCircumferenceInches;
     }
     
     /**
@@ -191,7 +201,7 @@ public class Crane extends SubsystemBase {
 
     /** Relative to the chassis up from starting is positive. */
     public double getElbowPosition() {
-        return elbowMotor.getEncoder().getPosition();
+        return -elbowMotor.getEncoder().getPosition();
     }
 
     /** Relative to the elbow joint, 0 is fully retracted, ceiling is fully extended. */
@@ -200,7 +210,7 @@ public class Crane extends SubsystemBase {
     }
 
     public double getGripperMotor() {
-        return gripperMotor.getEncoder().getPosition();
+        return -gripperMotor.getEncoder().getPosition();
     }
 
     public double getWristPosition() {

@@ -61,26 +61,30 @@ public final class Constants {
     
     // Extender limits
     // Extender specifics are measured from or end to end, or center of elbow on piece to edge of extender piece without Claw
-    public static final double kExtenderHardDeck = 3;
-    public static final double kExtenderStation = 27.5;
-    public static final double kExtenderHigh = 32.75;
-    public static final double kExtenderMid = 10.5;
-    public static final double kExtenderLow = 3.75;
-    public static final double kExtenderShelf = 10.5;
+    public static final double kExtenderHardDeck = 2;
+    public static final double kExtenderStation = 17.5;
+    public static final double kExtenderHigh = 22.75;
+    public static final double kExtenderMid = 0.5;
+    public static final double kExtenderLow = 0.5;
+    public static final double kExtenderShelf = 0.5;
     public static final double kExtenderPickup = 23.25;
-    // TODO: Update 40 inches to match extender length, update pully circumference
-    public static final double kExtenderCeiling = 40;
+    public static final double kExtenderCeiling = 25; // Absolute max is 36, be safer 27 -> 25
     public static final double kExtensionCap = 17; // 17 inches
-    // TODO: Update 10 inches to match extender Claw offset
-    public static final double kExtenderClawOffset = 10; // 10 inches from Claw to the end of extender
-    // TODO: Pully diameter may be incorrect, change 3 inches to match a better value
-    public static final double kPullyCircumferenceInches = 3 * Math.PI; // 3 inches diameter
+    public static final double kExtenderClawOffset = 13; // 13 inches from Claw to the end of extender
+    public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter, check again just in case
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Limit extension from hard deck to elbow pause, measured from butt of extender to 17 in. extention limit. */
     public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap;
     /** Limit extension from elbow pause to scoring/coral pickup, measured from claw tip to 17 in. extention limit. */
     public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset;
-    public static final double kExtenderStart = kExtenderCeiling - 5; // extender butt pokes out by how much?
+    public static final double kExtenderStart = kExtenderCeiling - 2; // extender butt pokes out by how much?
+    
+    // public static final double kExtenderStation = 27.5;
+    // public static final double kExtenderHigh = 32.75;
+    // public static final double kExtenderMid = 10.5;
+    // public static final double kExtenderLow = 3.75;
+    // public static final double kExtenderShelf = 10.5;
+    // public static final double kExtenderPickup = 23.25;
 
     // Elbow limits
     public static final double kElbowHardDeck = 10;
@@ -91,7 +95,7 @@ public final class Constants {
     /** This is for low reef, not ground/low pickup. */
     public static final double kElbowLow = 200;
     public static final double kElbowShelf = 247.5;
-    public static final double kElbowCeiling = 290;
+    public static final double kElbowCeiling = 270;
     
     // pull from the .bak
     // public static final double kGripperMaxspeedMPS = 4.8;
