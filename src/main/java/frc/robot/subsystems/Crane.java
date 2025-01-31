@@ -216,4 +216,17 @@ public class Crane extends SubsystemBase {
     public double getWristPosition() {
         return wristMotor.getEncoder().getPosition();
     }
+
+    public void craneLogger() {
+        Logger.info("SYSTEM: CRANE ACTIVE !");
+        Logger.info("ELBOW:", Double.toString(getElbowEncoder()) + " Actual Degrees -> " + Double.toString(elbowSetPoint) + " Target Degrees");
+        Logger.info("EXTENDER:", Double.toString(getWristEncoder()) + " Actual Degrees -> " + Double.toString(extenderSetPoint) + " Target Degrees");
+        Logger.info("WRIST:", Double.toString(getWristEncoder()) + " Actual Degrees -> " + Double.toString(wristSetPoint) + " Target Degrees");
+        Logger.info("GRIPPER:", Double.toString(getWristEncoder()) + " Actual Degrees -> " + Double.toString(gripperSetPoint) + " Target Degrees");
+        if(elbowMotor.getFaults()!=0){Logger.severe("ELBOW: " + Short.toString(elbowMotor.getFaults()));}
+        if(extenderMotor.getFaults()!=0){Logger.severe("EXTENDER: " + Short.toString(extenderMotor.getFaults()));}
+        if(wristMotor.getFaults()!=0){Logger.severe("WRIST: " + Short.toString(wristMotor.getFaults()));}
+        if(gripperMotor.getFaults()!=0){Logger.severe("GRIPPER: " + Short.toString(gripperMotor.getFaults()));}
+        if (getExtenderPosition() > 17):
+            Logger.info("out of EXTENDER limit")
 }
