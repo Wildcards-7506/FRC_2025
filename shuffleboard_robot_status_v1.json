@@ -238,6 +238,32 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elbow Position",
+              "_title": "/SmartDashboard/Elbow Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extender Position",
+              "_title": "/SmartDashboard/Extender Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -257,9 +283,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.857142925262451,
-    "y": -6.857142925262451,
-    "width": 1476.5714111328125,
-    "height": 880.0
+    "x": 0.5714285969734192,
+    "y": 0.5714285969734192,
+    "width": 1461.7142333984375,
+    "height": 865.1428833007812
   }
 }

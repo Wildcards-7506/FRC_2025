@@ -156,12 +156,16 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired angle of the elbow in degrees
      */
     public void setElbowPosition(double setPoint) {
-        elbowSetpoint = filterSetPoint(setPoint, 
+        setPoint = filterSetPoint(setPoint, 
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
-        System.out.println(elbowSetpoint);
+        SmartDashboard.putNumber("Elbow Position", elbowSetpoint);
+        if(elbowSetpoint < setPoint)
+            elbowSetpoint += 0.25;
+        if(elbowSetpoint > setPoint)
+            elbowSetpoint -= 0.25;
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
+        SmartDashboard.putNumber("Elbow Setpoint", setPoint);
     }
 
     /**
@@ -174,14 +178,18 @@ public class Crane extends SubsystemBase {
     public void setExtenderPosition(double setPoint) {
         // Full extension is setpoint = ceiling, motor = 0
         // Full retraction is setpoint = 0, motor = ceiling
-        extenderSetpoint = filterSetPoint(setPoint, 
-                                          CraneConstants.kExtenderHardDeck, 
-                                          CraneConstants.kExtenderCeiling);
-        setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
-        System.out.println("Extender: " + extenderSetpoint);
+        setPoint = filterSetPoint(setPoint, 
+                                  CraneConstants.kExtenderHardDeck, 
+                                  CraneConstants.kExtenderCeiling);
+        SmartDashboard.putNumber("Extender Position", extenderSetpoint);
+        if(extenderSetpoint < setPoint)
+            extenderSetpoint += 0.025;
+        if(extenderSetpoint > setPoint)
+            extenderSetpoint -= 0.025;
+        SmartDashboard.putNumber("Extender Setpoint", setPoint);
+        setPoint = CraneConstants.kExtenderCeiling - extenderSetpoint;
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
     }
 
     private double inchesToDegrees(double inches) {
@@ -205,21 +213,24 @@ public class Crane extends SubsystemBase {
 
     /** Returns the current angle of the elbow in degrees, CW+. */
     public double getElbowPosition() {
-        return elbowMotor.getEncoder().getPosition();
+        return elbowSetpoint;
+        // return elbowMotor.getEncoder().getPosition();
     }
 
     /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
     public double getExtenderPosition() {
-        return inchesToDegrees(CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition());
+        return extenderSetpoint;
+        // return inchesToDegrees(CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition());
     }
 
-    /** Returns the angle of the gripper in degrees, CW+. */
-    public double getGripperPosition() {
-        return gripperMotor.getEncoder().getPosition();
+    public double getGripperMotor() {
+        return gripperSetpoint;
+        // return gripperMotor.getEncoder().getPosition();
     }
 
     /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
-        return wristMotor.getEncoder().getPosition();
+        return wristSetpoint;
+        // return wristMotor.getEncoder().getPosition();
     }
 }
