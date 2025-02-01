@@ -74,9 +74,9 @@ public class Crane extends SubsystemBase {
         extenderSetpoint = CraneConstants.kExtenderStart;
 
         gripperConfig
+            .inverted(true)
             .idleMode(IdleMode.kBrake);
         gripperConfig.encoder
-            // .inverted(true)
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse);
@@ -99,9 +99,9 @@ public class Crane extends SubsystemBase {
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elbowConfig
+            .inverted(true)
             .idleMode(IdleMode.kBrake);
         elbowConfig.encoder
-            // .inverted(true)
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
@@ -133,7 +133,7 @@ public class Crane extends SubsystemBase {
         gripperSetpoint = filterSetPoint(setPoint,
                                          CraneConstants.kGripperHardDeck,
                                          CraneConstants.kGripperCeiling);
-        gripperPID.setReference(-gripperSetpoint, ControlType.kPosition);
+        gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
 
@@ -160,7 +160,7 @@ public class Crane extends SubsystemBase {
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
         System.out.println(elbowSetpoint);
-        elbowPID.setReference(-elbowSetpoint, ControlType.kPosition);
+        elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
 
@@ -205,7 +205,7 @@ public class Crane extends SubsystemBase {
 
     /** Relative to the chassis up from starting is positive. */
     public double getElbowPosition() {
-        return -elbowMotor.getEncoder().getPosition();
+        return elbowMotor.getEncoder().getPosition();
     }
 
     /** Relative to the elbow joint, 0 is fully retracted, ceiling is fully extended. */
@@ -214,7 +214,7 @@ public class Crane extends SubsystemBase {
     }
 
     public double getGripperMotor() {
-        return -gripperMotor.getEncoder().getPosition();
+        return gripperMotor.getEncoder().getPosition();
     }
 
     public double getWristPosition() {
