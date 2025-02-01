@@ -121,7 +121,7 @@ public class CraneTeleopCommand extends Command {
             //             // If elbow is at hard deck, then we slightly retract the extender for stability
             //             Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
             //             Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
-            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderLimit1); // Keep slightly retracted to improve stability
+            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderStart);
             //         }
             //     }
             // }
