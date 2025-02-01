@@ -203,20 +203,22 @@ public class Crane extends SubsystemBase {
         return setPoint;
     }
 
-    /** Relative to the chassis up from starting is positive. */
+    /** Returns the current angle of the elbow in degrees, CW+. */
     public double getElbowPosition() {
         return elbowMotor.getEncoder().getPosition();
     }
 
-    /** Returns the extension of the extender in inches. */
+    /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
     public double getExtenderPosition() {
         return inchesToDegrees(CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition());
     }
 
-    public double getGripperMotor() {
+    /** Returns the angle of the gripper in degrees, CW+. */
+    public double getGripperPosition() {
         return gripperMotor.getEncoder().getPosition();
     }
 
+    /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
         return wristMotor.getEncoder().getPosition();
     }
