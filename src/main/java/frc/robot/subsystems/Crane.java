@@ -76,6 +76,11 @@ public class Crane extends SubsystemBase {
         gripperConfig
             .inverted(true)
             .idleMode(IdleMode.kBrake);
+        gripperConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kGripperCeiling)
+            .reverseSoftLimit(CraneConstants.kGripperHardDeck);
         gripperConfig.encoder
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse)
@@ -88,6 +93,11 @@ public class Crane extends SubsystemBase {
     
         wristConfig
             .idleMode(IdleMode.kBrake);
+        wristConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kWristCeiling)
+            .reverseSoftLimit(CraneConstants.kElbowHardDeck);
         wristConfig.encoder
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
@@ -101,6 +111,11 @@ public class Crane extends SubsystemBase {
         elbowConfig
             .inverted(true)
             .idleMode(IdleMode.kBrake);
+        elbowConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kElbowCeiling + 2)
+            .reverseSoftLimit(CraneConstants.kElbowHardDeck - 2);
         elbowConfig.encoder
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
@@ -112,7 +127,13 @@ public class Crane extends SubsystemBase {
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         extenderConfig
+            .inverted(true)
             .idleMode(IdleMode.kBrake);
+        extenderConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(inchesToDegrees(CraneConstants.kExtenderCeiling))
+            .reverseSoftLimit(inchesToDegrees(CraneConstants.kExtenderHardDeck));
         extenderConfig.encoder
             .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
@@ -187,6 +208,10 @@ public class Crane extends SubsystemBase {
     private double inchesToDegrees(double inches) {
         return inches * 360 / CraneConstants.kPullyCircumferenceInches;
     }
+
+    private double degreesToInches(double degrees) {
+        return degrees * CraneConstants.kPullyCircumferenceInches / 360;
+    }
     
     /**
      * Returns the ceiling if the setpoint is above it, or the hard deck if the setpoint is below it.
@@ -210,7 +235,7 @@ public class Crane extends SubsystemBase {
 
     /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
     public double getExtenderPosition() {
-        return inchesToDegrees(CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition());
+        return CraneConstants.kExtenderStart - degreesToInches(extenderMotor.getEncoder().getPosition());
     }
 
     /** Returns the angle of the gripper in degrees, CW+. */
