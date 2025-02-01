@@ -143,7 +143,6 @@ public class CraneTeleopCommand extends Command {
     private boolean upToElbowPosition(double elbowPosition, double extenderLimit) {
         // If we want to go to elbow position, we must retract extender, then we rotate elbow
         if(Robot.crane.getElbowPosition() + offset < elbowPosition) {
-            extenderLimit = inchesToDegrees(extenderLimit);
             if(Robot.crane.getExtenderPosition() - offset > extenderLimit
                || Robot.crane.getExtenderPosition() + offset < extenderLimit) {
                 Robot.crane.setExtenderPosition(extenderLimit);
@@ -165,7 +164,6 @@ public class CraneTeleopCommand extends Command {
     private boolean downToElbowPosition(double elbowPosition, double extenderLimit) {
         // If we want to go to elbow position, we must retract extender, then we rotate elbow
         if(Robot.crane.getElbowPosition() - offset > elbowPosition) {
-            extenderLimit = inchesToDegrees(extenderLimit);
             if(Robot.crane.getExtenderPosition() - offset > extenderLimit
                || Robot.crane.getExtenderPosition() + offset < extenderLimit) {
                 Robot.crane.setExtenderPosition(extenderLimit);
@@ -175,10 +173,6 @@ public class CraneTeleopCommand extends Command {
             return false;
         }
         return true;
-    }
-
-    private double inchesToDegrees(double inches) {
-        return inches * 360 / CraneConstants.kPullyCircumferenceInches;
     }
     
     /**

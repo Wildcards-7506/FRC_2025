@@ -125,9 +125,9 @@ public class Crane extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the gripper relative to its starting position, CW+.
+     * Sets the angle of the gripper, shaft CW+.
      * 
-     * @param setPoint The desired position of the gripper Motor
+     * @param setPoint The desired angle of the gripper in degrees
      */
     public void setGripperPosition(double setPoint) {
         gripperSetpoint = filterSetPoint(setPoint,
@@ -138,9 +138,9 @@ public class Crane extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the wrist relative to its starting position
+     * Sets the angle of the wrist, shaft CCW+.
      * 
-     * @param setPoint The desired position of the wrist motor
+     * @param setPoint The desired angle of the wrist in degrees
      */
     public void setWristPosition(double setPoint) {
         wristSetpoint = filterSetPoint(setPoint, 
@@ -151,9 +151,9 @@ public class Crane extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the elbow relative to its starting position, CW+.
+     * Sets the angle of the elbow, shaft CW+.
      * 
-     * @param setPoint The desired position of the elbow motor
+     * @param setPoint The desired angle of the elbow in degrees
      */
     public void setElbowPosition(double setPoint) {
         elbowSetpoint = filterSetPoint(setPoint, 
@@ -165,11 +165,11 @@ public class Crane extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the extender relative to its starting position.
+     * Sets the extension of the extender, setpoint and actual position are flipped.
      * Full extension is setpoint = ceiling, motor = 0.
      * Full retraction is setpoint = 0, motor = ceiling.
      * 
-     * @param setPoint The desired position of the extender motor
+     * @param setPoint The desired extension of the extender in inches
      */
     public void setExtenderPosition(double setPoint) {
         // Full extension is setpoint = ceiling, motor = 0
@@ -208,9 +208,9 @@ public class Crane extends SubsystemBase {
         return elbowMotor.getEncoder().getPosition();
     }
 
-    /** Relative to the elbow joint, 0 is fully retracted, ceiling is fully extended. */
+    /** Returns the extension of the extender in inches. */
     public double getExtenderPosition() {
-        return CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition();
+        return inchesToDegrees(CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition());
     }
 
     public double getGripperMotor() {
