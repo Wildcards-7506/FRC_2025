@@ -67,7 +67,11 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
-        extenderSetpoint = CraneConstants.kExtenderCeiling;
+        // Set up setpoints for each motor
+        gripperSetpoint = CraneConstants.kGripperHardDeck;
+        wristSetpoint = CraneConstants.kWristOrigin;
+        elbowSetpoint = CraneConstants.kElbowHardDeck;
+        extenderSetpoint = CraneConstants.kExtenderStart;
 
         gripperConfig
             .idleMode(IdleMode.kBrake);
