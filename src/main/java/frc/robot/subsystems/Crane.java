@@ -68,6 +68,10 @@ public class Crane extends SubsystemBase {
         extenderPID = extenderMotor.getClosedLoopController();
 
         // Set up setpoints for each motor
+        gripperSetpoint = CraneConstants.kGripperHardDeck;
+        wristSetpoint = CraneConstants.kWristOrigin;
+        elbowSetpoint = CraneConstants.kElbowHardDeck;
+        extenderSetpoint = CraneConstants.kExtenderStart;
         setGripperPosition(CraneConstants.kGripperHardDeck);
         setWristPosition(CraneConstants.kWristOrigin);
         setElbowPosition(CraneConstants.kElbowHardDeck);
