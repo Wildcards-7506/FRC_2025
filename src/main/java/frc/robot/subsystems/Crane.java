@@ -68,10 +68,10 @@ public class Crane extends SubsystemBase {
         extenderPID = extenderMotor.getClosedLoopController();
 
         // Set up setpoints for each motor
-        gripperSetpoint = CraneConstants.kGripperHardDeck;
-        wristSetpoint = CraneConstants.kWristOrigin;
-        elbowSetpoint = CraneConstants.kElbowHardDeck;
-        extenderSetpoint = CraneConstants.kExtenderStart;
+        setGripperPosition(CraneConstants.kGripperHardDeck);
+        setWristPosition(CraneConstants.kWristOrigin);
+        setElbowPosition(CraneConstants.kElbowHardDeck);
+        setExtenderPosition(CraneConstants.kExtenderStart);
 
         gripperConfig
             .inverted(true)
@@ -177,7 +177,7 @@ public class Crane extends SubsystemBase {
         extenderSetpoint = filterSetPoint(setPoint, 
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
-        setPoint = CraneConstants.kExtenderCeiling - extenderSetpoint;
+        setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         System.out.println("Extender: " + extenderSetpoint);
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
