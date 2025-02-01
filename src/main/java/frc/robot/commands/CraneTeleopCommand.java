@@ -14,8 +14,9 @@ public class CraneTeleopCommand extends Command {
                     prevMidReefState = false,
                     prevHighReefState = false;
     
-    /** Degree of offset so that the crane can progress to the next position. */
-    private double offset = 2.5;
+    /** Degree of angleMargin so that the crane can progress to the next position. */
+    private double angleMargin = 3;
+    private double extensionMargin = 0.5;
 
     public CraneTeleopCommand() {
         addRequirements(Robot.crane);
@@ -38,7 +39,7 @@ public class CraneTeleopCommand extends Command {
         if(PlayerConfigs.fineControlEnable) { // fine control
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
-            Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.1);
+            Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
         } else {
             // if(Robot.crane.craneState == 1) { // station
             //     // TODO: VERIFY station logic
@@ -142,9 +143,9 @@ public class CraneTeleopCommand extends Command {
      */
     private boolean upToElbowPosition(double elbowPosition, double extenderLimit) {
         // If we want to go to elbow position, we must retract extender, then we rotate elbow
-        if(Robot.crane.getElbowPosition() + offset < elbowPosition) {
-            if(Robot.crane.getExtenderPosition() - offset > extenderLimit
-               || Robot.crane.getExtenderPosition() + offset < extenderLimit) {
+        if(Robot.crane.getElbowPosition() + angleMargin < elbowPosition) {
+            if(Robot.crane.getExtenderPosition() - extensionMargin > extenderLimit
+               || Robot.crane.getExtenderPosition() + extensionMargin < extenderLimit) {
                 Robot.crane.setExtenderPosition(extenderLimit);
             } else {
                 Robot.crane.setElbowPosition(elbowPosition);
@@ -163,9 +164,9 @@ public class CraneTeleopCommand extends Command {
      */
     private boolean downToElbowPosition(double elbowPosition, double extenderLimit) {
         // If we want to go to elbow position, we must retract extender, then we rotate elbow
-        if(Robot.crane.getElbowPosition() - offset > elbowPosition) {
-            if(Robot.crane.getExtenderPosition() - offset > extenderLimit
-               || Robot.crane.getExtenderPosition() + offset < extenderLimit) {
+        if(Robot.crane.getElbowPosition() - angleMargin > elbowPosition) {
+            if(Robot.crane.getExtenderPosition() - extensionMargin > extenderLimit
+               || Robot.crane.getExtenderPosition() + extensionMargin < extenderLimit) {
                 Robot.crane.setExtenderPosition(extenderLimit);
             } else {
                 Robot.crane.setElbowPosition(elbowPosition);

@@ -122,7 +122,7 @@ public class Crane extends SubsystemBase {
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
-            .pid(0.01, 0.0, 0.5);
+            .pid(0.005, 0.0, 0.0);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -140,7 +140,7 @@ public class Crane extends SubsystemBase {
         extenderConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.1
-            .pid(0.01, 0.0, 0.1);
+            .pid(0.005, 0.0, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
