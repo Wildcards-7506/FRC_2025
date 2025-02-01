@@ -60,42 +60,35 @@ public final class Constants {
     public static final double kWristCeiling = 225;
     
     // Extender limits
-    // Extender specifics are measured from or end to end, or center of elbow on piece to edge of extender piece without Claw
-    public static final double kExtenderHardDeck = 2;
-    public static final double kExtenderStation = 17.5;
-    public static final double kExtenderHigh = 22.75;
-    public static final double kExtenderMid = 0.5;
-    public static final double kExtenderLow = 0.5;
-    public static final double kExtenderShelf = 0.5;
-    public static final double kExtenderPickup = 23.25;
-    public static final double kExtenderCeiling = 25; // Absolute max is 36, be safer 27 -> 25
+    // Extender setpoints are measured with 2 inch soft limit included
+    public static final double kExtenderHardDeck = 0;
+    public static final double kExtenderStation = 10;
+    public static final double kExtenderHigh = 21;
+    public static final double kExtenderMid = 0;
+    public static final double kExtenderLow = 0;
+    public static final double kExtenderShelf = 0;
+    public static final double kExtenderPickup = 12;
+    public static final double kExtenderStart = 18; // Starts retracted by 6 inches to get 18 inches of extension
+    public static final double kExtenderCeiling = kExtenderStart + 6; // 24 inches of extension (6 inches from start)
     public static final double kExtensionCap = 17; // 17 inches
-    public static final double kExtenderClawOffset = 13; // 13 inches from Claw to the end of extender
-    public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter, check again just in case
+    public static final double kExtenderClawOffset = 14; // 14 inches from edge of Claw to the soft limit of the extender
+    public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
-    /** Limit extension from hard deck to elbow pause, measured from butt of extender to 17 in. extention limit. */
-    public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap;
-    /** Limit extension from elbow pause to scoring/coral pickup, measured from claw tip to 17 in. extention limit. */
-    public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset;
-    public static final double kExtenderStart = kExtenderCeiling - 2; // extender butt pokes out by how much?
-    
-    // public static final double kExtenderStation = 27.5;
-    // public static final double kExtenderHigh = 32.75;
-    // public static final double kExtenderMid = 10.5;
-    // public static final double kExtenderLow = 3.75;
-    // public static final double kExtenderShelf = 10.5;
-    // public static final double kExtenderPickup = 23.25;
+    /** Keep extender butt-side within extension cap. */
+    public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
+    /** Keep extender claw-side within extension cap. */
+    public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
     public static final double kElbowHardDeck = 10;
-    public static final double kElbowStation = 25;
-    public static final double kElbowHigh = 140;
-    public static final double kElbowPause = 150;
-    public static final double kElbowMid = 160;
+    public static final double kElbowStation = 45;
+    public static final double kElbowHigh = 145;
+    public static final double kElbowPause = 160;
+    public static final double kElbowMid = 167;
     /** This is for low reef, not ground/low pickup. */
     public static final double kElbowLow = 200;
     public static final double kElbowShelf = 247.5;
-    public static final double kElbowCeiling = 270;
+    public static final double kElbowCeiling = 290;
     
     // pull from the .bak
     // public static final double kGripperMaxspeedMPS = 4.8;

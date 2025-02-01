@@ -67,12 +67,21 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
-        extenderSetpoint = CraneConstants.kExtenderCeiling;
+        // Set up setpoints for each motor
+        setGripperPosition(CraneConstants.kGripperHardDeck);
+        setWristPosition(CraneConstants.kWristOrigin);
+        setElbowPosition(CraneConstants.kElbowHardDeck);
+        setExtenderPosition(CraneConstants.kExtenderStart);
 
         gripperConfig
+            .inverted(true)
             .idleMode(IdleMode.kBrake);
+        gripperConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kGripperCeiling)
+            .reverseSoftLimit(CraneConstants.kGripperHardDeck);
         gripperConfig.encoder
-            // .inverted(true)
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse);
@@ -84,6 +93,11 @@ public class Crane extends SubsystemBase {
     
         wristConfig
             .idleMode(IdleMode.kBrake);
+        wristConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kWristCeiling)
+            .reverseSoftLimit(CraneConstants.kElbowHardDeck);
         wristConfig.encoder
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
@@ -95,48 +109,59 @@ public class Crane extends SubsystemBase {
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elbowConfig
+            .inverted(true)
             .idleMode(IdleMode.kBrake);
+        elbowConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kElbowCeiling + 2)
+            .reverseSoftLimit(CraneConstants.kElbowHardDeck - 2);
         elbowConfig.encoder
-            // .inverted(true)
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
-            .pid(0.01, 0.0, 0.5);
+            .pid(0.005, 0.0, 0.0);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         extenderConfig
+            .inverted(true)
             .idleMode(IdleMode.kBrake);
+        extenderConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(inchesToDegrees(CraneConstants.kExtenderCeiling))
+            .reverseSoftLimit(inchesToDegrees(CraneConstants.kExtenderHardDeck));
         extenderConfig.encoder
             .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
         extenderConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.1
-            .pid(0.01, 0.0, 0.1);
+            .pid(0.005, 0.0, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     /**
-     * Sets the position of the gripper relative to its starting position, CW+.
+     * Sets the angle of the gripper, shaft CW+.
      * 
-     * @param setPoint The desired position of the gripper Motor
+     * @param setPoint The desired angle of the gripper in degrees
      */
     public void setGripperPosition(double setPoint) {
         gripperSetpoint = filterSetPoint(setPoint,
                                          CraneConstants.kGripperHardDeck,
                                          CraneConstants.kGripperCeiling);
-        gripperPID.setReference(-gripperSetpoint, ControlType.kPosition);
+        gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
 
     /**
-     * Sets the position of the wrist relative to its starting position
+     * Sets the angle of the wrist, shaft CCW+.
      * 
-     * @param setPoint The desired position of the wrist motor
+     * @param setPoint The desired angle of the wrist in degrees
      */
     public void setWristPosition(double setPoint) {
         wristSetpoint = filterSetPoint(setPoint, 
@@ -147,25 +172,25 @@ public class Crane extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the elbow relative to its starting position, CW+.
+     * Sets the angle of the elbow, shaft CW+.
      * 
-     * @param setPoint The desired position of the elbow motor
+     * @param setPoint The desired angle of the elbow in degrees
      */
     public void setElbowPosition(double setPoint) {
         elbowSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
         System.out.println(elbowSetpoint);
-        elbowPID.setReference(-elbowSetpoint, ControlType.kPosition);
+        elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
 
     /**
-     * Sets the position of the extender relative to its starting position.
+     * Sets the extension of the extender, setpoint and actual position are flipped.
      * Full extension is setpoint = ceiling, motor = 0.
      * Full retraction is setpoint = 0, motor = ceiling.
      * 
-     * @param setPoint The desired position of the extender motor
+     * @param setPoint The desired extension of the extender in inches
      */
     public void setExtenderPosition(double setPoint) {
         // Full extension is setpoint = ceiling, motor = 0
@@ -173,7 +198,7 @@ public class Crane extends SubsystemBase {
         extenderSetpoint = filterSetPoint(setPoint, 
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
-        setPoint = CraneConstants.kExtenderCeiling - extenderSetpoint;
+        setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         System.out.println("Extender: " + extenderSetpoint);
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
@@ -182,6 +207,10 @@ public class Crane extends SubsystemBase {
 
     private double inchesToDegrees(double inches) {
         return inches * 360 / CraneConstants.kPullyCircumferenceInches;
+    }
+
+    private double degreesToInches(double degrees) {
+        return degrees * CraneConstants.kPullyCircumferenceInches / 360;
     }
     
     /**
@@ -199,20 +228,22 @@ public class Crane extends SubsystemBase {
         return setPoint;
     }
 
-    /** Relative to the chassis up from starting is positive. */
+    /** Returns the current angle of the elbow in degrees, CW+. */
     public double getElbowPosition() {
-        return -elbowMotor.getEncoder().getPosition();
+        return elbowMotor.getEncoder().getPosition();
     }
 
-    /** Relative to the elbow joint, 0 is fully retracted, ceiling is fully extended. */
+    /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
     public double getExtenderPosition() {
-        return CraneConstants.kExtenderCeiling - extenderMotor.getEncoder().getPosition();
+        return CraneConstants.kExtenderStart - degreesToInches(extenderMotor.getEncoder().getPosition());
     }
 
-    public double getGripperMotor() {
-        return -gripperMotor.getEncoder().getPosition();
+    /** Returns the angle of the gripper in degrees, CW+. */
+    public double getGripperPosition() {
+        return gripperMotor.getEncoder().getPosition();
     }
 
+    /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
         return wristMotor.getEncoder().getPosition();
     }
