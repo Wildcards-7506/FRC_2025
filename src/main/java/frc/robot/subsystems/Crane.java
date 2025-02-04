@@ -219,7 +219,7 @@ public class Crane extends SubsystemBase {
 
     public void intakeLog() {
         Logger.info("ELBOW", Double.toString(getElbowPosition()) + " Actual Degrees -> " + Double.toString(elbowSetPoint) + " Target Degrees");
-        Logger.info("EXTENDER", Double.toString(getExtenderPosition()) + " Actual Inches -> " + Double.toString(extenderSetpoint) + " Target Degrees");        
+        Logger.info("EXTENDER", Double.toString(getExtenderPosition()) + " Actual Inches -> " + Double.toString(extenderSetpoint) + " Target Inches");        
         Logger.info("WRIST", Double.toString(getWristPosition()) + " Actual Degrees -> " + Double.toString(wristSetPoint) + " Target Degrees");        
         Logger.info("GRIPPER", Double.toString(getGripperMotor()) + " Actual Degrees -> " + Double.toString(gripperSetPoint) + " Target Degrees");        
         if(elbowMotor.getFaults()!=0){Logger.warn("ELBOW: " + Short.toString(elbowMotor.getFaults()));}        
