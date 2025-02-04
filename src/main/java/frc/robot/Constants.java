@@ -38,6 +38,10 @@ public final class Constants {
     public static final int WRIST = 10;
     public static final int ELBOW = 11;
     public static final int EXTENDER = 12;
+
+    // Climber: consists of rotator and extender
+    public static final int ROTATOR = 13;
+    public static final int ANCHOR = 14;
   }
 
   public static final class CraneConstants{
@@ -89,36 +93,22 @@ public final class Constants {
     public static final double kElbowLow = 200;
     public static final double kElbowShelf = 247.5;
     public static final double kElbowCeiling = 290;
-    
-    // pull from the .bak
-    // public static final double kGripperMaxspeedMPS = 4.8;
-    // public static final double kGripperAngularSpeed  =  2 * Math.PI;
-    // public static final double kGripperTopSpeed = 1.0;
-    // public static final double kGripperTopAngularSpeed = 1.0;
-
-    // public static final double kArmExtensionMaxspeedMPS = 4.8;
-    // public static final double kArmRotationAngularSpeed = 2 * Math.PI;
-    // public static final double kArmExtensionTopSpeed = 1.0;
-    // public static final double kArmRotationTopSpeed = 1.0;
-    
-    // 2023 constants.java
-    // public static final int kRotateCurrentLimit = 30;
-    // public static final double kRotateEncoderDistancePerPulse = 1.0/125 * 12.0/15 * 360;
-    // public static final double kMotorKP = 0.007;
-    // public static final double kMotorSingleSub = 40;
-    // public static final double kMotorGroundClear = 15.0;
-    // public static final double kMotorGround = -5.0;
-    // public static final double kMotorHi = 160.0;
-    // public static final double kMotorMid = 165.0;
-    // public static final double kMotorDoubleSub = 85.0;
-    // public static final double kMotorDoubleCubeOffset = -30;
-    // public static final double kMotorSingleCubeOffset = -20;
-    // public static final double kMotorVertical = 115.0;
-    // public static final double kMotorClosed = 0.0;
-    // public static final double MotorHorizontalOffset = 60;
   }
 
-  public static final class ArmConstants {
+  public static final class ClimberConstants {
+    // TODO: Placeholder values, replace with actual values
+    public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+    public static final double kAnchorEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+
+    // Rotator limits
+  // TODO: Placeholder values, replace with actual values
+    public static final double kRotatorHardDeck = 0;
+    public static final double kRotatorCeiling = 135;
+
+    // Anchor limits
+  // TODO: Placeholder values, replace with actual values
+    public static final double kAnchorHardDeck = 0;
+    public static final double kAnchorCeiling = 5; // inches
   }
 
   public static final class IOConstants {
