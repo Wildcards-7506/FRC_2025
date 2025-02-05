@@ -26,6 +26,8 @@ public abstract class PlayerConfigs {
     public static boolean snapRight;
     public static boolean snapDown;
     public static boolean snapLeft;
+    public static boolean autoAlignLeft;
+    public static boolean autoAlignRight;
 
     // Reef snaps
     public static boolean snapUpRight;
