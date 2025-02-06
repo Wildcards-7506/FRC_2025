@@ -68,10 +68,10 @@ public final class Constants {
     public static final double kExtenderLow = 0;
     public static final double kExtenderShelf = 0;
     public static final double kExtenderPickup = 12;
-    public static final double kExtenderStart = 18; // Starts retracted by 6 inches to get 18 inches of extension
-    public static final double kExtenderCeiling = kExtenderStart + 6; // 24 inches of extension (6 inches from start)
+    public static final double kExtenderStart = 17; // starts retracted by 4 inches from maximum
+    public static final double kExtenderCeiling = kExtenderStart + 4; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
-    public static final double kExtenderClawOffset = 14; // 14 inches from edge of Claw to the soft limit of the extender
+    public static final double kExtenderClawOffset = 15; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
