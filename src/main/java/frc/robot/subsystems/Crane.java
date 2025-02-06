@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
     // Crane vars
@@ -249,13 +250,13 @@ public class Crane extends SubsystemBase {
     }
 
     public void intakeLog() {
-        Logger.info("ELBOW", Double.toString(getElbowPosition()) + " Actual Degrees -> " + Double.toString(elbowSetPoint) + " Target Degrees");
-        Logger.info("EXTENDER", Double.toString(getExtenderPosition()) + " Actual Inches -> " + Double.toString(extenderSetpoint) + " Target Inches");        
-        Logger.info("WRIST", Double.toString(getWristPosition()) + " Actual Degrees -> " + Double.toString(wristSetPoint) + " Target Degrees");        
-        Logger.info("GRIPPER", Double.toString(getGripperMotor()) + " Actual Degrees -> " + Double.toString(gripperSetPoint) + " Target Degrees");        
-        if(elbowMotor.getFaults()!=0){Logger.warn("ELBOW: " + Short.toString(elbowMotor.getFaults()));}        
-        if(extenderMotor.getFaults()!=0){Logger.warn("EXTENDER: " + Short.toString(extenderMotor.getFaults()));}        
-        if(writsMotor.getFaults()!=0){Logger.warn("WRIST: " + Short.toString(wristMotor.getFaults()));}        
-        if(gripperMotor.getFaults()!=0){Logger.warn("GRIPPER: " + Short.toString(gripperMotor.getFaults()));}        
-        if(intake.getFaults()!=0){Logger.warn("INTKL: " + Short.toString(intake.getFaults()));}    }
+        Logger.info("ELBOW", Double.toString(getElbowPosition()) + " Actual Degrees -> " + Double.toString(elbowSetpoint) + " Target Degrees");
+        Logger.info("EXTENDER", Double.toString(getExtenderPosition()) + " Actual Inches -> " + Double.toString(extenderSetpoint) + " Target Inches");
+        Logger.info("WRIST", Double.toString(getWristPosition()) + " Actual Degrees -> " + Double.toString(wristSetpoint) + " Target Degrees");
+        Logger.info("GRIPPER", Double.toString(getGripperPosition()) + " Actual Degrees -> " + Double.toString(gripperSetpoint) + " Target Degrees");
+        if(elbowMotor.getFaults().rawBits != 0) Logger.warn("ELBOW: " + elbowMotor.getFaults().toString());
+        if(extenderMotor.getFaults().rawBits != 0) Logger.warn("EXTENDER: " + extenderMotor.getFaults().toString());
+        if(wristMotor.getFaults().rawBits != 0) Logger.warn("WRIST: " + wristMotor.getFaults().toString());
+        if(gripperMotor.getFaults().rawBits != 0) Logger.warn("GRIPPER: " + gripperMotor.getFaults().toString());
+    }
 }
