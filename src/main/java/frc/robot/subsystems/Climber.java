@@ -60,13 +60,12 @@ public class Climber extends SubsystemBase {
             .velocityConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse);
         rotatorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
+            // TODO: PID values changed temporarily for testing
             .pid(0.005, 0.0, 0.0);
             
         rotatorMotor.configure(rotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         anchorConfig
-            .inverted(true)
             .idleMode(IdleMode.kBrake);
         anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
@@ -78,7 +77,7 @@ public class Climber extends SubsystemBase {
             .velocityConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
         anchorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.1
+            // TODO: PID values changed temporarily for testing
             .pid(0.005, 0.0, 0.1);
             
         anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
