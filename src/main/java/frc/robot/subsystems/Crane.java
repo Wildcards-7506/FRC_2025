@@ -68,13 +68,8 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
-        // Set up setpoints for each motor
-        setGripperPosition(CraneConstants.kGripperHardDeck);
-        setWristPosition(CraneConstants.kWristOrigin);
-        setElbowPosition(CraneConstants.kElbowHardDeck);
-        setExtenderPosition(CraneConstants.kExtenderStart);
-
         gripperConfig
+            .smartCurrentLimit(20)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
         gripperConfig.softLimit
@@ -93,6 +88,7 @@ public class Crane extends SubsystemBase {
         gripperMotor.configure(gripperConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
         wristConfig
+            .smartCurrentLimit(20)
             .idleMode(IdleMode.kBrake);
         wristConfig.softLimit
             .forwardSoftLimitEnabled(true)
@@ -110,6 +106,7 @@ public class Crane extends SubsystemBase {
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elbowConfig
+            .smartCurrentLimit(40)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
         elbowConfig.softLimit
@@ -128,6 +125,7 @@ public class Crane extends SubsystemBase {
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         extenderConfig
+            .smartCurrentLimit(40)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
         extenderConfig.softLimit
@@ -144,6 +142,12 @@ public class Crane extends SubsystemBase {
             .pid(0.005, 0.0, 0.1);
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        // Set up setpoints for each motor
+        setGripperPosition(CraneConstants.kGripperHardDeck);
+        setWristPosition(CraneConstants.kWristOrigin);
+        setElbowPosition(CraneConstants.kElbowHardDeck);
+        setExtenderPosition(CraneConstants.kExtenderStart);
     }
 
     /**
@@ -181,7 +185,8 @@ public class Crane extends SubsystemBase {
         elbowSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
-        System.out.println(elbowSetpoint);
+        System.out.println("Elbow: " + getElbowPosition());
+        System.out.println("Elbow Setpoint: " + elbowSetpoint);
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
@@ -200,7 +205,7 @@ public class Crane extends SubsystemBase {
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
-        System.out.println("Extender: " + extenderSetpoint);
+        System.out.println("Extender: " + getExtenderPosition());
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
