@@ -8,9 +8,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -51,8 +53,8 @@ public class Crane extends SubsystemBase {
     public double extenderSetpoint;
 
     //Sucker
-    private final SparkMax suckerMotor;
-    private final SparkMaxConfig suckerConfig;
+    private final SparkFlex suckerMotor;
+    private final SparkFLexConfig suckerConfig;
     public final SparkClosedLoopController suckerPID;
     public double suckIn = false
     
@@ -154,6 +156,27 @@ public class Crane extends SubsystemBase {
         setWristPosition(CraneConstants.kWristOrigin);
         setElbowPosition(CraneConstants.kElbowHardDeck);
         setExtenderPosition(CraneConstants.kExtenderStart);
+
+     //FLEX Motor TODO: write code for spark flex motor
+        suckerConfig
+            .smartCurrentLimit(20)
+            .idleMode(IdleMode.kBrake);
+        suckerConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kWristCeiling)
+            .reverseSoftLimit(CraneConstants.kElbowHardDeck);
+        suckerConfig.encoder
+        // TODO: Ratio needs to be changed
+            .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
+        suckerConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.01, 0.0, 0.0);
+            
+        suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    
     }
 
     /**
