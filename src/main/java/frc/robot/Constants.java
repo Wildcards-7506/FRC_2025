@@ -38,6 +38,7 @@ public final class Constants {
     public static final int WRIST = 10;
     public static final int ELBOW = 11;
     public static final int EXTENDER = 12;
+    public static final int SUCKER = 13;
   }
 
   public static final class CraneConstants{
