@@ -57,7 +57,7 @@ public final class Constants {
     public static final double kWristOrigin = 0;
     public static final double kWristOrigin180 = 180;
     public static final double kWristVertical = 90;
-    public static final double kWristCeiling = 225;
+    public static final double kWristCeiling = 90;
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
