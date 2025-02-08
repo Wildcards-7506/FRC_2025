@@ -15,7 +15,7 @@ public class CraneTeleopCommand extends Command {
                     prevHighReefState = false;
     
     /** Degree of angleMargin so that the crane can progress to the next position. */
-    private double angleMargin = 3;
+    private double angleMargin = 6;
     private double extensionMargin = 0.5;
 
     public CraneTeleopCommand() {
@@ -40,11 +40,11 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
+            // Robot.crane.setGripperPosition(Robot.crane.gripperSetpoint + PlayerConfigs.fineControlExtender * 0.1);
         } else {
             if(Robot.crane.craneState == 1) { // station
                 // TODO: VERIFY station logic
                 if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    Robot.crane.setWristPosition(CraneConstants.kWristVertical);
                     if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
                        && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
                         Robot.crane.setWristPosition(CraneConstants.kWristVertical);
