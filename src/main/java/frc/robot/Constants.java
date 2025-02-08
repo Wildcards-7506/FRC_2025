@@ -43,14 +43,14 @@ public final class Constants {
   public static final class CraneConstants{
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     // TODO: Ratio needs to be changed
-    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; 
-    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3;
+    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64; // tested 2/8/2025
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
-    public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/4; // Tested as of 1/25/2025
+    public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/5; // Tested as of 2/8/2025
     
     // Gripper limits
     public static final double kGripperHardDeck = 0;
-    public static final double kGripperCeiling = 50;
+    public static final double kGripperCeiling = 40;
 
     // Wrist limits
     public static final double kWristHardDeck = -45;
@@ -80,7 +80,7 @@ public final class Constants {
     public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
-    public static final double kElbowHardDeck = 10;
+    public static final double kElbowHardDeck = 20;
     public static final double kElbowStation = 45;
     public static final double kElbowHigh = 145;
     public static final double kElbowPause = 160;
