@@ -68,6 +68,12 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
+        // Set up setpoints for each motor
+        // setGripperPosition(CraneConstants.kGripperHardDeck);
+        // setWristPosition(CraneConstants.kWristOrigin);
+        // setElbowPosition(CraneConstants.kElbowHardDeck);
+        // setExtenderPosition(CraneConstants.kExtenderStart);
+
         gripperConfig
             .smartCurrentLimit(20)
             .inverted(true)
@@ -83,7 +89,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kGripperEncoderDistancePerPulse);
         gripperConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.001, 0.0, 0.0);
+            .pid(0.005, 0.0, 0.0);
             
         gripperMotor.configure(gripperConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
@@ -94,7 +100,7 @@ public class Crane extends SubsystemBase {
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
             .forwardSoftLimit(CraneConstants.kWristCeiling)
-            .reverseSoftLimit(CraneConstants.kElbowHardDeck);
+            .reverseSoftLimit(CraneConstants.kWristHardDeck);
         wristConfig.encoder
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
@@ -106,7 +112,7 @@ public class Crane extends SubsystemBase {
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         elbowConfig
-            .smartCurrentLimit(40)
+            .smartCurrentLimit(80)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
         elbowConfig.softLimit
@@ -120,7 +126,7 @@ public class Crane extends SubsystemBase {
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
-            .pid(0.005, 0.0, 0.0);
+            .pid(0.005, 0.0000025, 0.7);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -172,6 +178,7 @@ public class Crane extends SubsystemBase {
         wristSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kWristHardDeck, 
                                        CraneConstants.kWristCeiling);
+        // System.out.println("Wrist: " + getWristPosition());
         wristPID.setReference(wristSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Wrist Setpoint", setPoint);
     }
@@ -185,8 +192,14 @@ public class Crane extends SubsystemBase {
         elbowSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
+        /*
+         * don't let integral accumulate if more than 10 degrees away
+         */
+        if(Math.abs(getElbowPosition() - elbowSetpoint) > 13) {
+            elbowPID.setIAccum(0.0);
+        }
         System.out.println("Elbow: " + getElbowPosition());
-        System.out.println("Elbow Setpoint: " + elbowSetpoint);
+        System.out.println("Integral Accum: " + elbowPID.getIAccum());
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
     }
@@ -205,7 +218,7 @@ public class Crane extends SubsystemBase {
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
-        System.out.println("Extender: " + getExtenderPosition());
+        // System.out.println("Extender: " + getExtenderPosition());
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
