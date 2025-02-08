@@ -64,9 +64,9 @@ public final class Constants {
     public static final double kExtenderHardDeck = 0;
     public static final double kExtenderStation = 10;
     public static final double kExtenderHigh = 21;
-    public static final double kExtenderMid = 0;
-    public static final double kExtenderLow = 0;
-    public static final double kExtenderShelf = 0;
+    public static final double kExtenderMid = 18;
+    public static final double kExtenderLow = 16;
+    public static final double kExtenderShelf = 17;
     public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 17; // starts retracted by 4 inches from maximum
     public static final double kExtenderCeiling = kExtenderStart + 4; // starting + tail end offset - 2 inch margin
@@ -84,10 +84,10 @@ public final class Constants {
     public static final double kElbowStation = 45;
     public static final double kElbowHigh = 145;
     public static final double kElbowPause = 160;
-    public static final double kElbowMid = 167;
+    public static final double kElbowMid = 92;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 200;
-    public static final double kElbowShelf = 247.5;
+    public static final double kElbowLow = 69;
+    public static final double kElbowShelf = 40;
     public static final double kElbowCeiling = 290;
     
     // pull from the .bak
