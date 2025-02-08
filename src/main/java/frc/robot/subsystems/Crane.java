@@ -50,6 +50,12 @@ public class Crane extends SubsystemBase {
     public final SparkClosedLoopController extenderPID;
     public double extenderSetpoint;
 
+    //Sucker
+    private final SparkMax suckerMotor;
+    private final SparkMaxConfig suckerConfig;
+    public final SparkClosedLoopController suckerPID;
+    public double suckIn = false
+    
     public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
         gripperMotor = new SparkMax(CANIDS.GRIPPER, MotorType.kBrushless);
