@@ -56,15 +56,8 @@ public abstract class PlayerConfigs {
     public static boolean fineControlEnable; // Fine control enable
     public static boolean climberOnline; // Climber engage
     
-    // Shooter
-    // public static boolean armScoringMechanism;
-    // public static boolean shooterActive;
-    // public static boolean fire;
-    // public static boolean reject;
-    // public static boolean intake;
-
-    // Climbers
-    // public static double climberEngage;
+    public static boolean fineControlEnable; // Fine control enable
+    public static boolean climberOnline; // Climber engage
 
     /**
      * This helper method is used to get the joystick value after deadbanding.
@@ -77,6 +70,17 @@ public abstract class PlayerConfigs {
     }
 
     /**
+     * This helper method is used to get the joystick value after deadbanding.
+     * 
+     * @param axis The joystick axis to apply the deadband to.
+     * @return A double representing the new axis value. 0.0 if old axis value <= {@code IOConstants.XY_DEADBAND}.
+     */
+    public double applyAxisDeadband(double axis) {
+        return Math.abs(axis) > IOConstants.XY_DEADBAND ? axis : 0.0;
+    }
+
+    /**
+
      * This method updates the controller values for the driver.
      */
     public void getDriverConfig() {}
