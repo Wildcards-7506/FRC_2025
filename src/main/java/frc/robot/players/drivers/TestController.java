@@ -40,15 +40,16 @@ public class TestController extends PlayerConfigs {
 
     @Override
     public void getOperatorConfig() {
+        stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
-        station = Robot.controller1.getAButton(); // Likely same button as lowReef
-        lowReef = station; // Likely same button as station
+        shelfReef = Robot.controller1.getXButton();
+        lowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
-        shelfReef = Robot.controller1.getXButton();
         gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX()); // Fine control wrist
-        fineControlElbow = applyAxisDeadband(Robot.controller1.getLeftY()); // Fine control elbow
+        fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
+        fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
+        fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
         

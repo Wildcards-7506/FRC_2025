@@ -40,17 +40,21 @@ public abstract class PlayerConfigs {
     public static boolean robotRelative;
 
     // Arm
+    public static boolean stationPickup;
     public static boolean lowPickup;
-    public static boolean station; // Likely same button as lowReef
-    public static boolean lowReef; // Likely same button as station
+    public static boolean shelfReef;
+    public static boolean lowReef; // Likely same button as lowReef
     public static boolean midReef;
     public static boolean highReef;
-    public static boolean shelfReef;
     public static boolean gripperOpen;
-    public static double fineControlWrist; // Fine control wrist
-    public static double fineControlElbow; // Fine control elbow
+    public static double fineControlWrist;
+    public static double fineControlElbow;
+    public static double fineControlExtender;
     public static boolean climberActivate;
     public static boolean climberDeactivate;
+    
+    public static boolean fineControlEnable; // Fine control enable
+    public static boolean climberOnline; // Climber engage
     
     public static boolean fineControlEnable; // Fine control enable
     public static boolean climberOnline; // Climber engage
@@ -66,6 +70,17 @@ public abstract class PlayerConfigs {
     }
 
     /**
+     * This helper method is used to get the joystick value after deadbanding.
+     * 
+     * @param axis The joystick axis to apply the deadband to.
+     * @return A double representing the new axis value. 0.0 if old axis value <= {@code IOConstants.XY_DEADBAND}.
+     */
+    public double applyAxisDeadband(double axis) {
+        return Math.abs(axis) > IOConstants.XY_DEADBAND ? axis : 0.0;
+    }
+
+    /**
+
      * This method updates the controller values for the driver.
      */
     public void getDriverConfig() {}

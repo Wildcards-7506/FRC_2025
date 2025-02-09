@@ -19,33 +19,7 @@
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Auto Chooser",
-              "_title": "/SmartDashboard/Auto Chooser",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "3,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Driver",
-              "_title": "/SmartDashboard/Driver",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Operator",
-              "_title": "/SmartDashboard/Operator",
+              "_title": "Auto Chooser",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -58,7 +32,7 @@
             "content": {
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "/SmartDashboard/Field",
+              "_title": "Field",
               "_glyph": 148,
               "_showGlyph": false,
               "Game/Game": "k2024Crescendo",
@@ -74,7 +48,7 @@
             "content": {
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/Skip Non-Path Commands",
-              "_title": "/SmartDashboard/Skip Non-Path Commands",
+              "_title": "Skip Non-Path Commands",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -87,25 +61,12 @@
             "content": {
               "_type": "Alerts",
               "_source0": "network_table:///SmartDashboard/Alerts",
-              "_title": "/SmartDashboard/Alerts",
+              "_title": "Alerts",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "3,2": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Network Table Tree",
-              "_source0": "network_table:///PathPlanner",
-              "_title": "/PathPlanner",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,2": {
+          "6,3": {
             "size": [
               1,
               1
@@ -113,24 +74,9 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///FMSInfo/StationNumber",
-              "_title": "/FMSInfo/StationNumber",
+              "_title": "StationNumber",
               "_glyph": 148,
               "_showGlyph": false
-            }
-          },
-          "5,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///FMSInfo/IsRedAlliance",
-              "_title": "/FMSInfo/IsRedAlliance",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#FF0000FF",
-              "Colors/Color when false": "#0000FFFF"
             }
           },
           "3,0": {
@@ -141,7 +87,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///FMSInfo/EventName",
-              "_title": "/FMSInfo/EventName",
+              "_title": "EventName",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -154,7 +100,7 @@
             "content": {
               "_type": "Graph",
               "_source0": "network_table:///SmartDashboard/Field/Robot",
-              "_title": "/SmartDashboard/Field/Robot",
+              "_title": "Robot Field Data",
               "_glyph": 148,
               "_showGlyph": false,
               "Graph/Visible time": 30.0,
@@ -162,7 +108,10 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul"
+              "Y-axis/Unit": "ul",
+              "Visible data//SmartDashboard/Field/Robot[0]": true,
+              "Visible data//SmartDashboard/Field/Robot[1]": true,
+              "Visible data//SmartDashboard/Field/Robot[2]": true
             }
           },
           "3,1": {
@@ -173,7 +122,7 @@
             "content": {
               "_type": "Basic FMS Info",
               "_source0": "network_table:///FMSInfo",
-              "_title": "/FMSInfo",
+              "_title": "FMSInfo",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -186,7 +135,61 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///FMSInfo/GameSpecificMessage",
-              "_title": "/FMSInfo/GameSpecificMessage",
+              "_title": "GameSpecificMessage",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Driver",
+              "_title": "Driver",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Operator",
+              "_title": "Operator",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///FMSInfo/IsRedAlliance",
+              "_title": "Alliance Color",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#FF0000FF",
+              "Colors/Color when false": "#0000FFFF"
+            }
+          },
+          "3,2": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///PathPlanner",
+              "_title": "PathPlanner",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -371,9 +374,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.5714285969734192,
-    "y": 0.5714285969734192,
-    "width": 1461.7142333984375,
-    "height": 865.1428833007812
+    "x": -6.857142925262451,
+    "y": -6.857142925262451,
+    "width": 1476.5714111328125,
+    "height": 880.0
   }
 }
