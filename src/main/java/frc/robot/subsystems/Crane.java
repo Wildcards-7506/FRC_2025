@@ -54,9 +54,8 @@ public class Crane extends SubsystemBase {
 
     //Sucker
     private final SparkFlex suckerMotor;
-    private final SparkFLexConfig suckerConfig;
+    private final SparkFlexConfig suckerConfig;
     public final SparkClosedLoopController suckerPID;
-    public double suckIn = false
     
     public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
@@ -75,6 +74,10 @@ public class Crane extends SubsystemBase {
         extenderMotor = new SparkMax(CANIDS.EXTENDER, MotorType.kBrushless);
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
+
+        suckerMotor = new SparkFlex(CANIDS.SUCKER, MotorType.kBrushless);
+        suckerConfig = new SparkFlexConfig();
+        suckerPID = suckerMotor.getClosedLoopController();
 
         gripperConfig
             .smartCurrentLimit(20)
@@ -151,32 +154,25 @@ public class Crane extends SubsystemBase {
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // Set up setpoints for each motor
-        setGripperPosition(CraneConstants.kGripperHardDeck);
-        setWristPosition(CraneConstants.kWristOrigin);
-        setElbowPosition(CraneConstants.kElbowHardDeck);
-        setExtenderPosition(CraneConstants.kExtenderStart);
-
-     //FLEX Motor TODO: write code for spark flex motor
+        //FLEX Motor TODO: write code for spark flex motor
         suckerConfig
             .smartCurrentLimit(20)
             .idleMode(IdleMode.kBrake);
-        suckerConfig.softLimit
-            .forwardSoftLimitEnabled(true)
-            .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(CraneConstants.kWristCeiling)
-            .reverseSoftLimit(CraneConstants.kElbowHardDeck);
         suckerConfig.encoder
         // TODO: Ratio needs to be changed
-            .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
-            .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
+            .positionConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse);
         suckerConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.01, 0.0, 0.0);
             
         suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    
+        // Set up setpoints for each motor
+        setGripperPosition(CraneConstants.kGripperHardDeck);
+        setWristPosition(CraneConstants.kWristOrigin);
+        setElbowPosition(CraneConstants.kElbowHardDeck);
+        setExtenderPosition(CraneConstants.kExtenderStart);  
     }
 
     /**

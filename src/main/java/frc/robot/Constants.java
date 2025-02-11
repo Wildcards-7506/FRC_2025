@@ -48,6 +48,7 @@ public final class Constants {
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/4; // Tested as of 1/25/2025
+    public static final double kSuckerEncoderDistancePerPulse = 360.0;
     
     // Gripper limits
     public static final double kGripperHardDeck = 0;
@@ -90,6 +91,11 @@ public final class Constants {
     public static final double kElbowLow = 200;
     public static final double kElbowShelf = 247.5;
     public static final double kElbowCeiling = 290;
+
+    // Sucker limits
+    public static final double holdCurrent = 0;
+    public static final double intakeCurrent = 0;
+    public static final double ejectCurrent = 0;
     
     // pull from the .bak
     // public static final double kGripperMaxspeedMPS = 4.8;
