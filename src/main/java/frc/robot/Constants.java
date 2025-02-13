@@ -47,8 +47,8 @@ public final class Constants {
   public static final class CraneConstants{
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     // TODO: Ratio needs to be changed
-    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/4;
-    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/4 * 1/4;
+    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; // tested 2/8/2025
+    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64 * 1/3; // tested 
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/4; // Tested as of 1/25/2025
     
