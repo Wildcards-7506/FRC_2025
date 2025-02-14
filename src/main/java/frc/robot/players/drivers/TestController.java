@@ -21,10 +21,6 @@ public class TestController extends PlayerConfigs {
         turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        snapUp = Robot.controller0.getPOV() == IOConstants.DPAD_UP;
-        snapRight = Robot.controller0.getPOV() == IOConstants.DPAD_RIGHT;
-        snapDown = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN;
-        snapLeft = Robot.controller0.getPOV() == IOConstants.DPAD_LEFT;
 
         // Reef snaps
         snapUpRight = Robot.controller0.getPOV() == IOConstants.DPAD_UP_RIGHT;
@@ -33,6 +29,10 @@ public class TestController extends PlayerConfigs {
         snapUpLeft = Robot.controller0.getPOV() == IOConstants.DPAD_UP_LEFT;
 
         robotRelative = Robot.controller0.getRightBumperButton();
+
+        //Auto Align
+        autoAlignLeft = Robot.controller0.getXButtonReleased();
+        autoAlignRight = Robot.controller0.getBButtonReleased();
         
         //Gyro Reset
         zeroGyro = Robot.controller0.getBButton();
@@ -50,10 +50,13 @@ public class TestController extends PlayerConfigs {
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
         fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        fineControlRotator = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
+        fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
         
-        fineControlEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
+        fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
+        fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
         climberOnline = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT; // Climber engage
     }
 }

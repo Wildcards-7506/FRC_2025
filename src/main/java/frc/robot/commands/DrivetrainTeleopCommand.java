@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
+import frc.robot.commands.autonomous.AutoAlign;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
@@ -53,6 +54,15 @@ public class DrivetrainTeleopCommand extends Command {
         // When robotRelative is false, the robot will drive relative to the field's current heading
         if(joystickHasInput())
             Robot.drivetrain.drive(yInputSpeed, xInputSpeed, inputRot, !PlayerConfigs.robotRelative);
+
+        //Cancel normal command if auto align is called
+        if(PlayerConfigs.autoAlignLeft) {
+            new AutoAlign(Robot.drivetrain, true).schedule();
+            this.cancel();
+        } else if(PlayerConfigs.autoAlignRight){
+            new AutoAlign(Robot.drivetrain, false).schedule();
+            this.cancel();
+        }
     }
 
     private boolean joystickHasInput() {

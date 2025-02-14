@@ -36,7 +36,7 @@ public class CraneTeleopCommand extends Command {
 
         updateCraneState();
         
-        if(PlayerConfigs.fineControlEnable) { // fine control
+        if(PlayerConfigs.fineControlCraneEnable) { // fine control
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
@@ -120,7 +120,7 @@ public class CraneTeleopCommand extends Command {
         }
 
         SmartDashboard.putNumber("Crane State", Robot.crane.craneState);
-        SmartDashboard.putBoolean("Fine Control", PlayerConfigs.fineControlEnable);
+        SmartDashboard.putBoolean("Fine Control", PlayerConfigs.fineControlCraneEnable);
         SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
         SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
     }

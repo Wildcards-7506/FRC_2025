@@ -26,6 +26,8 @@ public abstract class PlayerConfigs {
     public static boolean snapRight;
     public static boolean snapDown;
     public static boolean snapLeft;
+    public static boolean autoAlignLeft;
+    public static boolean autoAlignRight;
 
     // Reef snaps
     public static boolean snapUpRight;
@@ -53,18 +55,13 @@ public abstract class PlayerConfigs {
     public static boolean climberActivate;
     public static boolean climberDeactivate;
     
-    public static boolean fineControlEnable; // Fine control enable
+    public static boolean fineControlCraneEnable; // Fine control enable
+    public static boolean fineControlClimberEnable; // Fine control enable
     public static boolean climberOnline; // Climber engage
-    
-    // Shooter
-    // public static boolean armScoringMechanism;
-    // public static boolean shooterActive;
-    // public static boolean fire;
-    // public static boolean reject;
-    // public static boolean intake;
 
-    // Climbers
-    // public static double climberEngage;
+    // ClimbersfineControlRotator
+    public static double fineControlRotator;
+    public static double fineControlAnchor;
 
     /**
      * This helper method is used to get the joystick value after deadbanding.

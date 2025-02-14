@@ -38,13 +38,17 @@ public final class Constants {
     public static final int WRIST = 10;
     public static final int ELBOW = 11;
     public static final int EXTENDER = 12;
+
+    // Climber: consists of rotator and extender
+    public static final int ROTATOR = 13;
+    public static final int ANCHOR = 14;
   }
 
   public static final class CraneConstants{
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     // TODO: Ratio needs to be changed
-    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3;
-    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64; // tested 2/8/2025
+    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; // tested 2/8/2025
+    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64 * 1/3; // tested 
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/5; // Tested as of 2/8/2025
     
@@ -53,10 +57,9 @@ public final class Constants {
     public static final double kGripperCeiling = 40;
 
     // Wrist limits
-    public static final double kWristHardDeck = -45;
+    public static final double kWristHardDeck = -90;
     public static final double kWristOrigin = 0;
-    public static final double kWristOrigin180 = 180;
-    public static final double kWristVertical = 90;
+    public static final double kWristOrigin = 0;
     public static final double kWristCeiling = 90;
     
     // Extender limits
@@ -89,36 +92,22 @@ public final class Constants {
     public static final double kElbowLow = 69;
     public static final double kElbowShelf = 40;
     public static final double kElbowCeiling = 290;
-    
-    // pull from the .bak
-    // public static final double kGripperMaxspeedMPS = 4.8;
-    // public static final double kGripperAngularSpeed  =  2 * Math.PI;
-    // public static final double kGripperTopSpeed = 1.0;
-    // public static final double kGripperTopAngularSpeed = 1.0;
-
-    // public static final double kArmExtensionMaxspeedMPS = 4.8;
-    // public static final double kArmRotationAngularSpeed = 2 * Math.PI;
-    // public static final double kArmExtensionTopSpeed = 1.0;
-    // public static final double kArmRotationTopSpeed = 1.0;
-    
-    // 2023 constants.java
-    // public static final int kRotateCurrentLimit = 30;
-    // public static final double kRotateEncoderDistancePerPulse = 1.0/125 * 12.0/15 * 360;
-    // public static final double kMotorKP = 0.007;
-    // public static final double kMotorSingleSub = 40;
-    // public static final double kMotorGroundClear = 15.0;
-    // public static final double kMotorGround = -5.0;
-    // public static final double kMotorHi = 160.0;
-    // public static final double kMotorMid = 165.0;
-    // public static final double kMotorDoubleSub = 85.0;
-    // public static final double kMotorDoubleCubeOffset = -30;
-    // public static final double kMotorSingleCubeOffset = -20;
-    // public static final double kMotorVertical = 115.0;
-    // public static final double kMotorClosed = 0.0;
-    // public static final double MotorHorizontalOffset = 60;
   }
 
-  public static final class ArmConstants {
+  public static final class ClimberConstants {
+    // TODO: Placeholder values, replace with actual values
+    public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
+    public static final double kAnchorEncoderDistancePerPulse = 360.0 * 1/3;
+
+    // Rotator limits
+  // TODO: Placeholder values, replace with actual values
+    public static final double kRotatorHardDeck = 0;
+    public static final double kRotatorCeiling = 135;
+
+    // Anchor limits
+  // TODO: Placeholder values, replace with actual values
+    public static final double kAnchorHardDeck = 0;
+    public static final double kAnchorCeiling = 5; // inches
   }
 
   public static final class IOConstants {
