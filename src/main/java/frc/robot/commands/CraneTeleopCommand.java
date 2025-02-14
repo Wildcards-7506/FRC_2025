@@ -29,10 +29,10 @@ public class CraneTeleopCommand extends Command {
     // Called every time (~20 ms) the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(PlayerConfigs.gripperOpen)
-            Robot.crane.setGripperPosition(90);
-        else
-            Robot.crane.setGripperPosition(0);
+        // if(PlayerConfigs.gripperOpen)
+        //     Robot.crane.setGripperPosition(90);
+        // else
+        //     Robot.crane.setGripperPosition(0);
 
         updateCraneState();
         
@@ -40,72 +40,75 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
-            // Robot.crane.setGripperPosition(Robot.crane.gripperSetpoint + PlayerConfigs.fineControlExtender * 0.1);
         } else {
-            if(Robot.crane.craneState == 1) { // station
-                if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
-                       && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
-                        Robot.crane.setWristPosition(CraneConstants.kWristVertical);
-                        Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
-                    }
-                }
-            }
-            if(Robot.crane.craneState == 2) { // low pickup
-                if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
-                    Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
-                    if(upToElbowPosition(CraneConstants.kElbowCeiling, CraneConstants.kExtenderLimit2)) {
-                        // If elbow is at ceiling, then we extend the extender to pick up the coral
-                        Robot.crane.setWristPosition(CraneConstants.kWristOrigin); // may need to rotate 180 degrees
-                        Robot.crane.setElbowPosition(CraneConstants.kElbowCeiling);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderPickup);
-                    }
-                }
-            }
-            if(Robot.crane.craneState == 3) { // shelf reef
-                if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
-                    if(upToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
-                       && downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)) {
-                        Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
-                        Robot.crane.setElbowPosition(CraneConstants.kElbowShelf);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderShelf);
-                    }
-                }
-            }
-            if(Robot.crane.craneState == 4) { // low reef
-                if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    if(upToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)
-                       && downToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)) {
-                        Robot.crane.setWristPosition(CraneConstants.kWristVertical);
-                        Robot.crane.setElbowPosition(CraneConstants.kElbowLow);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderLow);
-                    }
-                }
-            }
-            if(Robot.crane.craneState == 5) { // mid reef
-                if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                    if(upToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)
-                       && downToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)) {
-                        Robot.crane.setWristPosition(CraneConstants.kWristVertical);
-                        Robot.crane.setElbowPosition(CraneConstants.kElbowMid);
-                        Robot.crane.setExtenderPosition(CraneConstants.kExtenderMid);
-                    }
-                }
-            }
-            if(Robot.crane.craneState == 6) { // high reef
-                if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
-                    if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
-                        if(downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit2 + 10)) {
-                            Robot.crane.setWristPosition(CraneConstants.kWristVertical);
-                            Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
-                            Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
-                        }
-                    }
-                }
-            }
+            // if(Robot.crane.craneState == 1) { // station
+            //     if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+            //         if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
+            //            && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+            //             Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+            //             Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
+            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
+            //         }
+            //     }
+            // }
+            // if(Robot.crane.craneState == 2) { // low pickup
+            //     if(upToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit1)) {
+            //         Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
+            //         if(upToElbowPosition(CraneConstants.kElbowCeiling, CraneConstants.kExtenderLimit2)) {
+            //             // If elbow is at ceiling, then we extend the extender to pick up the coral
+            //             Robot.crane.setWristPosition(CraneConstants.kWristOrigin); // may need to rotate 180 degrees
+            //             Robot.crane.setElbowPosition(CraneConstants.kElbowCeiling);
+            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderPickup);
+            //         }
+            //     }
+            // }
+            // if(Robot.crane.craneState == 3) { // shelf reef
+            //     if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+            //         Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
+            //         if(upToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
+            //            && downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)) {
+            //             Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
+            //             Robot.crane.setElbowPosition(CraneConstants.kElbowShelf);
+            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderShelf);
+            //         }
+            //     }
+            // }
+            // if(Robot.crane.craneState == 4) { // low reef
+            //     if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+            //         if(upToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)
+            //            && downToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)) {
+            //             Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+            //             Robot.crane.setElbowPosition(CraneConstants.kElbowLow);
+            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderLow);
+            //         }
+            //     }
+            // }
+            // if(Robot.crane.craneState == 5) { // mid reef
+            //     if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+            //         if(upToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)
+            //            && downToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)) {
+            //             Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+            //             Robot.crane.setElbowPosition(CraneConstants.kElbowMid);
+            //             Robot.crane.setExtenderPosition(CraneConstants.kExtenderMid);
+            //         }
+            //     }
+            // }
+            // if(Robot.crane.craneState == 6) { // high reef
+            //     if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+            //         if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
+            //             if(downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit2 + 10)) {
+            //                 Robot.crane.setWristPosition(CraneConstants.kWristVertical);
+            //                 Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
+            //                 Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
+            //             }
+            //         }
+            //     }
+            // }
             if(Robot.crane.craneState == 0) { // stow
+                if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
+                    
+                }
+
                 // If we want to go to elbow pause, we must retract extender, then we rotate elbow to pause position
                 if(downToElbowPosition(CraneConstants.kElbowPause, CraneConstants.kExtenderLimit2)) {
                     Robot.crane.setWristPosition(CraneConstants.kWristOrigin);
