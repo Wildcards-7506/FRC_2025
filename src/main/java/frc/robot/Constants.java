@@ -57,10 +57,8 @@ public final class Constants {
     public static final double kGripperCeiling = 40;
 
     // Wrist limits
-    public static final double kWristHardDeck = -90;
-    public static final double kWristOrigin = 0;
-    public static final double kWristOrigin = 0;
-    public static final double kWristCeiling = 90;
+    public static final double kWristHardDeck = 0;
+    public static final double kWristCeiling = 225;
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
@@ -71,8 +69,8 @@ public final class Constants {
     public static final double kExtenderLow = 16;
     public static final double kExtenderShelf = 17;
     public static final double kExtenderPickup = 12;
-    public static final double kExtenderStart = 17; // starts retracted by 4 inches from maximum
-    public static final double kExtenderCeiling = kExtenderStart + 4; // starting + tail end offset - 2 inch margin
+    public static final double kExtenderStart = 13; // starts retracted by 4 inches from maximum
+    public static final double kExtenderCeiling = kExtenderStart; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     public static final double kExtenderClawOffset = 15; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter

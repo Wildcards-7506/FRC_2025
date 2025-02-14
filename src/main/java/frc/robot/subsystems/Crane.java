@@ -68,12 +68,6 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
-        // Set up setpoints for each motor
-        // setGripperPosition(CraneConstants.kGripperHardDeck);
-        // setWristPosition(CraneConstants.kWristOrigin);
-        // setElbowPosition(CraneConstants.kElbowHardDeck);
-        // setExtenderPosition(CraneConstants.kExtenderStart);
-
         gripperConfig
             .smartCurrentLimit(20)
             .inverted(true)
@@ -150,8 +144,8 @@ public class Crane extends SubsystemBase {
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Set up setpoints for each motor
-        setGripperPosition(CraneConstants.kGripperHardDeck);
-        setWristPosition(CraneConstants.kWristOrigin);
+        // setGripperPosition(CraneConstants.kGripperHardDeck);
+        setWristPosition(CraneConstants.kWristHardDeck);
         setElbowPosition(CraneConstants.kElbowHardDeck);
         setExtenderPosition(CraneConstants.kExtenderStart);
     }
@@ -161,13 +155,13 @@ public class Crane extends SubsystemBase {
      * 
      * @param setPoint The desired angle of the gripper in degrees
      */
-    public void setGripperPosition(double setPoint) {
-        gripperSetpoint = filterSetPoint(setPoint,
-                                         CraneConstants.kGripperHardDeck,
-                                         CraneConstants.kGripperCeiling);
-        gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Gripper Setpoint", setPoint);
-    }
+    // public void setGripperPosition(double setPoint) {
+    //     gripperSetpoint = filterSetPoint(setPoint,
+    //                                      CraneConstants.kGripperHardDeck,
+    //                                      CraneConstants.kGripperCeiling);
+    //     gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
+    //     SmartDashboard.putNumber("Gripper Setpoint", setPoint);
+    // }
 
     /**
      * Sets the angle of the wrist, shaft CCW+.
@@ -178,9 +172,9 @@ public class Crane extends SubsystemBase {
         wristSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kWristHardDeck, 
                                        CraneConstants.kWristCeiling);
-        // System.out.println("Wrist: " + getWristPosition());
         wristPID.setReference(wristSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Wrist Setpoint", setPoint);
+        SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
+        SmartDashboard.putNumber("Wrist Pos", getWristPosition());
     }
 
     /**
@@ -198,10 +192,10 @@ public class Crane extends SubsystemBase {
         if(Math.abs(getElbowPosition() - elbowSetpoint) > 13) {
             elbowPID.setIAccum(0.0);
         }
-        System.out.println("Elbow: " + getElbowPosition());
         System.out.println("Integral Accum: " + elbowPID.getIAccum());
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Elbow Setpoint", elbowSetpoint);
+        SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);
+        SmartDashboard.putNumber("Elbow Pos", getElbowPosition());
     }
 
     /**
@@ -218,10 +212,10 @@ public class Crane extends SubsystemBase {
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
-        // System.out.println("Extender: " + getExtenderPosition());
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Extender Setpoint", extenderSetpoint);
+        SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
+        SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
 
     private double inchesToDegrees(double inches) {
