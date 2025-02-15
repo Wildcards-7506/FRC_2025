@@ -35,6 +35,15 @@ public class CraneTeleopCommand extends Command {
         //     Robot.crane.setGripperPosition(0);
 
         updateCraneState();
+
+        /** Sucker */
+        if (PlayerConfigs.suckerIntake) {
+            Robot.crane.spinSucker(-400); // rpm
+        } else if (PlayerConfigs.suckerEject) {
+            Robot.crane.spinSucker(400); // rpm
+        } else {
+            Robot.crane.spinSucker(0);
+        }
         
         if(PlayerConfigs.fineControlCraneEnable) { // fine control
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);

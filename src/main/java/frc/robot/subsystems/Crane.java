@@ -9,9 +9,11 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,6 +55,11 @@ public class Crane extends SubsystemBase {
     public final SparkClosedLoopController extenderPID;
     public double extenderSetpoint;
 
+    //Sucker
+    private final SparkFlex suckerMotor;
+    private final SparkFlexConfig suckerConfig;
+    public final SparkClosedLoopController suckerPID;
+    
     public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
         gripperMotor = new SparkMax(CANIDS.GRIPPER, MotorType.kBrushless);
@@ -70,6 +77,10 @@ public class Crane extends SubsystemBase {
         extenderMotor = new SparkMax(CANIDS.EXTENDER, MotorType.kBrushless);
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
+
+        suckerMotor = new SparkFlex(CANIDS.SUCKER, MotorType.kBrushless);
+        suckerConfig = new SparkFlexConfig();
+        suckerPID = suckerMotor.getClosedLoopController();
 
         gripperConfig
             .smartCurrentLimit(20)
@@ -146,11 +157,25 @@ public class Crane extends SubsystemBase {
             
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+        //FLEX Motor TODO: write code for spark flex motor
+        suckerConfig
+            .smartCurrentLimit(20)
+            .idleMode(IdleMode.kBrake);
+        suckerConfig.encoder
+        // TODO: Ratio needs to be changed
+            .positionConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse);
+        suckerConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.01, 0.0, 0.0);
+            
+        suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
         // Set up setpoints for each motor
         // setGripperPosition(CraneConstants.kGripperHardDeck);
         setWristPosition(CraneConstants.kWristHardDeck);
         setElbowPosition(CraneConstants.kElbowHardDeck);
-        setExtenderPosition(CraneConstants.kExtenderStart);
+        setExtenderPosition(CraneConstants.kExtenderStart);  
     }
 
     /**
@@ -165,6 +190,10 @@ public class Crane extends SubsystemBase {
     //     gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
     //     SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     // }
+    
+    public void spinSucker(double velocity) {
+        suckerPID.setReference(velocity, ControlType.kVelocity);
+    }
 
     /**
      * Sets the angle of the wrist, shaft CCW+.

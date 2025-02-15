@@ -46,7 +46,8 @@ public class TestController extends PlayerConfigs {
         lowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
-        gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
+        suckerIntake = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
+        suckerEject = Robot.controller1.getLeftBumperButton();
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
         fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative

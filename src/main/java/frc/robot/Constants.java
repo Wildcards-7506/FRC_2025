@@ -52,6 +52,7 @@ public final class Constants {
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64 * 1/3; // tested 
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // Tested as of 1/25/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/5; // Tested as of 2/8/2025
+    public static final double kSuckerEncoderDistancePerPulse = 360.0 * 1/3;
     
     // Gripper limits
     public static final double kGripperHardDeck = 0;

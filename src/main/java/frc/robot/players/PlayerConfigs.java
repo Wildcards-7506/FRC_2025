@@ -48,7 +48,8 @@ public abstract class PlayerConfigs {
     public static boolean lowReef; // Likely same button as lowReef
     public static boolean midReef;
     public static boolean highReef;
-    public static boolean gripperOpen;
+    public static boolean suckerIntake;
+    public static boolean suckerEject;
     public static double fineControlWrist;
     public static double fineControlElbow;
     public static double fineControlExtender;
