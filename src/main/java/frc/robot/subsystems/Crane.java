@@ -6,12 +6,14 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
@@ -43,6 +45,7 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
+    private ArmFeedforward feedforward;
     
     //Extender
     private final SparkMax extenderMotor;
@@ -101,7 +104,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.01, 0.0, 0.0);
+            .pid(0.005, 0.0, 0.1);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -169,10 +172,17 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired angle of the wrist in degrees
      */
     public void setWristPosition(double setPoint) {
-        wristSetpoint = filterSetPoint(setPoint, 
-                                       CraneConstants.kWristHardDeck, 
-                                       CraneConstants.kWristCeiling);
-        wristPID.setReference(wristSetpoint, ControlType.kPosition);
+        if(craneState == 5) {
+            wristSetpoint = filterSetPoint(setPoint, 
+                                           CraneConstants.kWristHigh, 
+                                           CraneConstants.kWristHardDeck);
+        } else {
+            wristSetpoint = filterSetPoint(setPoint, 
+                                        CraneConstants.kWristHardDeck, 
+                                        CraneConstants.kWristCeiling);
+        }
+        setPoint = getElbowPosition() + wristSetpoint;
+        wristPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
         SmartDashboard.putNumber("Wrist Pos", getWristPosition());
     }
