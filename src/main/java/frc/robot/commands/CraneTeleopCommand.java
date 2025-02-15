@@ -10,7 +10,7 @@ public class CraneTeleopCommand extends Command {
 
     /** 1 = right, -1 = left */
     public void (int direction, boolean power) {
-            suckerMotor.set(power * direction)
+            Robot.Crane.suckerMotor.set(power * direction)
     } 
 
     
@@ -50,7 +50,7 @@ public class CraneTeleopCommand extends Command {
         } else if (PlayerConfigsy.climberActivate) {
             spinSucker(-1, 50)
         } else {
-            suckerMotor.set(0)
+            spinSucker(1,0)
         }
 
         
