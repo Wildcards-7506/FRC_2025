@@ -7,6 +7,13 @@ import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
 public class CraneTeleopCommand extends Command {
+
+    /** 1 = right, -1 = left */
+    public void (int direction, boolean power) {
+            suckerMotor.set(power * direction)
+    } 
+
+    
     private boolean prevStationPickupState = false,
                     prevLowPickupState = false,
                     prevShelfReefState = false,
@@ -29,12 +36,24 @@ public class CraneTeleopCommand extends Command {
     // Called every time (~20 ms) the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        
         if(PlayerConfigs.gripperOpen)
             Robot.crane.setGripperPosition(90);
         else
             Robot.crane.setGripperPosition(0);
-
+        
         updateCraneState();
+
+        /** Sucker */
+        if (PlayerConfigs.gripperOpen) {
+            spinSucker(1, 50) 
+        } else if (PlayerConfigsy.climberActivate) {
+            spinSucker(-1, 50)
+        } else {
+            suckerMotor.set(0)
+        }
+
+        
         
         if(PlayerConfigs.fineControlEnable) { // fine control
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
