@@ -188,6 +188,10 @@ public class Crane extends SubsystemBase {
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
 
+    public void spinSucker(int power) {
+            Robot.Crane.suckerMotor.set(power);
+    } 
+
     /**
      * Sets the angle of the wrist, shaft CCW+.
      * 
