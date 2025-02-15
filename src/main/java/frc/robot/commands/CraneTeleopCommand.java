@@ -40,11 +40,11 @@ public class CraneTeleopCommand extends Command {
 
         /** Sucker */
         if (PlayerConfigs.gripperOpen) {
-            Robot.Crane.spinSucker(50);
+            Robot.crane.spinSucker(-5);
         } else if (PlayerConfigs.climberActivate) {
-            Robot.Crane.spinSucker(-50);
+            Robot.crane.spinSucker(5);
         } else {
-            Robot.Crane.spinSucker(0);
+            Robot.crane.spinSucker(0);
         }
 
         

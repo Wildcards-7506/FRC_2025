@@ -187,9 +187,10 @@ public class Crane extends SubsystemBase {
         gripperPID.setReference(gripperSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     }
+    
+    public void spinSucker(double power) {
 
-    public void spinSucker(int power) {
-            Robot.Crane.suckerMotor.set(power);
+        suckerPID.setReference(power, ControlType.kVoltage);
     } 
 
     /**
