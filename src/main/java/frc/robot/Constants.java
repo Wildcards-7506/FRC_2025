@@ -35,6 +35,7 @@ public final class Constants {
 
     // Claw: consists of gripper (grabby grabby) and wrist
     public static final int GRIPPER = 9;
+    public static final int SUCKER = 15;
     public static final int WRIST = 10;
     public static final int ELBOW = 11;
     public static final int EXTENDER = 12;
@@ -55,20 +56,16 @@ public final class Constants {
     // Gripper limits
     public static final double kGripperHardDeck = 0;
     public static final double kGripperCeiling = 40;
-
-    // Wrist limits
-    public static final double kWristHardDeck = 0;
-    public static final double kWristCeiling = 225;
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderHardDeck = 0;
-    public static final double kExtenderStation = 10;
-    public static final double kExtenderHigh = 21;
-    public static final double kExtenderMid = 18;
-    public static final double kExtenderLow = 16;
-    public static final double kExtenderShelf = 17;
-    public static final double kExtenderPickup = 12;
+    public static final double kExtenderStation = 0;
+    public static final double kExtenderHigh = 13;
+    public static final double kExtenderMid = 9.25;
+    public static final double kExtenderLow = 0;
+    public static final double kExtenderShelf = 8.5;
+    // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 13; // starts retracted by 4 inches from maximum
     public static final double kExtenderCeiling = kExtenderStart; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
@@ -76,20 +73,31 @@ public final class Constants {
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
-    public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
+    // public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
+    public static final double kExtenderLimit1 = kExtenderHardDeck;
     /** Keep extender claw-side within extension cap. */
-    public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
+    // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
     public static final double kElbowHardDeck = 20;
-    public static final double kElbowStation = 45;
-    public static final double kElbowHigh = 145;
-    public static final double kElbowPause = 160;
-    public static final double kElbowMid = 92;
+    public static final double kElbowShelf = 0;
+    public static final double kElbowStation = 28.5;
+    public static final double kElbowHigh = 141 - 10;
+    public static final double kElbowMid = 99.7;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 69;
-    public static final double kElbowShelf = 40;
-    public static final double kElbowCeiling = 290;
+    public static final double kElbowLow = 71.8;
+    // public static final double kElbowCeiling = 290;
+    public static final double kElbowCeiling = kElbowHigh;
+
+    // Wrist limits
+    /** High is high + angle matched anle from elbow, elbow is 145 + - 100 = 45 */
+    public static final double kWristHigh = -100;
+    public static final double kWristHardDeck = 0;
+    public static final double kWristStation = 45;
+    public static final double kWristShelf = 45;
+    public static final double kWristLow = 123;
+    public static final double kWristMid = 126.3;
+    public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid on wrist.
   }
 
   public static final class ClimberConstants {
