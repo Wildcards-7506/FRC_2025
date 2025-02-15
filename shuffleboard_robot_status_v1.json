@@ -89,9 +89,9 @@
               "_showGlyph": false
             }
           },
-          "3,3": {
+          "7,3": {
             "size": [
-              2,
+              3,
               1
             ],
             "content": {
@@ -133,59 +133,7 @@
               "Visuals/Show Outside Circles": false
             }
           },
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Gripper Setpoint",
-              "_title": "Gripper Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Wrist Setpoint",
-              "_title": "/SmartDashboard/Wrist Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elbow Setpoint",
-              "_title": "/SmartDashboard/Elbow Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Extender Setpoint",
-              "_title": "/SmartDashboard/Extender Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "7,2": {
+          "4,3": {
             "size": [
               1,
               1
@@ -198,7 +146,7 @@
               "_showGlyph": false
             }
           },
-          "8,2": {
+          "3,3": {
             "size": [
               1,
               1
@@ -238,6 +186,110 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist SetP",
+              "_title": "/SmartDashboard/Wrist SetP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist Pos",
+              "_title": "/SmartDashboard/Wrist Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elbow SetP",
+              "_title": "/SmartDashboard/Elbow SetP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elbow Pos",
+              "_title": "/SmartDashboard/Elbow Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extender SetP",
+              "_title": "/SmartDashboard/Extender SetP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extender Pos",
+              "_title": "/SmartDashboard/Extender Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Rotator Setpoint",
+              "_title": "/SmartDashboard/Rotator Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Anchor Setpoint",
+              "_title": "/SmartDashboard/Anchor Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -257,9 +309,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.857142925262451,
-    "y": -6.857142925262451,
-    "width": 1476.5714111328125,
-    "height": 880.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
   }
 }
