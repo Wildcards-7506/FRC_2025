@@ -7,11 +7,6 @@ import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
 public class CraneTeleopCommand extends Command {
-
-    public void spinSucker(int power) {
-            Robot.Crane.suckerMotor.set(power * direction);
-    } 
-
     
     private boolean prevStationPickupState = false,
                     prevLowPickupState = false,
@@ -45,11 +40,11 @@ public class CraneTeleopCommand extends Command {
 
         /** Sucker */
         if (PlayerConfigs.gripperOpen) {
-            spinSucker(1, 50);
+            spinSucker(50);
         } else if (PlayerConfigsy.climberActivate) {
-            spinSucker(-1, 50);
+            spinSucker(-50);
         } else {
-            spinSucker(1,0);
+            spinSucker(0);
         }
 
         
