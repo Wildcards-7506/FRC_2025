@@ -8,7 +8,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -19,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
+import frc.robot.players.PlayerConfigs;
 import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
@@ -58,6 +58,8 @@ public class Crane extends SubsystemBase {
     private final SparkMax suckerMotor;
     private final SparkMaxConfig suckerConfig;
     public final SparkClosedLoopController suckerPID;
+    public double suckerSetpoint;
+    private boolean prevHoldState = false; // used to grab position once for holding sucker in place
     
     public Crane() {
         // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
@@ -190,8 +192,21 @@ public class Crane extends SubsystemBase {
     //     SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     // }
     
-    public void spinSucker(double velocity) {
-        suckerPID.setReference(velocity, ControlType.kVelocity);
+    public void spinSucker(double volts) {
+        // suckerPID.setReference(velocity, ControlType.kVelocity);
+        suckerMotor.setVoltage(volts);
+    }
+
+    /**
+     * Holds the sucker in place if it is not being ejected or intaked. Grabs position once and holds it.
+     */
+    public void holdSucker() {
+        if (!PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake && !prevHoldState) {
+            spinSucker(0);
+            suckerSetpoint = getSuckerPosition();
+        }
+        prevHoldState = !PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake;
+        suckerPID.setReference(suckerSetpoint, ControlType.kPosition);
     }
 
     /**
@@ -297,6 +312,11 @@ public class Crane extends SubsystemBase {
     /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
         return wristMotor.getEncoder().getPosition();
+    }
+
+    /** Returns the angle of the sucker in degrees, CCW+. */
+    public double getSuckerPosition() {
+        return suckerMotor.getEncoder().getPosition();
     }
 
     public void intakeLog() {
