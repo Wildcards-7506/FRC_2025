@@ -168,9 +168,9 @@ public class Robot extends TimedRobot {
   public void testInit() {
     Logger.info("SYSTEM","Test Program Started");
     CommandScheduler.getInstance().cancelAll();
-    // driver = driver_chooser.getSelected();
+    driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
-    // crane.setDefaultCommand(new CraneTeleopCommand());
+    crane.setDefaultCommand(new CraneTeleopCommand());
     climber.setDefaultCommand(new ClimberTeleopCommand());
   }
 
@@ -178,6 +178,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     CommandScheduler.getInstance().run();
+    driver.getDriverConfig();
     operator.getOperatorConfig();
   }
 

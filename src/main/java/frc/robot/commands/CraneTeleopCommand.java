@@ -30,6 +30,12 @@ public class CraneTeleopCommand extends Command {
     // Called every time (~20 ms) the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        // EXECUTE CRANE TELEOP ONLY WHEN CLIMBER CONTROL IS OFF
+        if(Robot.climber.onClimberControl) {
+            putCraneToClimbState();
+            return;
+        }
+
         // if(PlayerConfigs.gripperOpen)
         //     Robot.crane.setGripperPosition(90);
         // else
@@ -51,6 +57,10 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
         } else {
+            // If crane state is updated to positive val, then crane won't go to climb state
+            if(Robot.crane.craneState == CraneState.CLIMB) { // climb
+                putCraneToClimbState();
+            }
             if(Robot.crane.craneState == CraneState.STATION) { // station
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
@@ -109,9 +119,10 @@ public class CraneTeleopCommand extends Command {
         }
 
         SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
-        SmartDashboard.putBoolean("Fine Control", PlayerConfigs.fineControlCraneEnable);
+        SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
         SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
         SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
+        SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
     }
 
     /**
@@ -154,6 +165,26 @@ public class CraneTeleopCommand extends Command {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Puts the crane to climb state and sets the craneState to CLIMB to keep hold.
+     */
+    private void putCraneToClimbState() {
+        // This sets the crane to the climb state only if this method is called
+        Robot.crane.craneState = CraneState.CLIMB; // climb state
+        Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
+        if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
+           && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+            Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
+            Robot.crane.setExtenderPosition(CraneConstants.kExtenderHardDeck);
+        }
+        
+        SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
+        SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
+        SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
+        SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
+        SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
     }
     
     /**

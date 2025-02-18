@@ -50,7 +50,7 @@
               "_showGlyph": false
             }
           },
-          "5,4": {
+          "6,4": {
             "size": [
               1,
               1
@@ -89,9 +89,9 @@
               "_showGlyph": false
             }
           },
-          "7,3": {
+          "8,3": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
@@ -102,7 +102,7 @@
               "_showGlyph": false
             }
           },
-          "6,4": {
+          "5,4": {
             "size": [
               1,
               1
@@ -133,7 +133,7 @@
               "Visuals/Show Outside Circles": false
             }
           },
-          "4,3": {
+          "4,0": {
             "size": [
               1,
               1
@@ -152,21 +152,6 @@
               1
             ],
             "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Fine Control",
-              "_title": "/SmartDashboard/Fine Control",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/FC Elbow",
               "_title": "FC Elbow",
@@ -174,7 +159,7 @@
               "_showGlyph": false
             }
           },
-          "6,3": {
+          "5,3": {
             "size": [
               1,
               1
@@ -265,6 +250,90 @@
               "_showGlyph": false
             }
           },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Climber Tog",
+              "_title": "/SmartDashboard/Climber Tog",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Climber FC",
+              "_title": "/SmartDashboard/Climber FC",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FC Rotator",
+              "_title": "/SmartDashboard/FC Rotator",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FC Anchor",
+              "_title": "/SmartDashboard/FC Anchor",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Crane FC",
+              "_title": "/SmartDashboard/Crane FC",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/FC Extender",
+              "_title": "/SmartDashboard/FC Extender",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
           "6,2": {
             "size": [
               1,
@@ -272,8 +341,21 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Rotator Setpoint",
-              "_title": "/SmartDashboard/Rotator Setpoint",
+              "_source0": "network_table:///SmartDashboard/Rotator SetP",
+              "_title": "/SmartDashboard/Rotator SetP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Rotator Pos",
+              "_title": "/SmartDashboard/Rotator Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -285,8 +367,21 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Anchor Setpoint",
-              "_title": "/SmartDashboard/Anchor Setpoint",
+              "_source0": "network_table:///SmartDashboard/Anchor SetP",
+              "_title": "/SmartDashboard/Anchor SetP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Anchor Pos",
+              "_title": "/SmartDashboard/Anchor Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -309,9 +404,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "x": -6.857142925262451,
+    "y": -6.857142925262451,
+    "width": 1476.5714111328125,
+    "height": 880.0
   }
 }

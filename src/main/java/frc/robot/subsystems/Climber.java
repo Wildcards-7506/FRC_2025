@@ -16,9 +16,7 @@ import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
-    // Climber vars
-    // public int climberState = 0; // 0 is stow/default/starting configuration
-    public boolean onClimberControl;
+    public boolean onClimberControl = false;
 
     // Rotator
     private final SparkMax rotatorMotor;
@@ -95,7 +93,8 @@ public class Climber extends SubsystemBase {
                                        ClimberConstants.kRotatorCeiling);
         System.out.println(rotatorSetpoint);
         rotatorPID.setReference(rotatorSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Rotator Setpoint", rotatorSetpoint);
+        SmartDashboard.putNumber("Rotator SetP", rotatorSetpoint);
+        SmartDashboard.putNumber("Rotator Pos", getRotatorPosition());
     }
 
     /**
@@ -109,7 +108,16 @@ public class Climber extends SubsystemBase {
                                        ClimberConstants.kAnchorCeiling);
         System.out.println(anchorSetpoint);
         anchorPID.setReference(anchorSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Anchor Setpoint", anchorSetpoint);
+        SmartDashboard.putNumber("Anchor SetP", anchorSetpoint);
+        SmartDashboard.putNumber("Anchor Pos", getAnchorPosition());
+    }
+
+    public double getRotatorPosition() {
+        return rotatorMotor.getEncoder().getPosition();
+    }
+
+    public double getAnchorPosition() {
+        return anchorMotor.getEncoder().getPosition();
     }
     
     /**

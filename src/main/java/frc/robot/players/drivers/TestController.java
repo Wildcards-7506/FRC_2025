@@ -38,7 +38,7 @@ public class TestController extends PlayerConfigs {
         zeroGyro = Robot.controller0.getBButton();
 
         // Climber toggle
-        climberOnline = Robot.controller0.getPOV() == IOConstants.BUTTON_START; // Climber engage
+        climberOnline = Robot.controller0.getStartButton(); // Climber engage
     }
 
     @Override
@@ -61,6 +61,5 @@ public class TestController extends PlayerConfigs {
         
         fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
         fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
-        climberOnline = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT; // Climber engage
     }
 }
