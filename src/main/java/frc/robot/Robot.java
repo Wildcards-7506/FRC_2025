@@ -170,8 +170,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     // driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
-    crane.setDefaultCommand(new CraneTeleopCommand());
-    // climber.setDefaultCommand(new ClimberTeleopCommand());
+    // crane.setDefaultCommand(new CraneTeleopCommand());
+    climber.setDefaultCommand(new ClimberTeleopCommand());
   }
 
   /** This function is called periodically during test mode. */

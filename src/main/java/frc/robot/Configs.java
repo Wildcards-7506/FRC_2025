@@ -53,35 +53,4 @@ public final class Configs {
           .positionWrappingInputRange(0, turningFactor);
     }
   }
-
-  // public static final class Brake {
-  //   public static final SparkMaxConfig brakeConfig = new SparkMaxConfig();
-
-  //   static {
-  //     brakeConfig
-  //         .smartCurrentLimit(30)
-  //         .idleMode(IdleMode.kBrake)
-  //         .inverted(true);
-  //   }
-  // }
-
-  // public static final class Arm {
-  //   public static final SparkMaxConfig armConfig = new SparkMaxConfig();
-
-  //   static {
-  //     double armPositionFactor = ((2 * Math.PI) / ArmConstants.kArmGearRatio); // radians
-
-  //     armConfig
-  //         .smartCurrentLimit(50)
-  //         .idleMode(IdleMode.kBrake);
-  //     armConfig.encoder
-  //         .positionConversionFactor(armPositionFactor) // radians
-  //         .velocityConversionFactor(armPositionFactor / 60.0); // radians/sec
-  //     armConfig.closedLoop
-  //         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-  //         .pidf(4, 0, 0.5, 0)
-  //         .outputRange(-1, 1);
-
-  //   }
-  // }
 }

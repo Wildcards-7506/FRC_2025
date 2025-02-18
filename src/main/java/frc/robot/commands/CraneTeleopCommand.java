@@ -8,7 +8,7 @@ import frc.robot.players.PlayerConfigs;
 
 public class CraneTeleopCommand extends Command {
     private boolean prevStationPickupState = false,
-                    prevLowPickupState = false,
+                    // prevLowPickupState = false,
                     prevShelfReefState = false,
                     prevlowReefState = false,
                     prevMidReefState = false,
