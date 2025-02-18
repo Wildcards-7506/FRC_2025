@@ -16,8 +16,9 @@ import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
-    // Crane vars
-    public int climberState = 0; // 0 is stow/default/starting configuration
+    // Climber vars
+    // public int climberState = 0; // 0 is stow/default/starting configuration
+    public boolean onClimberControl;
 
     // Rotator
     private final SparkMax rotatorMotor;

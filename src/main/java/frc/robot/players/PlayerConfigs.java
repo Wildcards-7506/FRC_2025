@@ -58,7 +58,7 @@ public abstract class PlayerConfigs {
     
     public static boolean fineControlCraneEnable; // Fine control enable
     public static boolean fineControlClimberEnable; // Fine control enable
-    public static boolean climberOnline; // Climber engage
+    public static boolean climberOnline; // Climber toggle is specifically controlled by driver (not operator)
 
     // ClimbersfineControlRotator
     public static double fineControlRotator;

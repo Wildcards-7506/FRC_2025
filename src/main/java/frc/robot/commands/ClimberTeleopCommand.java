@@ -6,6 +6,8 @@ import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
 public class ClimberTeleopCommand extends Command {
+    // Holds previous state for toggle functionality
+    private boolean prevState = false;
 
     public ClimberTeleopCommand() {
         addRequirements(Robot.climber);
@@ -18,12 +20,19 @@ public class ClimberTeleopCommand extends Command {
     // Called every time (~20 ms) the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        // Climber toggle
+        if(PlayerConfigs.climberOnline && !prevState) {
+            Robot.climber.onClimberControl = !Robot.climber.onClimberControl;
+        }
+        prevState = PlayerConfigs.climberOnline;
+
         if(PlayerConfigs.fineControlClimberEnable) { // fine control
             Robot.climber.setRotatorPosition(Robot.climber.rotatorSetpoint + PlayerConfigs.fineControlRotator * 0.1);
             Robot.climber.setAnchorPosition(Robot.climber.anchorSetpoint + PlayerConfigs.fineControlAnchor * 0.01);
         }
 
-        SmartDashboard.putNumber("Climber State", Robot.climber.climberState);
+        // SmartDashboard.putNumber("Climber State", Robot.climber.climberState);
+        SmartDashboard.putBoolean("Climber Tog", Robot.climber.onClimberControl);
         SmartDashboard.putBoolean("Climber FC", PlayerConfigs.fineControlClimberEnable);
         SmartDashboard.putNumber("FC Rotator", PlayerConfigs.fineControlRotator);
         SmartDashboard.putNumber("FC Anchor", PlayerConfigs.fineControlAnchor);

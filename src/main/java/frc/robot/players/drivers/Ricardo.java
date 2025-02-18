@@ -7,7 +7,7 @@ import frc.robot.players.PlayerConfigs;
 public class Ricardo extends PlayerConfigs {
     @Override
     public void getDriverConfig() {
-        //Constants
+        // Constants
         fullTurnSpeed = 0.40;
         fullDriveSpeed = 0.30;
         boostTurnSpeed = 1;
@@ -15,7 +15,7 @@ public class Ricardo extends PlayerConfigs {
         fineTurnSpeed = 0.1;
         fineDriveSpeed = 0.1;
         
-        //Driving and rotation
+        // Driving and rotation
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
         turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
@@ -30,12 +30,15 @@ public class Ricardo extends PlayerConfigs {
 
         robotRelative = Robot.controller0.getRightBumperButton();
 
-        //Auto Align
+        // Auto Align
         autoAlignLeft = Robot.controller0.getXButtonReleased();
         autoAlignRight = Robot.controller0.getBButtonReleased();
         
-        //Gyro Reset
+        // Gyro Reset
         zeroGyro = Robot.controller0.getBButton();
+
+        // Climber toggle
+        climberOnline = Robot.controller0.getPOV() == IOConstants.BUTTON_START; // Climber engage
     }
 
     @Override
@@ -58,6 +61,5 @@ public class Ricardo extends PlayerConfigs {
         
         fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
         fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
-        climberOnline = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT; // Climber engage
     }
 }
