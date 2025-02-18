@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.CraneState;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
@@ -50,7 +51,7 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
         } else {
-            if(Robot.crane.craneState == 1) { // station
+            if(Robot.crane.craneState == CraneState.STATION) { // station
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
                     && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
@@ -59,7 +60,7 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
                 }
             }
-            if(Robot.crane.craneState == 2) { // shelf reef
+            if(Robot.crane.craneState == CraneState.SHELF) { // shelf reef
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
                     && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
@@ -68,7 +69,7 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
                 }
             }
-            if(Robot.crane.craneState == 3) { // low reef
+            if(Robot.crane.craneState == CraneState.LOW_REEF) { // low reef
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(upToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)
                     && downToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)) {
@@ -77,7 +78,7 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderLow);
                 }
             }
-            if(Robot.crane.craneState == 4) { // mid 
+            if(Robot.crane.craneState == CraneState.MID_REEF) { // mid 
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(upToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)
                     && downToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)) {
@@ -86,7 +87,7 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderMid);
                 }
             }
-            if(Robot.crane.craneState == 5) { // high reef
+            if(Robot.crane.craneState == CraneState.HIGH_REEF) { // high reef
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
                     && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
@@ -95,7 +96,7 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
                 }
             }
-            if(Robot.crane.craneState == 0) { // stow
+            if(Robot.crane.craneState == CraneState.STOW) { // stow
                 // If we want to go to elbow pause, we must retract extender
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
@@ -107,7 +108,7 @@ public class CraneTeleopCommand extends Command {
             }
         }
 
-        SmartDashboard.putNumber("Crane State", Robot.crane.craneState);
+        SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
         SmartDashboard.putBoolean("Fine Control", PlayerConfigs.fineControlCraneEnable);
         SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
         SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
@@ -166,12 +167,12 @@ public class CraneTeleopCommand extends Command {
      * </ul>
      */
     private void updateCraneState() {
-        prevStationPickupState = updateButtonState(PlayerConfigs.stationPickup, prevStationPickupState, 1);
+        prevStationPickupState = updateButtonState(PlayerConfigs.stationPickup, prevStationPickupState, CraneState.STATION);
         // prevLowPickupState = updateButtonState(PlayerConfigs.lowPickup, prevLowPickupState, );
-        prevShelfReefState = updateButtonState(PlayerConfigs.shelfReef, prevShelfReefState, 2);
-        prevlowReefState = updateButtonState(PlayerConfigs.lowReef, prevlowReefState, 3);
-        prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, 4);
-        prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, 5);
+        prevShelfReefState = updateButtonState(PlayerConfigs.shelfReef, prevShelfReefState, CraneState.SHELF);
+        prevlowReefState = updateButtonState(PlayerConfigs.lowReef, prevlowReefState, CraneState.LOW_REEF);
+        prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, CraneState.MID_REEF);
+        prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, CraneState.HIGH_REEF);
     }
 
     /**
@@ -181,12 +182,12 @@ public class CraneTeleopCommand extends Command {
      * @param craneState The desired state of the crane.
      * @return The updated state of the button.
      */
-    private boolean updateButtonState(boolean buttonPressed, boolean prevState, int craneState) {
+    private boolean updateButtonState(boolean buttonPressed, boolean prevState, CraneState craneState) {
         if(buttonPressed && !prevState) {
             if(Robot.crane.craneState != craneState) {
                 Robot.crane.craneState = craneState;
             } else {
-                Robot.crane.craneState = 0;
+                Robot.crane.craneState = CraneState.STOW;
             }
         }
         return buttonPressed;

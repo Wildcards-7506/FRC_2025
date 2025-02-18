@@ -19,11 +19,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.CraneState;
 import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
     // Crane vars
-    public int craneState = 0; // 0 is stow/default/starting configuration
+    public CraneState craneState = CraneState.STOW; // stow is the starting configuration
 
     // Gripper
     private final SparkMax gripperMotor;
@@ -200,7 +201,7 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired angle of the wrist in degrees
      */
     public void setWristPosition(double setPoint) {
-        if(craneState == 5) {
+        if(craneState == CraneState.HIGH_REEF) {
             wristSetpoint = filterSetPoint(setPoint, 
                                            CraneConstants.kWristHigh, 
                                            CraneConstants.kWristHardDeck);
