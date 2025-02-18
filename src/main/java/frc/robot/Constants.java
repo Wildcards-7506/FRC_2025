@@ -83,7 +83,7 @@ public final class Constants {
     public static final double kElbowHardDeck = 20;
     public static final double kElbowShelf = 0;
     public static final double kElbowStation = 28.5;
-    public static final double kElbowHigh = 141 - 10;
+    public static final double kElbowHigh = 118;
     public static final double kElbowMid = 99.7;
     /** This is for low reef, not ground/low pickup. */
     public static final double kElbowLow = 71.8;
@@ -91,14 +91,13 @@ public final class Constants {
     public static final double kElbowCeiling = kElbowHigh;
 
     // Wrist limits
-    /** High is high + angle matched anle from elbow, elbow is 145 + - 100 = 45 */
-    public static final double kWristHigh = -100;
+    public static final double kWristHigh = -52.6; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 45;
     public static final double kWristShelf = 45;
     public static final double kWristLow = 123;
     public static final double kWristMid = 126.3;
-    public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid on wrist.
+    public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
   }
 
   public static final class ClimberConstants {
