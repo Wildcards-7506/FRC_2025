@@ -12,7 +12,6 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,8 +55,8 @@ public class Crane extends SubsystemBase {
     public double extenderSetpoint;
 
     //Sucker
-    private final SparkFlex suckerMotor;
-    private final SparkFlexConfig suckerConfig;
+    private final SparkMax suckerMotor;
+    private final SparkMaxConfig suckerConfig;
     public final SparkClosedLoopController suckerPID;
     
     public Crane() {
@@ -78,8 +77,8 @@ public class Crane extends SubsystemBase {
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
-        suckerMotor = new SparkFlex(CANIDS.SUCKER, MotorType.kBrushless);
-        suckerConfig = new SparkFlexConfig();
+        suckerMotor = new SparkMax(CANIDS.SUCKER, MotorType.kBrushless);
+        suckerConfig = new SparkMaxConfig();
         suckerPID = suckerMotor.getClosedLoopController();
 
         gripperConfig
