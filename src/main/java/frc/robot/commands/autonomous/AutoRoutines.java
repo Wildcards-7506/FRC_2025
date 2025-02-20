@@ -80,6 +80,7 @@ public final class AutoRoutines {
   }
 
   private void setMarkers() {
+    // Examples:
     // NamedCommands.registerCommand("AutoShoot", new AutoShoot());
     // NamedCommands.registerCommand("AutoIntake", new AutoIntake_Trigger(5, false,12,2.4));
     // NamedCommands.registerCommand("AutoShooterSpinup", new AutoShooterSpinUp(ShooterConstants.kLArmedRPM, ShooterConstants.kRArmedRPM));
@@ -90,7 +91,7 @@ public final class AutoRoutines {
     // NamedCommands.registerCommand("AutoIntakeStowToAmp", new AutoIntakeStowToAmp());
   }
 
-      /**
+  /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
