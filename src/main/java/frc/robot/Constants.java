@@ -57,6 +57,13 @@ public final class Constants {
   }
 
   public static final class CraneConstants{
+    // Arm Feedforward constants
+    // TODO: Tune kSVolts by looking at how much voltage is required to move the arm a smidge above where it starts
+    public static double kSVolts = 0.0; // Volts
+    public static final double kGVolts = 1.74; // Volts
+    public static final double kVVoltSecsPerDeg = 2.44 * Math.PI / 180.0; // V*s/rad to V*s/deg
+    public static final double kAVoltSecsSquaredPerDeg = 0.16 * Math.PI / 180.0; // V*s^2/rad to V*s^2/deg
+
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; // tested 2/15/2025
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64 * 1/3; // tested 2/15/2025

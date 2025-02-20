@@ -24,6 +24,7 @@ import frc.robot.utils.Logger;
 public class Crane extends SubsystemBase {
     // Crane vars
     public CraneState craneState = CraneState.STOW; // stow is the starting configuration
+    private ArmFeedforward feedforward;
 
     // Gripper
     private final SparkMax gripperMotor;
@@ -46,7 +47,6 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
-    private ArmFeedforward feedforward;
     
     //Extender
     private final SparkMax extenderMotor;
@@ -62,7 +62,12 @@ public class Crane extends SubsystemBase {
     private boolean prevHoldState = false; // used to grab position once for holding sucker in place
     
     public Crane() {
-        // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
+        feedforward = new ArmFeedforward(CraneConstants.kSVolts, 
+                                         CraneConstants.kGVolts, 
+                                         CraneConstants.kVVoltSecsPerDeg, 
+                                         CraneConstants.kAVoltSecsSquaredPerDeg
+        );
+
         gripperMotor = new SparkMax(CANIDS.GRIPPER, MotorType.kBrushless);
         gripperConfig = new SparkMaxConfig();
         gripperPID = gripperMotor.getClosedLoopController();
