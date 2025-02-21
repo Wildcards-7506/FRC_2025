@@ -31,8 +31,8 @@ public class Ricardo extends PlayerConfigs {
         robotRelative = Robot.controller0.getRightBumperButton();
 
         // Auto Align
-        autoAlignLeft = Robot.controller0.getXButtonReleased();
-        autoAlignRight = Robot.controller0.getBButtonReleased();
+        // autoAlignLeft = Robot.controller0.getXButtonReleased();
+        // autoAlignRight = Robot.controller0.getBButtonReleased();
         
         // Gyro Reset
         zeroGyro = Robot.controller0.getBButton();
