@@ -47,13 +47,12 @@ public class Climber extends SubsystemBase {
 
         // Set the PID coefficients
         rotatorConfig
-            .inverted(true)
             .idleMode(IdleMode.kBrake);
         rotatorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimberConstants.kRotatorCeiling)
-            .reverseSoftLimit(ClimberConstants.kRotatorHardDeck);
+            .forwardSoftLimit(ClimberConstants.kRotatorCeiling + 2)
+            .reverseSoftLimit(ClimberConstants.kRotatorHardDeck - 2);
         rotatorConfig.encoder
             .positionConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse)
             .velocityConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse);
@@ -69,15 +68,15 @@ public class Climber extends SubsystemBase {
         anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling))
-            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck));
+            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling + 0.1))
+            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck - 0.1));
         anchorConfig.encoder
             .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse)
             .velocityConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
         anchorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing
-            .pid(0.005, 0.0, 0.1);
+            .pid(0.005, 0.0, 0.0);
             
         anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -91,7 +90,6 @@ public class Climber extends SubsystemBase {
         rotatorSetpoint = filterSetPoint(setPoint, 
                                        ClimberConstants.kRotatorHardDeck, 
                                        ClimberConstants.kRotatorCeiling);
-        System.out.println(rotatorSetpoint);
         rotatorPID.setReference(rotatorSetpoint, ControlType.kPosition);
         SmartDashboard.putNumber("Rotator SetP", rotatorSetpoint);
         SmartDashboard.putNumber("Rotator Pos", getRotatorPosition());
@@ -106,8 +104,8 @@ public class Climber extends SubsystemBase {
         anchorSetpoint = filterSetPoint(setPoint, 
                                        ClimberConstants.kAnchorHardDeck, 
                                        ClimberConstants.kAnchorCeiling);
-        System.out.println(anchorSetpoint);
-        anchorPID.setReference(anchorSetpoint, ControlType.kPosition);
+        setPoint = inchesToDegrees(anchorSetpoint);
+        anchorPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Anchor SetP", anchorSetpoint);
         SmartDashboard.putNumber("Anchor Pos", getAnchorPosition());
     }
@@ -137,6 +135,6 @@ public class Climber extends SubsystemBase {
 
     // TODO: Figure out conversion ratio in-person
     private double inchesToDegrees(double inches) {
-        return inches;
+        return inches * (8 * 360); // rotations to get extension on the 
     }
 }

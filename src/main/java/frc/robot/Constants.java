@@ -122,17 +122,18 @@ public final class Constants {
   public static final class ClimberConstants {
     // TODO: Placeholder values, replace with actual values
     public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
-    public static final double kAnchorEncoderDistancePerPulse = 360.0 * 1/3;
+    public static final double kAnchorEncoderDistancePerPulse = 360.0 * 1/4;
 
     // Rotator limits
   // TODO: Placeholder values, replace with actual values
     public static final double kRotatorHardDeck = 0;
-    public static final double kRotatorCeiling = 135;
+    // public static final double kRotatorCeiling = 135;
+    public static final double kRotatorCeiling = 110;
 
     // Anchor limits
   // TODO: Placeholder values, replace with actual values
-    public static final double kAnchorHardDeck = 0;
-    public static final double kAnchorCeiling = 5; // inches
+    public static final double kAnchorHardDeck = 0.25;
+    public static final double kAnchorCeiling = 6.25; // inches
   }
 
   public static final class IOConstants {
