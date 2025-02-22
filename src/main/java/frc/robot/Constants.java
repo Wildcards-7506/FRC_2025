@@ -93,10 +93,12 @@ public final class Constants {
     /** Keep extender butt-side within extension cap. */
     // public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
     public static final double kExtenderLimit1 = kExtenderHardDeck;
-    /** Keep extender claw-side within extension cap. */
+    // /** Keep extender claw-side within extension cap. */
     // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
+    // TODO: Measure the elbow offset from the horizontal position
+    public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 20;
     public static final double kElbowShelf = 0;
     public static final double kElbowStation = 28.5;
