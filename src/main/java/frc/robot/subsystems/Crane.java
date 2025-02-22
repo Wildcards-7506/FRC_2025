@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -24,6 +25,7 @@ import frc.robot.utils.Logger;
 public class Crane extends SubsystemBase {
     // Crane vars
     public CraneState craneState = CraneState.STOW; // stow is the starting configuration
+    private ArmFeedforward feedforward;
 
     // Gripper
     private final SparkMax gripperMotor;
@@ -46,7 +48,6 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
-    private ArmFeedforward feedforward;
     
     //Extender
     private final SparkMax extenderMotor;
@@ -62,7 +63,12 @@ public class Crane extends SubsystemBase {
     private boolean prevHoldState = false; // used to grab position once for holding sucker in place
     
     public Crane() {
-        // Initializing the Gripper motorSparkMax max = new SparkMax(1, MotorType.kBrushless);
+        feedforward = new ArmFeedforward(CraneConstants.kSVolts, 
+                                         CraneConstants.kGVolts, 
+                                         CraneConstants.kVVoltSecsPerDeg, 
+                                         CraneConstants.kAVoltSecsSquaredPerDeg
+        );
+
         gripperMotor = new SparkMax(CANIDS.GRIPPER, MotorType.kBrushless);
         gripperConfig = new SparkMaxConfig();
         gripperPID = gripperMotor.getClosedLoopController();
@@ -240,13 +246,24 @@ public class Crane extends SubsystemBase {
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
         /*
-         * don't let integral accumulate if more than 10 degrees away
+         * don't let integral accumulate if more than a few degrees away from setpoint
          */
         if(Math.abs(getElbowPosition() - elbowSetpoint) > 13) {
             elbowPID.setIAccum(0.0);
         }
-        // System.out.println("Integral Accum: " + elbowPID.getIAccum());
-        elbowPID.setReference(elbowSetpoint, ControlType.kPosition);
+        /*
+         * Set this value to the voltage reading when crane is retracted and elbow is at horizon, like in mid / low reef
+         */
+        double voltsAtHorizon = 0;
+        double angleFromHorizon = getElbowPosition() + CraneConstants.kElbowHorizonOffset;
+        double counterGravityVolts = voltsAtHorizon * Math.cos(angleFromHorizon);
+
+        double appliedVoltageElbow = elbowMotor.getBusVoltage() * elbowMotor.getAppliedOutput();
+
+        System.out.format("Controller output: %8.5f V\tGravity counter: %8.5f V\n", 
+                           appliedVoltageElbow, counterGravityVolts); // confirm with REV Hardware Client, elbow canID 11
+
+        elbowPID.setReference(elbowSetpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, counterGravityVolts);
         SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);
         SmartDashboard.putNumber("Elbow Pos", getElbowPosition());
     }
