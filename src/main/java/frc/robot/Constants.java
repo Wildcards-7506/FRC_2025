@@ -78,16 +78,16 @@ public final class Constants {
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderHardDeck = 0;
-    public static final double kExtenderStation = 0;
-    public static final double kExtenderHigh = 13;
-    public static final double kExtenderMid = 9.25;
+    public static final double kExtenderStation = 10.5;
+    public static final double kExtenderHigh = 23.5;
+    public static final double kExtenderMid = 6.37;
     public static final double kExtenderLow = 0;
-    public static final double kExtenderShelf = 8.5;
+    public static final double kExtenderShelf = 19;
     // public static final double kExtenderPickup = 12;
-    public static final double kExtenderStart = 13; // starts retracted by 4 inches from maximum
-    public static final double kExtenderCeiling = kExtenderStart; // starting + tail end offset - 2 inch margin
+    public static final double kExtenderStart = 16.5; // starts retracted by 4 inches from maximum
+    public static final double kExtenderCeiling = 19.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
-    public static final double kExtenderClawOffset = 15; // measured from edge of Claw to the soft limit of the extender
+    // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
@@ -102,10 +102,10 @@ public final class Constants {
     public static final double kElbowHardDeck = 20;
     public static final double kElbowShelf = 0;
     public static final double kElbowStation = 28.5;
-    public static final double kElbowHigh = 118;
-    public static final double kElbowMid = 99.7;
+    public static final double kElbowHigh = 141; // 118
+    public static final double kElbowMid = 101.64;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 71.8;
+    public static final double kElbowLow = 66.76;
     // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowHigh;
 
@@ -114,8 +114,8 @@ public final class Constants {
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 45;
     public static final double kWristShelf = 45;
-    public static final double kWristLow = 123;
-    public static final double kWristMid = 126.3;
+    public static final double kWristLow = 92.5;
+    public static final double kWristMid = 75.47;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
   }
 
@@ -126,14 +126,14 @@ public final class Constants {
 
     // Rotator limits
   // TODO: Placeholder values, replace with actual values
-    public static final double kRotatorHardDeck = 0;
-    // public static final double kRotatorCeiling = 135;
-    public static final double kRotatorCeiling = 110;
+    public static final double kRotatorHardDeck = -10;
+    public static final double kRotatorCeiling = 135;
+    // public static final double kRotatorCeiling = 110;
 
     // Anchor limits
   // TODO: Placeholder values, replace with actual values
     public static final double kAnchorHardDeck = 0.25;
-    public static final double kAnchorCeiling = 6.25; // inches
+    public static final double kAnchorCeiling = 7.25; // inches
   }
 
   public static final class IOConstants {
