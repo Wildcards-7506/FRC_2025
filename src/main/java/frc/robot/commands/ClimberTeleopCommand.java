@@ -32,7 +32,7 @@ public class ClimberTeleopCommand extends Command {
         if(!Robot.climber.onClimberControl) return;
 
         if(PlayerConfigs.fineControlClimberEnable) { // fine control
-            Robot.climber.setRotatorPosition(Robot.climber.rotatorSetpoint + PlayerConfigs.fineControlRotator * 1);
+            Robot.climber.setRotatorPosition(Robot.climber.rotatorSetpoint + PlayerConfigs.fineControlRotator * 0.8);
             Robot.climber.setAnchorPosition(Robot.climber.anchorSetpoint + PlayerConfigs.fineControlAnchor * 0.1);
         }
 

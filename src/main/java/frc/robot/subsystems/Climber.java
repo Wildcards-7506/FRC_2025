@@ -42,11 +42,12 @@ public class Climber extends SubsystemBase {
         anchorPID = anchorMotor.getClosedLoopController();
 
         // Configure setpoints
-        setRotatorPosition(ClimberConstants.kRotatorHardDeck);
-        setAnchorPosition(ClimberConstants.kAnchorHardDeck);
+        // setRotatorPosition(ClimberConstants.kRotatorHardDeck);
+        // setAnchorPosition(ClimberConstants.kAnchorHardDeck);
 
         // Set the PID coefficients
         rotatorConfig
+            .smartCurrentLimit(80)
             .idleMode(IdleMode.kBrake);
         rotatorConfig.softLimit
             .forwardSoftLimitEnabled(true)
@@ -59,17 +60,18 @@ public class Climber extends SubsystemBase {
         rotatorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing
-            .pid(0.005, 0.0, 0.0);
+            .pid(0.05, 0.0, 0.0);
             
         rotatorMotor.configure(rotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         anchorConfig
+            .smartCurrentLimit(80)
             .idleMode(IdleMode.kBrake);
-        anchorConfig.softLimit
-            .forwardSoftLimitEnabled(true)
-            .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling + 0.1))
-            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck - 0.1));
+        // anchorConfig.softLimit
+        //     .forwardSoftLimitEnabled(true)
+        //     .reverseSoftLimitEnabled(true)
+        //     .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling + 0.2))
+        //     .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck - 0.2));
         anchorConfig.encoder
             .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse)
             .velocityConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
@@ -79,6 +81,9 @@ public class Climber extends SubsystemBase {
             .pid(0.005, 0.0, 0.0);
             
         anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        anchorSetpoint = getAnchorPosition();
+        rotatorSetpoint = getRotatorPosition();
     }
 
     /**
@@ -115,7 +120,7 @@ public class Climber extends SubsystemBase {
     }
 
     public double getAnchorPosition() {
-        return anchorMotor.getEncoder().getPosition();
+        return inchesToDegrees(anchorMotor.getEncoder().getPosition());
     }
     
     /**
