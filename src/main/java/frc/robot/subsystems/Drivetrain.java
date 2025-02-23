@@ -142,7 +142,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Method to snap robot heading to a specific angle.
    * The robot's angle is considered to be zero when it is facing directly 
-   * away from the alliance station wall. Remember that this should be CCW positive.
+   * away from the alliance station wall. Remember that this should be CW positive.
    * 
    * Flips 180 degrees if alliance color is red.
    * 
@@ -150,7 +150,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void snap(double angle) {
     // If alliance color is red then add 180 to the angle then subtract 360 if the angle is greater than 180
-    // Default color is blue, so 0 is up, then clockwise, 90 is right, 180 is down, 270 is left
+    // Default color is blue, so 0 is up, then clockwise, 90 is right, 180 is down, 270/-90 is left
     if (Robot.teamColor.get() == Alliance.Red) {
       angle += 180;
     }
