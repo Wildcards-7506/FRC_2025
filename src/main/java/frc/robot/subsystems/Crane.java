@@ -149,11 +149,11 @@ public class Crane extends SubsystemBase {
             .smartCurrentLimit(40)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
-        extenderConfig.softLimit
-            .forwardSoftLimitEnabled(true)
-            .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(inchesToDegrees(CraneConstants.kExtenderCeiling))
-            .reverseSoftLimit(inchesToDegrees(CraneConstants.kExtenderHardDeck));
+        // extenderConfig.softLimit
+        //     .forwardSoftLimitEnabled(true)
+        //     .reverseSoftLimitEnabled(true)
+        //     .forwardSoftLimit(inchesToDegrees(3))
+        //     .reverseSoftLimit(inchesToDegrees(CraneConstants.kExtenderCeiling));
         extenderConfig.encoder
             .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
@@ -166,6 +166,7 @@ public class Crane extends SubsystemBase {
 
         //FLEX Motor TODO: write code for spark flex motor
         suckerConfig
+            .inverted(true)
             .smartCurrentLimit(20)
             .idleMode(IdleMode.kBrake);
         suckerConfig.encoder
@@ -210,9 +211,11 @@ public class Crane extends SubsystemBase {
         if (!PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake && !prevHoldState) {
             spinSucker(0);
             suckerSetpoint = getSuckerPosition();
+            System.out.println("SuckerSetpoint" + suckerSetpoint);
         }
-        prevHoldState = !PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake;
-        suckerPID.setReference(suckerSetpoint, ControlType.kPosition);
+        // prevHoldState = !PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake;
+        // suckerPID.setReference(suckerSetpoint, ControlType.kPosition);
+        spinSucker(0);
     }
 
     /**
@@ -248,7 +251,7 @@ public class Crane extends SubsystemBase {
         /*
          * don't let integral accumulate if more than a few degrees away from setpoint
          */
-        if(Math.abs(getElbowPosition() - elbowSetpoint) > 13) {
+        if(Math.abs(getElbowPosition() - elbowSetpoint) > 15) {
             elbowPID.setIAccum(0.0);
         }
         /*
@@ -282,9 +285,10 @@ public class Crane extends SubsystemBase {
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
+        SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
+        // System.out.println("Extender motor inches: " + setPoint);
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
         SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
 
