@@ -61,26 +61,26 @@ public class CraneTeleopCommand extends Command {
             // if(Robot.crane.craneState == CraneState.CLIMB) { // climb
             //     putCraneToClimbState();
             // }
-            // if(Robot.crane.craneState == CraneState.STATION) { // station
-            //     // Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
-            //     Robot.crane.setWristPosition(CraneConstants.kWristStation);
-            //     if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
-            //         && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
-            //         Robot.crane.setWristPosition(CraneConstants.kWristStation);
-            //         Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
-            //         Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
-            //     }
-            // }
-            // if(Robot.crane.craneState == CraneState.SHELF) { // shelf reef
-            //     // Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
-            //     Robot.crane.setWristPosition(CraneConstants.kWristShelf);
-            //     if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
-            //         && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
-            //         Robot.crane.setWristPosition(CraneConstants.kWristShelf);
-            //         Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
-            //         Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
-            //     }
-            // }
+            if(Robot.crane.craneState == CraneState.STATION) { // station
+                // Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
+                Robot.crane.setWristPosition(CraneConstants.kWristStation);
+                if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
+                    && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                    Robot.crane.setWristPosition(CraneConstants.kWristStation);
+                    Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
+                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
+                }
+            }
+            if(Robot.crane.craneState == CraneState.SHELF) { // shelf reef
+                // Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
+                Robot.crane.setWristPosition(CraneConstants.kWristShelf);
+                if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
+                    && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                    Robot.crane.setWristPosition(CraneConstants.kWristShelf);
+                    Robot.crane.setElbowPosition(CraneConstants.kElbowStation);
+                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderStation);
+                }
+            }
             if(Robot.crane.craneState == CraneState.LOW_REEF) { // low reef
                 // Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 Robot.crane.setWristPosition(CraneConstants.kWristLow);
@@ -101,15 +101,15 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderMid);
                 }
             }
-            // if(Robot.crane.craneState == CraneState.HIGH_REEF) { // high reef
-            //     Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
-            //     if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
-            //         && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
-            //         Robot.crane.setWristPosition(CraneConstants.kWristHigh);
-            //         Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
-            //         Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
-            //     }
-            // }
+            if(Robot.crane.craneState == CraneState.HIGH_REEF) { // high reef
+                Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
+                if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
+                    && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+                    Robot.crane.setWristPosition(CraneConstants.kWristHigh);
+                    Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
+                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
+                }
+            }
             if(Robot.crane.craneState == CraneState.STOW) { // stow
                 // If we want to go to elbow pause, we must retract extender
                 Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);

@@ -78,14 +78,14 @@ public final class Constants {
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderHardDeck = 0;
-    public static final double kExtenderStation = 10.5;
-    public static final double kExtenderHigh = 23.5;
-    public static final double kExtenderMid = 6.37;
+    public static final double kExtenderStation = 0;
+    public static final double kExtenderHigh = 20.75;
+    public static final double kExtenderMid = 7.83;
     public static final double kExtenderLow = 0;
-    public static final double kExtenderShelf = 19;
+    public static final double kExtenderShelf = 17;
     // public static final double kExtenderPickup = 12;
-    public static final double kExtenderStart = 16.5; // starts retracted by 4 inches from maximum
-    public static final double kExtenderCeiling = 19.5; // starting + tail end offset - 2 inch margin
+    public static final double kExtenderStart = 17; // starts retracted by 4 inches from maximum
+    public static final double kExtenderCeiling = 20.75; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
@@ -100,22 +100,22 @@ public final class Constants {
     // TODO: Measure the elbow offset from the horizontal position
     public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 20;
-    public static final double kElbowShelf = 0;
-    public static final double kElbowStation = 28.5;
-    public static final double kElbowHigh = 141; // 118
-    public static final double kElbowMid = 101.64;
+    public static final double kElbowShelf = 20;
+    public static final double kElbowStation = 25.75;
+    public static final double kElbowHigh = 133;
+    public static final double kElbowMid = 94;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 66.76;
+    public static final double kElbowLow = 64.1;
     // public static final double kElbowCeiling = 290;
-    public static final double kElbowCeiling = kElbowHigh;
+    public static final double kElbowCeiling = kElbowHigh + 10;
 
     // Wrist limits
-    public static final double kWristHigh = -52.6; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
+    public static final double kWristHigh = -108; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 45;
+    public static final double kWristStation = 15;
     public static final double kWristShelf = 45;
-    public static final double kWristLow = 92.5;
-    public static final double kWristMid = 75.47;
+    public static final double kWristLow = 100;
+    public static final double kWristMid = 100;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
   }
 

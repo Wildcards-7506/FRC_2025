@@ -226,7 +226,7 @@ public class Crane extends SubsystemBase {
     public void setWristPosition(double setPoint) {
         if(craneState == CraneState.HIGH_REEF) {
             wristSetpoint = filterSetPoint(setPoint, 
-                                           CraneConstants.kWristHigh, 
+                                           CraneConstants.kWristHigh - 15, 
                                            CraneConstants.kWristHardDeck);
         } else {
             wristSetpoint = filterSetPoint(setPoint, 
@@ -285,10 +285,10 @@ public class Crane extends SubsystemBase {
                                           CraneConstants.kExtenderHardDeck, 
                                           CraneConstants.kExtenderCeiling);
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
-        SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
-        // System.out.println("Extender motor inches: " + setPoint);
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
+        System.out.println("Extender input: " + setPoint);
+        SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
         SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
 
