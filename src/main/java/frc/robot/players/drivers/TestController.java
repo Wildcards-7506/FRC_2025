@@ -43,6 +43,7 @@ public class TestController extends PlayerConfigs {
 
     @Override
     public void getOperatorConfig() {
+        fineStrafe = 0.05;
         stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
         shelfReef = Robot.controller1.getXButton();
@@ -58,6 +59,9 @@ public class TestController extends PlayerConfigs {
         fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
+
+        strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
+        strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
         
         fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
         fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable

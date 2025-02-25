@@ -28,6 +28,13 @@ public class DrivetrainTeleopCommand extends Command {
             Robot.drivetrain.zeroHeading();
         }
 
+        if(PlayerConfigs.strafeRight){
+            Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
+        }
+        if(PlayerConfigs.strafeLeft){
+            Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
+        }
+
         // Joystick Inputs
         xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
         yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);

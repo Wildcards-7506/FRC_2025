@@ -29,6 +29,11 @@ public abstract class PlayerConfigs {
     public static boolean autoAlignLeft;
     public static boolean autoAlignRight;
 
+    //Operator Drivetrain control
+    public static double fineStrafe;
+    public static boolean strafeRight;
+    public static boolean strafeLeft;
+
     // Reef snaps
     public static boolean snapUpRight;
     public static boolean snapDownRight;
