@@ -136,7 +136,7 @@ public class Robot extends TimedRobot {
 
     // Subsystem default commands
     drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
-    crane.setDefaultCommand(new CraneTeleopCommand());
+    // crane.setDefaultCommand(new CraneTeleopCommand());
 
     // Default subsystem states
     drivetrain.idleSwerve(IdleMode.kBrake);
