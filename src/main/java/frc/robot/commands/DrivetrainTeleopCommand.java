@@ -23,9 +23,18 @@ public class DrivetrainTeleopCommand extends Command {
     // Called every time the scheduler runs (every ~20 ms) while the command is scheduled.
     @Override
     public void execute() {
+        Robot.drivetrain.stop();
+        
         //Reset Gyro
         if(PlayerConfigs.zeroGyro) {
             Robot.drivetrain.zeroHeading();
+        }
+
+        if(PlayerConfigs.strafeRight){
+            Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
+        }
+        if(PlayerConfigs.strafeLeft){
+            Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
         }
 
         // Joystick Inputs
@@ -35,7 +44,6 @@ public class DrivetrainTeleopCommand extends Command {
 
         // Default is stop, input priority: joystick > snap > stop
         // Where joystick is the final decision maker
-        Robot.drivetrain.stop();
 
         // Snap to angles
         if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
