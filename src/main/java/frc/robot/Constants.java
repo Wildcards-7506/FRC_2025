@@ -78,7 +78,7 @@ public final class Constants {
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderHardDeck = 0;
-    public static final double kExtenderStation = 0;
+    public static final double kExtenderStation = 3;
     public static final double kExtenderHigh = 20.75;
     public static final double kExtenderMid = 7.83;
     public static final double kExtenderLow = 0;
@@ -110,7 +110,7 @@ public final class Constants {
     public static final double kElbowCeiling = kElbowHigh + 10;
 
     // Wrist limits
-    public static final double kWristHigh = -90; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
+    public static final double kWristHigh = -100; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 15;
     public static final double kWristShelf = 45;
