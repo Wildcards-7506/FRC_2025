@@ -102,7 +102,7 @@ public final class Constants {
     public static final double kElbowHardDeck = 20;
     public static final double kElbowShelf = 20;
     public static final double kElbowStation = 25.75;
-    public static final double kElbowHigh = 133;
+    public static final double kElbowHigh = 122.17;
     public static final double kElbowMid = 94;
     /** This is for low reef, not ground/low pickup. */
     public static final double kElbowLow = 64.1;
@@ -110,12 +110,12 @@ public final class Constants {
     public static final double kElbowCeiling = kElbowHigh + 10;
 
     // Wrist limits
-    public static final double kWristHigh = -108; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
+    public static final double kWristHigh = -90; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 15;
     public static final double kWristShelf = 45;
-    public static final double kWristLow = 100;
-    public static final double kWristMid = 100;
+    public static final double kWristLow = 95;
+    public static final double kWristMid = 95;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
   }
 
