@@ -115,8 +115,8 @@ public final class Constants {
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 15;
     public static final double kWristShelf = 95;
-    public static final double kWristLow = 95;
-    public static final double kWristMid = 95;
+    public static final double kWristLow = 92;
+    public static final double kWristMid = 92;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
   }
 
