@@ -140,8 +140,9 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // TODO: PID values changed temporarily for testing, 1/25/2025 was: 0.01, 0.01, 0.5 
-            .pid(0.005, 0.0000025, 0.7);
+            // TODO: PID values changed temporarily for testing
+            // .pid(0.005, 0.0, 0.1);
+            .pid(0.0, 0.0, 0.0);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -211,7 +212,7 @@ public class Crane extends SubsystemBase {
         if (!PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake && !prevHoldState) {
             spinSucker(0);
             suckerSetpoint = getSuckerPosition();
-            System.out.println("SuckerSetpoint" + suckerSetpoint);
+            // System.out.println("SuckerSetpoint" + suckerSetpoint);
         }
         // prevHoldState = !PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake;
         // suckerPID.setReference(suckerSetpoint, ControlType.kPosition);
@@ -257,14 +258,21 @@ public class Crane extends SubsystemBase {
         /*
          * Set this value to the voltage reading when crane is retracted and elbow is at horizon, like in mid / low reef
          */
-        double voltsAtHorizon = 0;
+        double voltsAtMaxHorizon = 1.31; // 1.31 V calculated, try lower and build up
+        double voltsAtMinHorizon = 0.56; // 0.56 V calculated, try lower and build up
+        double voltsInUse = 0.0;
+
+        // Angle of elbow from horizon line
         double angleFromHorizon = getElbowPosition() + CraneConstants.kElbowHorizonOffset;
-        double counterGravityVolts = voltsAtHorizon * Math.cos(angleFromHorizon);
+
+        // Scale the voltage to the extender position as a percentage of the ceiling
+        voltsInUse = (extenderSetpoint / CraneConstants.kExtenderCeiling) * (voltsAtMaxHorizon - voltsAtMinHorizon) + voltsAtMinHorizon;
+
+        double counterGravityVolts = voltsInUse * Math.cos(Math.toRadians(angleFromHorizon));
 
         double appliedVoltageElbow = elbowMotor.getBusVoltage() * elbowMotor.getAppliedOutput();
-
-        System.out.format("Controller output: %8.5f V\tGravity counter: %8.5f V\n", 
-                           appliedVoltageElbow, counterGravityVolts); // confirm with REV Hardware Client, elbow canID 11
+        System.out.format("Controller output: %8.5f V\tGravity counter: %8.5f V\tElbow from horizon: %8.5f deg\tExtender: %8.5f\n", 
+                           appliedVoltageElbow, counterGravityVolts, angleFromHorizon, extenderSetpoint); // confirm with REV Hardware Client, elbow canID 11
 
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, counterGravityVolts);
         SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);
@@ -287,7 +295,7 @@ public class Crane extends SubsystemBase {
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        System.out.println("Extender input: " + setPoint);
+        // System.out.println("Extender input: " + setPoint);
         SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
         SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
