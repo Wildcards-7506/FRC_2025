@@ -58,9 +58,9 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
         } else {
             // If crane state is updated to positive val, then crane won't go to climb state
-            // if(Robot.crane.craneState == CraneState.CLIMB) { // climb
-            //     putCraneToClimbState();
-            // }
+            if(Robot.crane.craneState == CraneState.CLIMB) { // climb
+                putCraneToClimbState();
+            }
             if(Robot.crane.craneState == CraneState.STATION) { // station
                 // Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
                 Robot.crane.setWristPosition(CraneConstants.kWristStation);
@@ -110,16 +110,16 @@ public class CraneTeleopCommand extends Command {
                     Robot.crane.setExtenderPosition(CraneConstants.kExtenderHigh);
                 }
             }
-            if(Robot.crane.craneState == CraneState.STOW) { // stow
-                // If we want to go to elbow pause, we must retract extender
-                Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
-                if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
-                    // If elbow is at hard deck, then we slightly retract the extender for stability
-                    Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
-                    Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
-                    Robot.crane.setExtenderPosition(CraneConstants.kExtenderStart);
-                }
-            }
+            // if(Robot.crane.craneState == CraneState.STOW) { // stow
+            //     // If we want to go to elbow pause, we must retract extender
+            //     Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
+            //     if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
+            //         // If elbow is at hard deck, then we slightly retract the extender for stability
+            //         Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
+            //         Robot.crane.setElbowPosition(CraneConstants.kElbowHardDeck);
+            //         Robot.crane.setExtenderPosition(CraneConstants.kExtenderStart);
+            //     }
+            // }
         }
 
         SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
@@ -194,12 +194,6 @@ public class CraneTeleopCommand extends Command {
     /**
      * Updates the crane state based on the button pressed. Holds the state of
      * the crane until more buttons are pressed.
-     * <ul>
-     * <li>Button A is pressed, state = 1, A pressed again, state = 0.</li>
-     * <li>Button A is pressed, B is pressed, state = 2.</li>
-     * <li>Button A is pressed, B is pressed, then B again, state = 0.</li>
-     * <li>Button A is pressed, B is pressed, A is pressed, state = 1.</li>
-     * </ul>
      */
     private void updateCraneState() {
         prevStationPickupState = updateButtonState(PlayerConfigs.stationPickup, prevStationPickupState, CraneState.STATION);
@@ -222,7 +216,8 @@ public class CraneTeleopCommand extends Command {
             if(Robot.crane.craneState != craneState) {
                 Robot.crane.craneState = craneState;
             } else {
-                Robot.crane.craneState = CraneState.STOW;
+                // Robot.crane.craneState = CraneState.STOW;
+                Robot.crane.craneState = CraneState.STATION;
             }
         }
         return buttonPressed;

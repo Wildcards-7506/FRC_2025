@@ -98,16 +98,17 @@ public final class Constants {
 
     // Elbow limits
     // TODO: Measure the elbow offset from the horizontal position
-    public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
+    public static final double kElbowHorizonOffset = -49.395763; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 20;
     public static final double kElbowShelf = 20;
-    public static final double kElbowStation = 25.75;
+    public static final double kElbowStation = 19.481273;
     public static final double kElbowHigh = 122.17;
+    public static final double kElbowClimb = 131;
     public static final double kElbowMid = 94;
     /** This is for low reef, not ground/low pickup. */
     public static final double kElbowLow = 64.1;
     // public static final double kElbowCeiling = 290;
-    public static final double kElbowCeiling = kElbowHigh + 10;
+    public static final double kElbowCeiling = kElbowClimb + 10;
 
     // Wrist limits
     public static final double kWristHigh = -100; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
