@@ -78,11 +78,11 @@ public final class Constants {
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderHardDeck = 0;
-    public static final double kExtenderStation = 3;
+    public static final double kExtenderStation = 1.01;
     public static final double kExtenderHigh = 20.75;
-    public static final double kExtenderMid = 7.83;
+    public static final double kExtenderMid = 6.92;
     public static final double kExtenderLow = 0;
-    public static final double kExtenderShelf = 17;
+    public static final double kExtenderShelf = 4.60;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 17; // starts retracted by 4 inches from maximum
     public static final double kExtenderCeiling = 20.75; // starting + tail end offset - 2 inch margin
@@ -99,14 +99,14 @@ public final class Constants {
     // Elbow limits
     // TODO: Measure the elbow offset from the horizontal position
     public static final double kElbowHorizonOffset = -49.395763; // measured from horizontal position to resting angle
-    public static final double kElbowHardDeck = 20;
-    public static final double kElbowShelf = 20;
-    public static final double kElbowStation = 19.481273;
+    public static final double kElbowHardDeck = 15;
+    public static final double kElbowShelf = 31.49;
+    public static final double kElbowStation = 19.48;
     public static final double kElbowHigh = 122.17;
     public static final double kElbowClimb = 131;
-    public static final double kElbowMid = 94;
+    public static final double kElbowMid = 91.15;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 64.1;
+    public static final double kElbowLow = 53.86;
     // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowClimb + 10;
 
@@ -114,7 +114,7 @@ public final class Constants {
     public static final double kWristHigh = -100; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 15;
-    public static final double kWristShelf = 45;
+    public static final double kWristShelf = 95;
     public static final double kWristLow = 95;
     public static final double kWristMid = 95;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
