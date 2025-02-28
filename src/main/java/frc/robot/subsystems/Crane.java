@@ -115,7 +115,7 @@ public class Crane extends SubsystemBase {
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
             .forwardSoftLimit(CraneConstants.kWristCeiling)
-            .reverseSoftLimit(CraneConstants.kWristHardDeck);
+            .reverseSoftLimit(CraneConstants.kWristHardDeck - 20);
         wristConfig.encoder
         // TODO: Ratio needs to be changed
             .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
@@ -141,8 +141,8 @@ public class Crane extends SubsystemBase {
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing
-            // .pid(0.005, 0.0, 0.1);
-            .pid(0.0, 0.0, 0.0);
+            .pid(0.005, 0.0000005, 0.1);
+            // .pid(0.0, 0.0, 0.0);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -229,7 +229,13 @@ public class Crane extends SubsystemBase {
             wristSetpoint = filterSetPoint(setPoint, 
                                            CraneConstants.kWristHigh - 15, 
                                            CraneConstants.kWristHardDeck);
-        } else {
+        } 
+        else if(craneState == CraneState.CLIMB) {
+            wristSetpoint = filterSetPoint(setPoint, 
+                                           CraneConstants.kWristHigh - 50, 
+                                           CraneConstants.kWristHardDeck);
+        }
+        else {
             wristSetpoint = filterSetPoint(setPoint, 
                                         CraneConstants.kWristHardDeck, 
                                         CraneConstants.kWristCeiling);
@@ -252,21 +258,21 @@ public class Crane extends SubsystemBase {
         /*
          * don't let integral accumulate if more than a few degrees away from setpoint
          */
-        if(Math.abs(getElbowPosition() - elbowSetpoint) > 15) {
+        if(Math.abs(getElbowPosition() - elbowSetpoint) > 5) {
             elbowPID.setIAccum(0.0);
         }
         /*
          * Set this value to the voltage reading when crane is retracted and elbow is at horizon, like in mid / low reef
          */
-        double voltsAtMaxHorizon = 1.31; // 1.31 V calculated, try lower and build up
-        double voltsAtMinHorizon = 0.56; // 0.56 V calculated, try lower and build up
+        double voltsAtMaxHorizon = 1.00; // 1.31 V calculated, try lower and build up
+        double voltsAtMinHorizon = 0.43; // 0.56 V calculated, try lower and build up
         double voltsInUse = 0.0;
 
         // Angle of elbow from horizon line
         double angleFromHorizon = getElbowPosition() + CraneConstants.kElbowHorizonOffset;
 
         // Scale the voltage to the extender position as a percentage of the ceiling
-        voltsInUse = (extenderSetpoint / CraneConstants.kExtenderCeiling) * (voltsAtMaxHorizon - voltsAtMinHorizon) + voltsAtMinHorizon;
+        voltsInUse = (getExtenderPosition() / CraneConstants.kExtenderCeiling) * (voltsAtMaxHorizon - voltsAtMinHorizon) + voltsAtMinHorizon;
 
         double counterGravityVolts = voltsInUse * Math.cos(Math.toRadians(angleFromHorizon));
 

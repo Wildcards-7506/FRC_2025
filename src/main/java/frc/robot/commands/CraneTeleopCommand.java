@@ -180,6 +180,7 @@ public class CraneTeleopCommand extends Command {
         Robot.crane.setWristPosition(CraneConstants.kWristHardDeck);
         if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
            && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+            Robot.crane.setWristPosition(CraneConstants.kWristHigh-30);
             Robot.crane.setElbowPosition(CraneConstants.kElbowHigh);
             Robot.crane.setExtenderPosition(CraneConstants.kExtenderHardDeck);
         }
