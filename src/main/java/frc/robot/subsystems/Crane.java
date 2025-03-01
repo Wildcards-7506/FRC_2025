@@ -19,13 +19,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
+import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
     // Crane vars
-    public CraneState craneState = CraneState.STOW; // stow is the starting configuration
+    public CraneState craneState = CraneState.STATION; // stow is the starting configuration
     private ArmFeedforward feedforward;
+    /** Degree of angleMargin so that the crane can progress to the next position. */
+    private double angleMargin = 8;
+    private double extensionMargin = 0.5;
 
     // Gripper
     private final SparkMax gripperMotor;
@@ -184,7 +188,131 @@ public class Crane extends SubsystemBase {
         // setGripperPosition(CraneConstants.kGripperHardDeck);
         setWristPosition(CraneConstants.kWristHardDeck);
         setElbowPosition(CraneConstants.kElbowHardDeck);
-        setExtenderPosition(CraneConstants.kExtenderStart);  
+        setExtenderPosition(CraneConstants.kExtenderStart);
+    }
+
+    public void goToCraneState(CraneState state) {
+        if(state == CraneState.CLIMB) {
+            putCraneToClimbState();
+        }
+        if(state == CraneState.STATION) {
+            setWristPosition(CraneConstants.kWristStation);
+            if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
+                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                setWristPosition(CraneConstants.kWristStation);
+                setElbowPosition(CraneConstants.kElbowStation);
+                setExtenderPosition(CraneConstants.kExtenderStation);
+            }
+        }
+        if(state == CraneState.SHELF) {
+            setWristPosition(CraneConstants.kWristShelf);
+            if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
+                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                setWristPosition(CraneConstants.kWristShelf);
+                setElbowPosition(CraneConstants.kElbowStation);
+                setExtenderPosition(CraneConstants.kExtenderStation);
+            }
+        }
+        if(state == CraneState.LOW_REEF) {
+            setWristPosition(CraneConstants.kWristLow);
+            if(upToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)
+                && downToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)) {
+                setWristPosition(CraneConstants.kWristLow);
+                setElbowPosition(CraneConstants.kElbowLow);
+                setExtenderPosition(CraneConstants.kExtenderLow);
+            }
+        }
+        if(state == CraneState.MID_REEF) {
+            setWristPosition(CraneConstants.kWristMid);
+            if(upToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)
+                && downToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)) {
+                setWristPosition(CraneConstants.kWristMid);
+                setElbowPosition(CraneConstants.kElbowMid);
+                setExtenderPosition(CraneConstants.kExtenderMid);
+            }
+        }
+        if(state == CraneState.HIGH_REEF) {
+            setWristPosition(CraneConstants.kWristHardDeck);
+            if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
+                && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+                setWristPosition(CraneConstants.kWristHigh);
+                setElbowPosition(CraneConstants.kElbowHigh);
+                setExtenderPosition(CraneConstants.kExtenderHigh);
+            }
+        }
+        // if(state == CraneState.STOW) {
+        //     // If we want to go to elbow pause, we must retract extender
+        //     setWristPosition(CraneConstants.kWristHardDeck);
+        //     if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
+        //         // If elbow is at hard deck, then we slightly retract the extender for stability
+        //         setWristPosition(CraneConstants.kWristHardDeck);
+        //         setElbowPosition(CraneConstants.kElbowHardDeck);
+        //         setExtenderPosition(CraneConstants.kExtenderStart);
+        //     }
+        // }
+    }
+
+    /**
+     * Puts the crane to climb state and sets the craneState to CLIMB to keep hold.
+     */
+    public void putCraneToClimbState() {
+        // This sets the crane to the climb state only if this method is called
+        craneState = CraneState.CLIMB; // climb state
+        setWristPosition(CraneConstants.kWristHardDeck);
+        if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
+           && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
+            setWristPosition(CraneConstants.kWristHigh-30);
+            setElbowPosition(CraneConstants.kElbowHigh);
+            setExtenderPosition(CraneConstants.kExtenderHardDeck);
+        }
+        
+        SmartDashboard.putString("Crane State", craneState.toString());
+        SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
+        SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
+        SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
+        SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
+    }
+
+    /**
+     * Rotate elbow upwards (CEILING direction) with extender retracted to a limit.
+     * 
+     * @param elbowPosition The target elbow position in degrees.
+     * @param extenderLimit The target extender position in inches.
+     * @return True if the elbow is at the desired position.
+     */
+    private boolean upToElbowPosition(double elbowPosition, double extenderLimit) {
+        // If we want to go to elbow position, we must retract extender, then we rotate elbow
+        if(getElbowPosition() + angleMargin < elbowPosition) {
+            if(getExtenderPosition() - extensionMargin > extenderLimit
+               || getExtenderPosition() + extensionMargin < extenderLimit) {
+                setExtenderPosition(extenderLimit);
+            } else {
+                setElbowPosition(elbowPosition);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Rotate elbow upwards (HARD DECK direction) with extender retracted to a limit.
+     * 
+     * @param elbowPosition The target elbow position in degrees.
+     * @param extenderLimit The target extender position in inches.
+     * @return True if the elbow is at the desired position.
+     */
+    private boolean downToElbowPosition(double elbowPosition, double extenderLimit) {
+        // If we want to go to elbow position, we must retract extender, then we rotate elbow
+        if(getElbowPosition() - angleMargin > elbowPosition) {
+            if(getExtenderPosition() - extensionMargin > extenderLimit
+               || getExtenderPosition() + extensionMargin < extenderLimit) {
+                setExtenderPosition(extenderLimit);
+            } else {
+                setElbowPosition(elbowPosition);
+            }
+            return false;
+        }
+        return true;
     }
 
     /**
