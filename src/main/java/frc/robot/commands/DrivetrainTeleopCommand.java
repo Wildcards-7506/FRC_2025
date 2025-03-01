@@ -1,9 +1,8 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
-import frc.robot.commands.autonomous.AutoAlign;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
@@ -30,39 +29,34 @@ public class DrivetrainTeleopCommand extends Command {
             Robot.drivetrain.zeroHeading();
         }
 
-        if(PlayerConfigs.strafeRight){
-            Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
-        }
-        if(PlayerConfigs.strafeLeft){
-            Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
-        }
-
         // Joystick Inputs
         xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
         yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
         inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
-
-        // Default is stop, input priority: joystick > snap > stop
-        // Where joystick is the final decision maker
-
-        // Snap to angles
-        if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
-        if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);
-        if(PlayerConfigs.snapDown) Robot.drivetrain.snap(IOConstants.DPAD_DOWN);
-        if(PlayerConfigs.snapLeft) Robot.drivetrain.snap(IOConstants.DPAD_LEFT);
-
-        // Reef snaps
-        if(PlayerConfigs.snapUpRight) Robot.drivetrain.snap(DriveConstants.SNAP_UP_RIGHT);
-        if(PlayerConfigs.snapDownRight) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_RIGHT);
-        if(PlayerConfigs.snapDownLeft) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_LEFT);
-        if(PlayerConfigs.snapUpLeft) Robot.drivetrain.snap(DriveConstants.SNAP_UP_LEFT);
 
         // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
         // When robotRelative is true, the robot will drive relative to the robot's current heading
         // When robotRelative is false, the robot will drive relative to the field's current heading
         // System.out.println(Robot.drivetrain.m_gyro.getAngle());
         if(joystickHasInput())
-            Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, !PlayerConfigs.robotRelative);
+            Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, true);
+        else if(PlayerConfigs.strafeRight){
+            Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
+        }
+        else if(PlayerConfigs.strafeLeft){
+            Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
+        }
+        // Snap to angles
+        // else if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
+        // else if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);
+        // else if(PlayerConfigs.snapDown) Robot.drivetrain.snap(IOConstants.DPAD_DOWN);
+        // else if(PlayerConfigs.snapLeft) Robot.drivetrain.snap(IOConstants.DPAD_LEFT);
+
+        // // Reef snaps
+        // else if(PlayerConfigs.snapUpRight) Robot.drivetrain.snap(DriveConstants.SNAP_UP_RIGHT);
+        // else if(PlayerConfigs.snapDownRight) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_RIGHT);
+        // else if(PlayerConfigs.snapDownLeft) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_LEFT);
+        // else if(PlayerConfigs.snapUpLeft) Robot.drivetrain.snap(DriveConstants.SNAP_UP_LEFT);
 
         //Cancel normal command if auto align is called
         // if(PlayerConfigs.autoAlignLeft) {

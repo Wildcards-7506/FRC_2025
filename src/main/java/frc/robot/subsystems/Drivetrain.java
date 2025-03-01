@@ -154,6 +154,7 @@ public class Drivetrain extends SubsystemBase {
     if (Robot.teamColor.get() == Alliance.Red) {
       angle += 180;
     }
+    System.out.println(angle);
     if (angle > 180) angle -= 360;
     if (angle < -180) angle += 360;
     angle = -angle; // DPAD is CW positive, but robot is CCW positive
