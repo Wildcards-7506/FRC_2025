@@ -23,9 +23,13 @@ public class Ricardo extends PlayerConfigs {
         fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
 
         // Reef snaps
+        snapUp = Robot.controller0.getPOV() == IOConstants.DPAD_UP;
         snapUpRight = Robot.controller0.getPOV() == IOConstants.DPAD_UP_RIGHT;
+        snapRight = Robot.controller0.getPOV() == IOConstants.DPAD_RIGHT;
         snapDownRight = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_RIGHT;
+        snapDown = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN;
         snapDownLeft = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_LEFT;
+        snapLeft = Robot.controller0.getPOV() == IOConstants.DPAD_LEFT;
         snapUpLeft = Robot.controller0.getPOV() == IOConstants.DPAD_UP_LEFT;
 
         robotRelative = Robot.controller0.getRightBumperButton();
@@ -43,6 +47,7 @@ public class Ricardo extends PlayerConfigs {
 
     @Override
     public void getOperatorConfig() {
+        fineStrafe = 0.05;
         stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
         shelfReef = Robot.controller1.getXButton();
@@ -58,6 +63,9 @@ public class Ricardo extends PlayerConfigs {
         fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         climberActivate = Robot.controller1.getLeftBumperButton();
         climberDeactivate = Robot.controller1.getRightBumperButton();
+
+        strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
+        strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
         
         fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
         fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
