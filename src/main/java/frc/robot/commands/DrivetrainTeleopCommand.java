@@ -21,9 +21,7 @@ public class DrivetrainTeleopCommand extends Command {
     
     // Called every time the scheduler runs (every ~20 ms) while the command is scheduled.
     @Override
-    public void execute() {
-        Robot.drivetrain.stop();
-        
+    public void execute() {        
         //Reset Gyro
         if(PlayerConfigs.zeroGyro) {
             Robot.drivetrain.zeroHeading();
@@ -45,6 +43,9 @@ public class DrivetrainTeleopCommand extends Command {
         }
         else if(PlayerConfigs.strafeLeft){
             Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
+        }
+        else {
+            Robot.drivetrain.stop();
         }
         // Snap to angles
         // else if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
