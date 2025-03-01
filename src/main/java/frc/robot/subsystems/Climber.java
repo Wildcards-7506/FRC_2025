@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.CraneConstants;
 
 public class Climber extends SubsystemBase {
     public boolean onClimberControl = false;
@@ -65,7 +66,7 @@ public class Climber extends SubsystemBase {
         rotatorMotor.configure(rotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         anchorConfig
-            .smartCurrentLimit(80)
+            .smartCurrentLimit(100)
             .idleMode(IdleMode.kBrake);
         // anchorConfig.softLimit
         //     .forwardSoftLimitEnabled(true)
@@ -78,7 +79,7 @@ public class Climber extends SubsystemBase {
         anchorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing
-            .pid(0.005, 0.0, 0.0);
+            .pid(0.1, 0.0, 0.0);
             
         anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -106,9 +107,10 @@ public class Climber extends SubsystemBase {
      * @param setPoint The desired extension of the Anchor in inches
      */
     public void setAnchorPosition(double setPoint) {
-        anchorSetpoint = filterSetPoint(setPoint, 
-                                       ClimberConstants.kAnchorHardDeck, 
-                                       ClimberConstants.kAnchorCeiling);
+        // anchorSetpoint = filterSetPoint(setPoint, 
+        //                                ClimberConstants.kAnchorHardDeck, 
+        //                                ClimberConstants.kAnchorCeiling);
+        anchorSetpoint = setPoint;
         setPoint = inchesToDegrees(anchorSetpoint);
         anchorPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Anchor SetP", anchorSetpoint);
@@ -120,7 +122,7 @@ public class Climber extends SubsystemBase {
     }
 
     public double getAnchorPosition() {
-        return inchesToDegrees(anchorMotor.getEncoder().getPosition());
+        return degreesToInches(anchorMotor.getEncoder().getPosition());
     }
     
     /**
@@ -141,5 +143,9 @@ public class Climber extends SubsystemBase {
     // TODO: Figure out conversion ratio in-person
     private double inchesToDegrees(double inches) {
         return inches * (8 * 360); // rotations to get extension on the 
+    }
+
+    private double degreesToInches(double degrees) {
+        return degrees / (8 * 360);
     }
 }

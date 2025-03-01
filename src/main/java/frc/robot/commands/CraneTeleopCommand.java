@@ -38,9 +38,9 @@ public class CraneTeleopCommand extends Command {
 
         /** Sucker */
         if (PlayerConfigs.suckerIntake) {
-            Robot.crane.spinSucker(-4); // volts
+            Robot.crane.spinSucker(-12); // volts
         } else if (PlayerConfigs.suckerEject) {
-            Robot.crane.spinSucker(4); // volts
+            Robot.crane.spinSucker(12); // volts
         } else {
             Robot.crane.holdSucker();
         }

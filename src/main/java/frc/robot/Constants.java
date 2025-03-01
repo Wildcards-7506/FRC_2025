@@ -78,22 +78,23 @@ public final class Constants {
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
+    public static final double kExtenderOffset = 5;
     public static final double kExtenderHardDeck = 0;
-    public static final double kExtenderStation = 1.01;
-    public static final double kExtenderHigh = 20.75;
-    public static final double kExtenderMid = 6.92;
-    public static final double kExtenderLow = 0;
-    public static final double kExtenderShelf = 4.60;
-    // public static final double kExtenderPickup = 12;
-    public static final double kExtenderStart = 17; // starts retracted by 4 inches from maximum
-    public static final double kExtenderCeiling = 20.75; // starting + tail end offset - 2 inch margin
-    public static final double kExtensionCap = 17; // 17 inches
+    public static final double kExtenderStation = 1.01 + kExtenderOffset;
+    public static final double kExtenderHigh = 20.75 + kExtenderOffset;
+    public static final double kExtenderMid = 6.92 + kExtenderOffset;
+    public static final double kExtenderLow = 0 + kExtenderOffset;
+    public static final double kExtenderShelf = 4.60 + kExtenderOffset;
+    // public static final double kExtenderPickup = 12 + kExtenderOffset;
+    public static final double kExtenderStart = 17 + kExtenderOffset; // starts retracted by 4 inches from maximum
+    public static final double kExtenderCeiling = 20.75 + kExtenderOffset; // starting + tail end offset - 2 inch margin
+    public static final double kExtensionCap = 17 + kExtenderOffset; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
     // public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
-    public static final double kExtenderLimit1 = kExtenderHardDeck;
+    public static final double kExtenderLimit1 = kExtenderHardDeck + kExtenderOffset;
     // /** Keep extender claw-side within extension cap. */
     // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
@@ -112,12 +113,13 @@ public final class Constants {
     public static final double kElbowCeiling = kElbowClimb + 10;
 
     // Wrist limits
-    public static final double kWristHigh = -100; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
+    public static final double kWristDiffFromOldSlack = 10; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
+    public static final double kWristHigh = -100 + kWristDiffFromOldSlack; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 15;
-    public static final double kWristShelf = 95;
-    public static final double kWristLow = 92;
-    public static final double kWristMid = 92;
+    public static final double kWristStation = 15 + kWristDiffFromOldSlack;
+    public static final double kWristShelf = 95 + kWristDiffFromOldSlack;
+    public static final double kWristLow = 92 + kWristDiffFromOldSlack;
+    public static final double kWristMid = 92 + kWristDiffFromOldSlack;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
   }
 
@@ -135,7 +137,7 @@ public final class Constants {
     // Anchor limits
   // TODO: Placeholder values, replace with actual values
     public static final double kAnchorHardDeck = 0.25;
-    public static final double kAnchorCeiling = 7.25; // inches
+    public static final double kAnchorCeiling = 6.25; // inches
   }
 
   public static final class IOConstants {

@@ -172,7 +172,7 @@ public class Crane extends SubsystemBase {
         //FLEX Motor TODO: write code for spark flex motor
         suckerConfig
             .inverted(true)
-            .smartCurrentLimit(20)
+            .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
         suckerConfig.encoder
         // TODO: Ratio needs to be changed
@@ -360,7 +360,7 @@ public class Crane extends SubsystemBase {
         } 
         else if(craneState == CraneState.CLIMB) {
             wristSetpoint = filterSetPoint(setPoint, 
-                                           CraneConstants.kWristHigh - 50, 
+                                           CraneConstants.kWristHigh, 
                                            CraneConstants.kWristHardDeck);
         }
         else {
