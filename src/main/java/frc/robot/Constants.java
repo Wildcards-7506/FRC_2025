@@ -48,7 +48,7 @@ public final class Constants {
   // Crane States
   public enum CraneState {
     CLIMB,
-    STOW,
+    // STOW,
     STATION,
     SHELF,
     LOW_REEF,
@@ -63,6 +63,7 @@ public final class Constants {
     public static final double kGVolts = 1.74; // Volts
     public static final double kVVoltSecsPerDeg = 2.44 * Math.PI / 180.0; // V*s/rad to V*s/deg
     public static final double kAVoltSecsSquaredPerDeg = 0.16 * Math.PI / 180.0; // V*s^2/rad to V*s^2/deg
+    public static final double kDefaultErrorMargin = 1.0; // degrees
 
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; // tested 2/15/2025
