@@ -68,11 +68,11 @@ public class Climber extends SubsystemBase {
         anchorConfig
             .smartCurrentLimit(100)
             .idleMode(IdleMode.kBrake);
-        // anchorConfig.softLimit
-        //     .forwardSoftLimitEnabled(true)
-        //     .reverseSoftLimitEnabled(true)
-        //     .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling + 0.2))
-        //     .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck - 0.2));
+        anchorConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling + 0.2))
+            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck - 0.2));
         anchorConfig.encoder
             .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse)
             .velocityConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
@@ -106,14 +106,20 @@ public class Climber extends SubsystemBase {
      * 
      * @param setPoint The desired extension of the Anchor in inches
      */
-    public void setAnchorPosition(double setPoint) {
-        // anchorSetpoint = filterSetPoint(setPoint, 
-        //                                ClimberConstants.kAnchorHardDeck, 
-        //                                ClimberConstants.kAnchorCeiling);
-        anchorSetpoint = setPoint;
-        setPoint = inchesToDegrees(anchorSetpoint);
-        anchorPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Anchor SetP", anchorSetpoint);
+    // public void setAnchorPosition(double setPoint) {
+    //     // anchorSetpoint = filterSetPoint(setPoint, 
+    //     //                                ClimberConstants.kAnchorHardDeck, 
+    //     //                                ClimberConstants.kAnchorCeiling);
+    //     anchorSetpoint = setPoint;
+    //     setPoint = inchesToDegrees(anchorSetpoint);
+    //     anchorPID.setReference(setPoint, ControlType.kPosition);
+    //     SmartDashboard.putNumber("Anchor SetP", anchorSetpoint);
+    //     SmartDashboard.putNumber("Anchor Pos", getAnchorPosition());
+    // }
+
+    public void setAnchorVoltage(double volts) {
+        rotatorMotor.setVoltage(volts);
+        SmartDashboard.putNumber("Anchor SetP", volts);
         SmartDashboard.putNumber("Anchor Pos", getAnchorPosition());
     }
 

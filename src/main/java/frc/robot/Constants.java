@@ -82,7 +82,7 @@ public final class Constants {
     public static final double kExtenderHardDeck = 0;
     public static final double kExtenderStation = 1.01 + kExtenderOffset;
     public static final double kExtenderHigh = 20.75 + kExtenderOffset;
-    public static final double kExtenderMid = 6.92 + kExtenderOffset;
+    public static final double kExtenderMid = 6 + kExtenderOffset;
     public static final double kExtenderLow = 0 + kExtenderOffset;
     public static final double kExtenderShelf = 4.60 + kExtenderOffset;
     // public static final double kExtenderPickup = 12 + kExtenderOffset;
@@ -106,14 +106,14 @@ public final class Constants {
     public static final double kElbowStation = 19.48;
     public static final double kElbowHigh = 122.17;
     public static final double kElbowClimb = 131;
-    public static final double kElbowMid = 91.15;
+    public static final double kElbowMid = 93.15;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 53.86;
+    public static final double kElbowLow = 54.1;
     // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowClimb + 10;
 
     // Wrist limits
-    public static final double kWristDiffFromOldSlack = 10; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
+    public static final double kWristDiffFromOldSlack = 12; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
     public static final double kWristHigh = -100 + kWristDiffFromOldSlack; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 15 + kWristDiffFromOldSlack;
