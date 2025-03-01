@@ -71,8 +71,8 @@ public class Climber extends SubsystemBase {
         anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling + 0.2))
-            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck - 0.2));
+            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling))
+            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck));
         anchorConfig.encoder
             .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse)
             .velocityConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
