@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
@@ -38,9 +39,9 @@ public class CraneTeleopCommand extends Command {
 
         /** Sucker */
         if (PlayerConfigs.suckerIntake) {
-            Robot.crane.spinSucker(-12); // volts
+            Robot.crane.spinSucker(CraneConstants.kSuckerIntake); // volts
         } else if (PlayerConfigs.suckerEject) {
-            Robot.crane.spinSucker(12); // volts
+            Robot.crane.spinSucker(CraneConstants.kSuckerEject); // volts
         } else {
             Robot.crane.holdSucker();
         }

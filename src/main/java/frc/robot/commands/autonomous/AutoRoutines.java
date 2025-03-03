@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
+import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.CraneState;
 import frc.robot.commands.autonomous.actions.AutoCraneHighReef;
 import frc.robot.commands.autonomous.actions.AutoCraneLowReef;
 import frc.robot.commands.autonomous.actions.AutoCraneMidReef;
@@ -26,6 +28,8 @@ import frc.robot.commands.autonomous.actions.AutoCraneShelf;
 import frc.robot.commands.autonomous.actions.AutoCraneStation;
 import frc.robot.commands.autonomous.subsystem.AutoAlign;
 import frc.robot.commands.autonomous.subsystem.AutoDrivetrainX;
+import frc.robot.commands.autonomous.subsystem.AutoSpinSucker;
+import frc.robot.commands.autonomous.subsystem.GoToCraneState;
 
 @SuppressWarnings("unused")
 public final class AutoRoutines {
@@ -93,6 +97,8 @@ public final class AutoRoutines {
     NamedCommands.registerCommand("AutoCraneHighReef", new AutoCraneHighReef());
     NamedCommands.registerCommand("AutoAlignLeft", new AutoAlign(Robot.drivetrain, true));
     NamedCommands.registerCommand("AutoAlignRight", new AutoAlign(Robot.drivetrain, false));
+    NamedCommands.registerCommand("AutoSuckerSuck", new AutoSpinSucker(1, CraneConstants.kSuckerIntake));
+    NamedCommands.registerCommand("AutoSuckerEject", new AutoSpinSucker(1, CraneConstants.kSuckerEject));
   }
 
       /**

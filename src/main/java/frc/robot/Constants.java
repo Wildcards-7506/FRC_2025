@@ -121,6 +121,11 @@ public final class Constants {
     public static final double kWristLow = 92 + kWristDiffFromOldSlack;
     public static final double kWristMid = 92 + kWristDiffFromOldSlack;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
+
+    // Sucker limits
+    public static final double kSuckerIntake = 12;
+    public static final double kSuckerEject = -12;
+    public static final double kSuckerHold = 0;
   }
 
   public static final class ClimberConstants {
