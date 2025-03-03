@@ -19,6 +19,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
+import frc.robot.commands.autonomous.actions.AutoCraneHighReef;
+import frc.robot.commands.autonomous.actions.AutoCraneLowReef;
+import frc.robot.commands.autonomous.actions.AutoCraneMidReef;
+import frc.robot.commands.autonomous.actions.AutoCraneShelf;
+import frc.robot.commands.autonomous.actions.AutoCraneStation;
+import frc.robot.commands.autonomous.subsystem.AutoAlign;
 import frc.robot.commands.autonomous.subsystem.AutoDrivetrainX;
 
 @SuppressWarnings("unused")
@@ -80,14 +86,13 @@ public final class AutoRoutines {
   }
 
   private void setMarkers() {
-    // NamedCommands.registerCommand("AutoShoot", new AutoShoot());
-    // NamedCommands.registerCommand("AutoIntake", new AutoIntake_Trigger(5, false,12,2.4));
-    // NamedCommands.registerCommand("AutoShooterSpinup", new AutoShooterSpinUp(ShooterConstants.kLArmedRPM, ShooterConstants.kRArmedRPM));
-    // NamedCommands.registerCommand("AutoIntakeStowToGround", new AutoIntakeStowToGround());
-    // NamedCommands.registerCommand("AutoIntakeGroundToStow", new AutoIntakeGroundToStow());
-    // NamedCommands.registerCommand("AutoIntakeGroundToAmp", new AutoIntakeGroundToAmp());
-    // NamedCommands.registerCommand("AutoIntakeAmpToGround", new AutoIntakeAmpToGround());
-    // NamedCommands.registerCommand("AutoIntakeStowToAmp", new AutoIntakeStowToAmp());
+    NamedCommands.registerCommand("AutoCraneStation", new AutoCraneStation());
+    NamedCommands.registerCommand("AutoCraneShelf", new AutoCraneShelf());
+    NamedCommands.registerCommand("AutoCraneLowReef", new AutoCraneLowReef());
+    NamedCommands.registerCommand("AutoCraneMidReef", new AutoCraneMidReef());
+    NamedCommands.registerCommand("AutoCraneHighReef", new AutoCraneHighReef());
+    NamedCommands.registerCommand("AutoAlignLeft", new AutoAlign(Robot.drivetrain, true));
+    NamedCommands.registerCommand("AutoAlignRight", new AutoAlign(Robot.drivetrain, false));
   }
 
       /**
