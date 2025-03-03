@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
+import frc.robot.commands.autonomous.subsystem.AutoAlign;
 import frc.robot.players.PlayerConfigs;
 
 public class DrivetrainTeleopCommand extends Command {
@@ -38,7 +38,7 @@ public class DrivetrainTeleopCommand extends Command {
         // When robotRelative is false, the robot will drive relative to the field's current heading
         // System.out.println(Robot.drivetrain.m_gyro.getAngle());
         if(joystickHasInput())
-            Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, true);
+            Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, !PlayerConfigs.robotRelative);
         else if(PlayerConfigs.strafeRight){
             Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
         }
@@ -61,13 +61,13 @@ public class DrivetrainTeleopCommand extends Command {
         }
 
         //Cancel normal command if auto align is called
-        // if(PlayerConfigs.autoAlignLeft) {
-        //     new AutoAlign(Robot.drivetrain, true).schedule();
-        //     this.cancel();
-        // } else if(PlayerConfigs.autoAlignRight){
-        //     new AutoAlign(Robot.drivetrain, false).schedule();
-        //     this.cancel();
-        // }
+        if(PlayerConfigs.autoAlignLeft) {
+            new AutoAlign(Robot.drivetrain, true).schedule();
+            this.cancel();
+        } else if(PlayerConfigs.autoAlignRight){
+            new AutoAlign(Robot.drivetrain, false).schedule();
+            this.cancel();
+        }
     }
 
     private boolean joystickHasInput() {
