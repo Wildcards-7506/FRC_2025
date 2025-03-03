@@ -12,21 +12,18 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
-import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
     // Crane vars
     public CraneState craneState = CraneState.STATION; // stow is the starting configuration
-    private ArmFeedforward feedforward;
+    // private ArmFeedforward feedforward;
     /** Degree of angleMargin so that the crane can progress to the next position. */
     private double angleMargin = 8;
     private double extensionMargin = 0.5;
@@ -67,11 +64,11 @@ public class Crane extends SubsystemBase {
     private boolean prevHoldState = false; // used to grab position once for holding sucker in place
     
     public Crane() {
-        feedforward = new ArmFeedforward(CraneConstants.kSVolts, 
-                                         CraneConstants.kGVolts, 
-                                         CraneConstants.kVVoltSecsPerDeg, 
-                                         CraneConstants.kAVoltSecsSquaredPerDeg
-        );
+        // feedforward = new ArmFeedforward(CraneConstants.kSVolts, 
+        //                                  CraneConstants.kGVolts, 
+        //                                  CraneConstants.kVVoltSecsPerDeg, 
+        //                                  CraneConstants.kAVoltSecsSquaredPerDeg
+        // );
 
         gripperMotor = new SparkMax(CANIDS.GRIPPER, MotorType.kBrushless);
         gripperConfig = new SparkMaxConfig();
