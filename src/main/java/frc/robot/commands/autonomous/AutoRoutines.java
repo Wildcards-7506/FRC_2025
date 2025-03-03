@@ -26,10 +26,10 @@ import frc.robot.commands.autonomous.actions.AutoCraneLowReef;
 import frc.robot.commands.autonomous.actions.AutoCraneMidReef;
 import frc.robot.commands.autonomous.actions.AutoCraneShelf;
 import frc.robot.commands.autonomous.actions.AutoCraneStation;
-import frc.robot.commands.autonomous.subsystem.AutoAlign;
-import frc.robot.commands.autonomous.subsystem.AutoDrivetrainX;
-import frc.robot.commands.autonomous.subsystem.AutoSpinSucker;
-import frc.robot.commands.autonomous.subsystem.GoToCraneState;
+import frc.robot.commands.autonomous.commands.AutoAlign;
+import frc.robot.commands.autonomous.commands.AutoDrivetrainX;
+import frc.robot.commands.autonomous.commands.AutoSpinSucker;
+import frc.robot.commands.autonomous.commands.GoToCraneState;
 
 @SuppressWarnings("unused")
 public final class AutoRoutines {

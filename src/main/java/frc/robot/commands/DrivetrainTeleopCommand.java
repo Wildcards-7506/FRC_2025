@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
-import frc.robot.commands.autonomous.subsystem.AutoAlign;
+import frc.robot.commands.autonomous.commands.AutoAlign;
 import frc.robot.players.PlayerConfigs;
 
 public class DrivetrainTeleopCommand extends Command {
