@@ -159,7 +159,7 @@ public class Drivetrain extends SubsystemBase {
     if (angle < -180) angle += 360;
     angle = -angle; // DPAD is CW positive, but robot is CCW positive
     SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, Math.toRadians(90), Rotation2d.fromDegrees(angle)));
+        ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Rotation2d.fromDegrees(angle)));
     setStates(targetStates);
   }
 

@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
@@ -44,20 +45,20 @@ public class DrivetrainTeleopCommand extends Command {
         else if(PlayerConfigs.strafeLeft){
             Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
         }
+        // Snap to angles
+        else if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
+        else if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);
+        else if(PlayerConfigs.snapDown) Robot.drivetrain.snap(IOConstants.DPAD_DOWN);
+        else if(PlayerConfigs.snapLeft) Robot.drivetrain.snap(IOConstants.DPAD_LEFT);
+
+        // Reef snaps
+        else if(PlayerConfigs.snapUpRight) Robot.drivetrain.snap(DriveConstants.SNAP_UP_RIGHT);
+        else if(PlayerConfigs.snapDownRight) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_RIGHT);
+        else if(PlayerConfigs.snapDownLeft) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_LEFT);
+        else if(PlayerConfigs.snapUpLeft) Robot.drivetrain.snap(DriveConstants.SNAP_UP_LEFT);
         else {
             Robot.drivetrain.stop();
         }
-        // Snap to angles
-        // else if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
-        // else if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);
-        // else if(PlayerConfigs.snapDown) Robot.drivetrain.snap(IOConstants.DPAD_DOWN);
-        // else if(PlayerConfigs.snapLeft) Robot.drivetrain.snap(IOConstants.DPAD_LEFT);
-
-        // // Reef snaps
-        // else if(PlayerConfigs.snapUpRight) Robot.drivetrain.snap(DriveConstants.SNAP_UP_RIGHT);
-        // else if(PlayerConfigs.snapDownRight) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_RIGHT);
-        // else if(PlayerConfigs.snapDownLeft) Robot.drivetrain.snap(DriveConstants.SNAP_DOWN_LEFT);
-        // else if(PlayerConfigs.snapUpLeft) Robot.drivetrain.snap(DriveConstants.SNAP_UP_LEFT);
 
         //Cancel normal command if auto align is called
         // if(PlayerConfigs.autoAlignLeft) {
