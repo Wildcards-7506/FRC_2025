@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
-import frc.robot.commands.autonomous.subsystem.AutoAlign;
+import frc.robot.commands.autonomous.commands.AutoAlign;
 import frc.robot.players.PlayerConfigs;
 
 public class DrivetrainTeleopCommand extends Command {
@@ -61,13 +61,13 @@ public class DrivetrainTeleopCommand extends Command {
         }
 
         //Cancel normal command if auto align is called
-        if(PlayerConfigs.autoAlignLeft) {
-            new AutoAlign(Robot.drivetrain, true).schedule();
-            this.cancel();
-        } else if(PlayerConfigs.autoAlignRight){
-            new AutoAlign(Robot.drivetrain, false).schedule();
-            this.cancel();
-        }
+        // if(PlayerConfigs.autoAlignLeft) {
+        //     new AutoAlign(Robot.drivetrain, true).schedule();
+        //     this.cancel();
+        // } else if(PlayerConfigs.autoAlignRight){
+        //     new AutoAlign(Robot.drivetrain, false).schedule();
+        //     this.cancel();
+        // }
     }
 
     private boolean joystickHasInput() {

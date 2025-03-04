@@ -123,7 +123,7 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.005, 0.0, 0.1);
+            .pid(0.005, 0.000003, 0.1);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -142,7 +142,7 @@ public class Crane extends SubsystemBase {
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: PID values changed temporarily for testing
-            .pid(0.005, 0.0000005, 0.1);
+            .pid(0.005, 0.000003, 0.1);
             // .pid(0.0, 0.0, 0.0);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -365,10 +365,17 @@ public class Crane extends SubsystemBase {
                                         CraneConstants.kWristHardDeck, 
                                         CraneConstants.kWristCeiling);
         }
+        /*
+         * don't let integral accumulate if more than a few degrees away from setpoint
+         */
+        if(Math.abs(getRelativeWristPos() - wristSetpoint) > 10
+           || Math.abs(getRelativeWristPos() - wristSetpoint) < 0.5) {
+            wristPID.setIAccum(0.0);
+        }
         setPoint = getElbowPosition() + wristSetpoint;
         wristPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
-        SmartDashboard.putNumber("Wrist Pos", getWristPosition());
+        SmartDashboard.putNumber("Wrist Pos", getRelativeWristPos());
     }
 
     /**
@@ -383,7 +390,7 @@ public class Crane extends SubsystemBase {
         /*
          * don't let integral accumulate if more than a few degrees away from setpoint
          */
-        if(Math.abs(getElbowPosition() - elbowSetpoint) > 5) {
+        if(Math.abs(getElbowPosition() - elbowSetpoint) > 10 || Math.abs(getElbowPosition() - elbowSetpoint) < 0.5) {
             elbowPID.setIAccum(0.0);
         }
         /*
@@ -474,6 +481,10 @@ public class Crane extends SubsystemBase {
         return wristMotor.getEncoder().getPosition();
     }
 
+    public double getRelativeWristPos() {
+        return getWristPosition() - getElbowPosition();
+    }
+
     /** Returns the angle of the sucker in degrees, CCW+. */
     public double getSuckerPosition() {
         return suckerMotor.getEncoder().getPosition();
@@ -482,7 +493,7 @@ public class Crane extends SubsystemBase {
     public void intakeLog() {
         Logger.info("ELBOW", Double.toString(getElbowPosition()) + " Actual Degrees -> " + Double.toString(elbowSetpoint) + " Target Degrees");
         Logger.info("EXTENDER", Double.toString(getExtenderPosition()) + " Actual Inches -> " + Double.toString(extenderSetpoint) + " Target Inches");
-        Logger.info("WRIST", Double.toString(getWristPosition()) + " Actual Degrees -> " + Double.toString(wristSetpoint) + " Target Degrees");
+        Logger.info("WRIST", Double.toString(getRelativeWristPos()) + " Actual Degrees -> " + Double.toString(wristSetpoint) + " Target Degrees");
         Logger.info("GRIPPER", Double.toString(getGripperPosition()) + " Actual Degrees -> " + Double.toString(gripperSetpoint) + " Target Degrees");
         if(elbowMotor.getFaults().rawBits != 0) Logger.warn("ELBOW: " + elbowMotor.getFaults().toString());
         if(extenderMotor.getFaults().rawBits != 0) Logger.warn("EXTENDER: " + extenderMotor.getFaults().toString());
