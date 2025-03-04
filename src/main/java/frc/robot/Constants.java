@@ -78,23 +78,23 @@ public final class Constants {
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
-    public static final double kExtenderOffset = 5;
-    public static final double kExtenderHardDeck = 0;
+    public static final double kExtenderOffset = 3.5;
+    public static final double kExtenderHardDeck = 1;
     public static final double kExtenderStation = 4.96 + kExtenderOffset;
     public static final double kExtenderHigh = 20.75 + kExtenderOffset;
-    public static final double kExtenderMid = 7 + kExtenderOffset;
-    public static final double kExtenderLow = 0 + kExtenderOffset;
+    public static final double kExtenderMid = 9.48;
+    public static final double kExtenderLow = 3.46;
     public static final double kExtenderShelf = 4.60 + kExtenderOffset;
-    // public static final double kExtenderPickup = 12 + kExtenderOffset;
-    public static final double kExtenderStart = 17 + kExtenderOffset; // starts retracted by 4 inches from maximum
-    public static final double kExtenderCeiling = 20.75 + kExtenderOffset; // starting + tail end offset - 2 inch margin
-    public static final double kExtensionCap = 17 + kExtenderOffset; // 17 inches
+    // public static final double kExtenderPickup = 12;
+    public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
+    public static final double kExtenderCeiling = 21 + 4.5; // starting + tail end offset - 2 inch margin
+    public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
     // public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
-    public static final double kExtenderLimit1 = kExtenderHardDeck + kExtenderOffset;
+    public static final double kExtenderLimit1 = kExtenderHardDeck;
     // /** Keep extender claw-side within extension cap. */
     // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
@@ -106,9 +106,9 @@ public final class Constants {
     public static final double kElbowStation = 28.9;
     public static final double kElbowHigh = 122.17;
     public static final double kElbowClimb = 131;
-    public static final double kElbowMid = 93.15;
+    public static final double kElbowMid = 97.713;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 54.1;
+    public static final double kElbowLow = 66.65;
     // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowClimb + 10;
 
@@ -118,8 +118,8 @@ public final class Constants {
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 16.8 + kWristDiffFromOldSlack;
     public static final double kWristShelf = 95 + kWristDiffFromOldSlack;
-    public static final double kWristLow = 92 + kWristDiffFromOldSlack;
-    public static final double kWristMid = 92 + kWristDiffFromOldSlack;
+    public static final double kWristLow = 106;
+    public static final double kWristMid = 100.2;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
 
     // Sucker limits
