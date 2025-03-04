@@ -81,20 +81,19 @@ public final class Constants {
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
     public static final double kExtenderStation = 4.96 + kExtenderOffset;
-    public static final double kExtenderHigh = 20.75 + kExtenderOffset;
+    public static final double kExtenderHigh = 26.5;
     public static final double kExtenderMid = 9.48;
     public static final double kExtenderLow = 3.46;
     public static final double kExtenderShelf = 4.60 + kExtenderOffset;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
-    public static final double kExtenderCeiling = 21 + 4.5; // starting + tail end offset - 2 inch margin
+    public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
-    // public static final double kExtenderLimit1 = kExtenderCeiling - kExtensionCap + 2; // 2 inches from soft limit offset
-    public static final double kExtenderLimit1 = kExtenderHardDeck;
+    public static final double kExtenderLimit1 = kExtenderLow; // 2 inches from soft limit offset
     // /** Keep extender claw-side within extension cap. */
     // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
@@ -104,7 +103,7 @@ public final class Constants {
     public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = 31.49;
     public static final double kElbowStation = 28.9;
-    public static final double kElbowHigh = 122.17;
+    public static final double kElbowHigh = 125;
     public static final double kElbowClimb = 131;
     public static final double kElbowMid = 97.713;
     /** This is for low reef, not ground/low pickup. */
