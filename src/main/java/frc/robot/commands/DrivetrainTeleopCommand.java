@@ -42,9 +42,10 @@ public class DrivetrainTeleopCommand extends Command {
         else if(PlayerConfigs.strafeRight || (PlayerConfigs.robotRelative && PlayerConfigs.snapRight)){
             Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
         }
-        else if(PlayerConfigs.strafeLeft || (PlayerConfigs.robotRelative && PlayerConfigs.snapRight)){
+        else if(PlayerConfigs.strafeLeft || (PlayerConfigs.robotRelative && PlayerConfigs.snapLeft)){
             Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
         }
+        // else if(PlayerConfigs.robotRelative) {} // Do nothing if robot relative is on and no input
         // Snap to angles
         else if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
         else if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);

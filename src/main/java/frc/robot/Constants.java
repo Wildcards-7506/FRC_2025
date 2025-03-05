@@ -81,12 +81,13 @@ public final class Constants {
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
     public static final double kExtenderStation = 3.16;
+    public static final double kExtenderStation = 3.16;
     public static final double kExtenderHigh = 26.5;
     public static final double kExtenderMid = 9.48;
     public static final double kExtenderLow = 3.46;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
-    public static final double kExtenderShelf = kExtenderStart - 2;
+    public static final double kExtenderShelf = kExtenderStart - 5;
     public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
@@ -100,9 +101,10 @@ public final class Constants {
     // Elbow limits
     // TODO: Measure the elbow offset from the horizontal position
     public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
-    public static final double kElbowHardDeck = 10;
+    public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = kElbowHardDeck;
     public static final double kElbowStation = 28.9;
+    public static final double kElbowHigh = 120;
     public static final double kElbowHigh = 120;
     public static final double kElbowClimb = 131;
     public static final double kElbowMid = 97.713;
