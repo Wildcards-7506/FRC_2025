@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
+import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.utils.Logger;
 
@@ -41,9 +42,7 @@ public class Crane extends SubsystemBase {
     public final SparkClosedLoopController wristPID;
     public double wristSetpoint;
     private double prevWristDirection = 0;
-    
-    private double prevWristDirection = 0;
-    
+        
     // Arm: Elbow and Extender
     
     // Elbow
@@ -186,9 +185,13 @@ public class Crane extends SubsystemBase {
 
     public void goToCraneState(CraneState state) {
         if(state == CraneState.CLIMB) {
+            Robot.led.rainbow();
             putCraneToClimbState();
         }
         if(state == CraneState.STATION) {
+            if(!PlayerConfigs.suckerIntake && !PlayerConfigs.suckerEject){
+                Robot.led.solid(0,0,0);
+            }
             setWristPosition(CraneConstants.kWristStation);
             // Move up with extender at start so that we don't retract into the frame if below station
             if(upToElbowPosition(CraneConstants.kElbowStation - 8, CraneConstants.kExtenderStart)) {
@@ -201,6 +204,9 @@ public class Crane extends SubsystemBase {
             }
         }
         if(state == CraneState.SHELF) {
+            if(!PlayerConfigs.suckerIntake && !PlayerConfigs.suckerEject){
+                Robot.led.solid(15,255,255);
+            }
             setWristPosition(CraneConstants.kWristShelf);
             if(downToElbowPosition(-CraneConstants.kElbowHorizonOffset - 10, CraneConstants.kExtenderLimit1)) {
                 if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderShelf)
@@ -212,6 +218,9 @@ public class Crane extends SubsystemBase {
             }
         }
         if(state == CraneState.LOW_REEF) {
+            if(!PlayerConfigs.suckerIntake && !PlayerConfigs.suckerEject){
+                Robot.led.solid(90,255,255);
+            }
             setWristPosition(CraneConstants.kWristLow);
             if(upToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)
                 && downToElbowPosition(CraneConstants.kElbowLow, CraneConstants.kExtenderLimit1)) {
@@ -221,6 +230,9 @@ public class Crane extends SubsystemBase {
             }
         }
         if(state == CraneState.MID_REEF) {
+            if(!PlayerConfigs.suckerIntake && !PlayerConfigs.suckerEject){
+                Robot.led.solid(120,255,255);
+            }
             setWristPosition(CraneConstants.kWristMid);
             if(upToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)
                 && downToElbowPosition(CraneConstants.kElbowMid, CraneConstants.kExtenderLimit1)) {
@@ -230,6 +242,9 @@ public class Crane extends SubsystemBase {
             }
         }
         if(state == CraneState.HIGH_REEF) {
+            if(!PlayerConfigs.suckerIntake && !PlayerConfigs.suckerEject){
+                Robot.led.solid(255,0,255);
+            }
             setWristPosition(CraneConstants.kWristHardDeck);
             if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
                 && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
@@ -333,22 +348,14 @@ public class Crane extends SubsystemBase {
      * @param volts The volts to spin the sucker motor, max around (+/-) 12 volts.
      */
     public void spinSucker(double volts) {
-        // suckerPID.setReference(velocity, ControlType.kVelocity);
         suckerMotor.setVoltage(volts);
     }
 
     /**
-     * Holds the sucker in place if it is not being ejected or intaked. Grabs position once and holds it.
+     * Runs sucker with small holding voltage if it is not being ejected or intaked.
      */
     public void holdSucker() {
-        if (!PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake && !prevHoldState) {
-            spinSucker(0);
-            suckerSetpoint = getSuckerPosition();
-            // System.out.println("SuckerSetpoint" + suckerSetpoint);
-        }
-        // prevHoldState = !PlayerConfigs.suckerEject && !PlayerConfigs.suckerIntake;
-        // suckerPID.setReference(suckerSetpoint, ControlType.kPosition);
-        spinSucker(0);
+        spinSucker(0.5);
     }
 
     /**
@@ -500,6 +507,10 @@ public class Crane extends SubsystemBase {
     /** Returns the angle of the sucker in degrees, CCW+. */
     public double getSuckerPosition() {
         return suckerMotor.getEncoder().getPosition();
+    }
+
+    public double getSuckerCurrent() {
+        return suckerMotor.getOutputCurrent();
     }
 
     public void intakeLog() {

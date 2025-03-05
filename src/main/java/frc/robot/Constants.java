@@ -81,7 +81,6 @@ public final class Constants {
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
     public static final double kExtenderStation = 3.16;
-    public static final double kExtenderStation = 3.16;
     public static final double kExtenderHigh = 26.5;
     public static final double kExtenderMid = 9.48;
     public static final double kExtenderLow = 3.46;
@@ -104,7 +103,6 @@ public final class Constants {
     public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = kElbowHardDeck;
     public static final double kElbowStation = 28.9;
-    public static final double kElbowHigh = 120;
     public static final double kElbowHigh = 120;
     public static final double kElbowClimb = 131;
     public static final double kElbowMid = 97.713;

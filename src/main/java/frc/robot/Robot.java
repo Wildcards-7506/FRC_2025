@@ -26,6 +26,7 @@ import frc.robot.players.drivers.TestController;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LED;
 import frc.robot.utils.Logger;
 
 /**
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
   public final static Drivetrain drivetrain = new Drivetrain();
   public final static Crane crane = new Crane();
   public final static Climber climber = new Climber();
+  public final static LED led = new LED(0,10);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -121,6 +123,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
+    led.rainbow();
   }
 
   /** This function is called once when teleop is enabled. */

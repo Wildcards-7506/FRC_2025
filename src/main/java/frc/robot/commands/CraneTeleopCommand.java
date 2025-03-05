@@ -40,8 +40,16 @@ public class CraneTeleopCommand extends Command {
         /** Sucker */
         if (PlayerConfigs.suckerIntake) {
             Robot.crane.spinSucker(CraneConstants.kSuckerIntake); // volts
+            if(Robot.crane.getSuckerCurrent() > 20){
+                System.out.println("Current High");
+                Robot.led.solidBlink(60,255,255);
+            } else {
+                System.out.println("Current Low");
+                Robot.led.solidBlink(30,255,255);
+            }
         } else if (PlayerConfigs.suckerEject) {
             Robot.crane.spinSucker(CraneConstants.kSuckerEject); // volts
+            Robot.led.solidBlink(0,255,255);
         } else {
             Robot.crane.holdSucker();
         }
@@ -52,6 +60,7 @@ public class CraneTeleopCommand extends Command {
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.3);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.3);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
+            Robot.led.solidBlink(150,255,255);
         } else {
             Robot.crane.goToCraneState(Robot.crane.craneState);
         }
