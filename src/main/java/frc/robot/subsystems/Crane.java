@@ -194,20 +194,25 @@ public class Crane extends SubsystemBase {
         }
         if(state == CraneState.STATION) {
             setWristPosition(CraneConstants.kWristStation);
+            // Move up with extender at start so that we don't retract into the frame if below station
+            if(upToElbowPosition(CraneConstants.kElbowStation - 8, CraneConstants.kExtenderStart)) {
             if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
                 && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
                 setWristPosition(CraneConstants.kWristStation);
                 setElbowPosition(CraneConstants.kElbowStation);
                 setExtenderPosition(CraneConstants.kExtenderStation);
+                }
             }
         }
         if(state == CraneState.SHELF) {
             setWristPosition(CraneConstants.kWristShelf);
-            if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
-                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+            if(downToElbowPosition(-CraneConstants.kElbowHorizonOffset - 10, CraneConstants.kExtenderLimit1)) {
+                if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderShelf)
+                   && upToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderShelf)) {
                 setWristPosition(CraneConstants.kWristShelf);
-                setElbowPosition(CraneConstants.kElbowStation);
-                setExtenderPosition(CraneConstants.kExtenderStation);
+                    setElbowPosition(CraneConstants.kElbowShelf);
+                    setExtenderPosition(CraneConstants.kExtenderShelf);
+                }
             }
         }
         if(state == CraneState.LOW_REEF) {
