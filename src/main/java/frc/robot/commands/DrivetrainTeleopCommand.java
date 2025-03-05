@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
-import frc.robot.commands.autonomous.commands.AutoAlign;
 import frc.robot.players.PlayerConfigs;
 
 public class DrivetrainTeleopCommand extends Command {
@@ -38,13 +37,15 @@ public class DrivetrainTeleopCommand extends Command {
         // When robotRelative is false, the robot will drive relative to the field's current heading
         // System.out.println(Robot.drivetrain.m_gyro.getAngle());
         if(joystickHasInput())
-            Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, !PlayerConfigs.robotRelative);
-        else if(PlayerConfigs.strafeRight){
+            // Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, !PlayerConfigs.robotRelative);
+            Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, true);
+        else if(PlayerConfigs.strafeRight || (PlayerConfigs.robotRelative && PlayerConfigs.snapRight)){
             Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
         }
-        else if(PlayerConfigs.strafeLeft){
+        else if(PlayerConfigs.strafeLeft || (PlayerConfigs.robotRelative && PlayerConfigs.snapLeft)){
             Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
         }
+        // else if(PlayerConfigs.robotRelative) {} // Do nothing if robot relative is on and no input
         // Snap to angles
         else if(PlayerConfigs.snapUp) Robot.drivetrain.snap(IOConstants.DPAD_UP);
         else if(PlayerConfigs.snapRight) Robot.drivetrain.snap(IOConstants.DPAD_RIGHT);
