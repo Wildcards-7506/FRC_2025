@@ -49,8 +49,8 @@ public class CraneTeleopCommand extends Command {
         updateCraneState();
         
         if(PlayerConfigs.fineControlCraneEnable) { // fine control
-            Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.1);
-            Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.1);
+            Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.3);
+            Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.3);
             Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
         } else {
             Robot.crane.goToCraneState(Robot.crane.craneState);

@@ -40,15 +40,16 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig wristConfig;
     public final SparkClosedLoopController wristPID;
     public double wristSetpoint;
-    // public boolean wristScoreState = false;
-
+    private double prevWristDirection = 0;
+    
     // Arm: Elbow and Extender
-
+    
     // Elbow
     private final SparkMax elbowMotor;
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
+    private double prevElbowDirection = 0;
     
     //Extender
     private final SparkMax extenderMotor;
@@ -194,20 +195,22 @@ public class Crane extends SubsystemBase {
         }
         if(state == CraneState.STATION) {
             setWristPosition(CraneConstants.kWristStation);
-            if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
-                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
-                setWristPosition(CraneConstants.kWristStation);
-                setElbowPosition(CraneConstants.kElbowStation);
-                setExtenderPosition(CraneConstants.kExtenderStation);
+            if(upToElbowPosition(CraneConstants.kElbowHardDeck + 5, CraneConstants.kExtenderStart)) {
+                if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
+                    && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                    setWristPosition(CraneConstants.kWristStation);
+                    setElbowPosition(CraneConstants.kElbowStation);
+                    setExtenderPosition(CraneConstants.kExtenderStation);
+                }
             }
         }
         if(state == CraneState.SHELF) {
             setWristPosition(CraneConstants.kWristShelf);
             if(downToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)
-                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
+                && upToElbowPosition(CraneConstants.kElbowShelf, CraneConstants.kExtenderLimit1)) {
                 setWristPosition(CraneConstants.kWristShelf);
-                setElbowPosition(CraneConstants.kElbowStation);
-                setExtenderPosition(CraneConstants.kExtenderStation);
+                setElbowPosition(CraneConstants.kElbowShelf);
+                setExtenderPosition(CraneConstants.kExtenderShelf);
             }
         }
         if(state == CraneState.LOW_REEF) {
@@ -325,6 +328,12 @@ public class Crane extends SubsystemBase {
     //     SmartDashboard.putNumber("Gripper Setpoint", setPoint);
     // }
     
+    /**
+     * This method spins the sucker motor based on voltage and the direction 
+     * provided by a sign (e.g. -12).
+     * 
+     * @param volts The volts to spin the sucker motor, max around (+/-) 12 volts.
+     */
     public void spinSucker(double volts) {
         // suckerPID.setReference(velocity, ControlType.kVelocity);
         suckerMotor.setVoltage(volts);
@@ -368,10 +377,12 @@ public class Crane extends SubsystemBase {
         /*
          * don't let integral accumulate if more than a few degrees away from setpoint
          */
-        if(Math.abs(getRelativeWristPos() - wristSetpoint) > 10
-           || Math.abs(getRelativeWristPos() - wristSetpoint) < 0.5) {
+        if(Math.abs(getRelativeWristPos() - wristSetpoint) > 10 ||
+           Math.abs(getRelativeWristPos() - wristSetpoint) < 1 ||
+           prevWristDirection != Math.signum(getRelativeWristPos() - wristSetpoint)) {
             wristPID.setIAccum(0.0);
         }
+        prevWristDirection = Math.signum(getRelativeWristPos() - wristSetpoint);
         setPoint = getElbowPosition() + wristSetpoint;
         wristPID.setReference(setPoint, ControlType.kPosition);
         SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
@@ -390,13 +401,17 @@ public class Crane extends SubsystemBase {
         /*
          * don't let integral accumulate if more than a few degrees away from setpoint
          */
-        if(Math.abs(getElbowPosition() - elbowSetpoint) > 10 || Math.abs(getElbowPosition() - elbowSetpoint) < 0.5) {
-            elbowPID.setIAccum(0.0);
+        if(Math.abs(getElbowPosition() - elbowSetpoint) > 10 ||
+           Math.abs(getElbowPosition() - elbowSetpoint) < 1 ||
+           prevElbowDirection != Math.signum(getRelativeWristPos() - elbowSetpoint)) {
+            wristPID.setIAccum(0.0);
+            System.out.println("Reset");
         }
+        prevElbowDirection = Math.signum(getRelativeWristPos() - elbowSetpoint);
         /*
          * Set this value to the voltage reading when crane is retracted and elbow is at horizon, like in mid / low reef
          */
-        double voltsAtMaxHorizon = 1.00; // 1.31 V calculated, try lower and build up
+        double voltsAtMaxHorizon = 1.0; // 1.31 V calculated, try lower and build up
         double voltsAtMinHorizon = 0.43; // 0.56 V calculated, try lower and build up
         double voltsInUse = 0.0;
 
@@ -409,8 +424,8 @@ public class Crane extends SubsystemBase {
         double counterGravityVolts = voltsInUse * Math.cos(Math.toRadians(angleFromHorizon));
 
         double appliedVoltageElbow = elbowMotor.getBusVoltage() * elbowMotor.getAppliedOutput();
-        System.out.format("Controller output: %8.5f V\tGravity counter: %8.5f V\tElbow from horizon: %8.5f deg\tExtender: %8.5f\n", 
-                           appliedVoltageElbow, counterGravityVolts, angleFromHorizon, extenderSetpoint); // confirm with REV Hardware Client, elbow canID 11
+        // System.out.format("Controller output: %8.5f V\tGravity counter: %8.5f V\tElbow from horizon: %8.5f deg\tExtender: %8.5f\n", 
+        //                    appliedVoltageElbow, counterGravityVolts, angleFromHorizon, extenderSetpoint); // confirm with REV Hardware Client, elbow canID 11
 
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, counterGravityVolts);
         SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);

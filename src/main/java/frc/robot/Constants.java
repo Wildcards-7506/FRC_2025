@@ -80,13 +80,13 @@ public final class Constants {
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
-    public static final double kExtenderStation = 4.96 + kExtenderOffset;
+    public static final double kExtenderStation = 3.16;
     public static final double kExtenderHigh = 26.5;
     public static final double kExtenderMid = 9.48;
     public static final double kExtenderLow = 3.46;
-    public static final double kExtenderShelf = 4.60 + kExtenderOffset;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
+    public static final double kExtenderShelf = kExtenderStart - 2;
     public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
@@ -99,11 +99,11 @@ public final class Constants {
 
     // Elbow limits
     // TODO: Measure the elbow offset from the horizontal position
-    public static final double kElbowHorizonOffset = -49.395763; // measured from horizontal position to resting angle
-    public static final double kElbowHardDeck = 15;
-    public static final double kElbowShelf = 31.49;
+    public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
+    public static final double kElbowHardDeck = 10;
+    public static final double kElbowShelf = kElbowHardDeck;
     public static final double kElbowStation = 28.9;
-    public static final double kElbowHigh = 125.70;
+    public static final double kElbowHigh = 120;
     public static final double kElbowClimb = 131;
     public static final double kElbowMid = 97.713;
     /** This is for low reef, not ground/low pickup. */
@@ -115,8 +115,8 @@ public final class Constants {
     public static final double kWristDiffFromOldSlack = 14; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
     public static final double kWristHigh = -105; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 16.8 + kWristDiffFromOldSlack;
-    public static final double kWristShelf = 95 + kWristDiffFromOldSlack;
+    public static final double kWristStation = 33.55;
+    public static final double kWristShelf = 30.8;
     public static final double kWristLow = 106;
     public static final double kWristMid = 100.2;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
