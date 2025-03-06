@@ -58,8 +58,8 @@ public abstract class PlayerConfigs {
     public static double fineControlWrist;
     public static double fineControlElbow;
     public static double fineControlExtender;
-    public static boolean climberActivate;
-    public static boolean climberDeactivate;
+    // public static boolean climberActivate; // Original purpose was to have setpoints that this steps through
+    // public static boolean climberDeactivate;
     
     public static boolean fineControlCraneEnable; // Fine control enable
     public static boolean fineControlClimberEnable; // Fine control enable

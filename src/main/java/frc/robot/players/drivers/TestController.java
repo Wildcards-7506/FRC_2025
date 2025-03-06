@@ -61,12 +61,13 @@ public class TestController extends PlayerConfigs {
         fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         fineControlRotator = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
         fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
-        climberActivate = Robot.controller1.getLeftBumperButton();
-        climberDeactivate = Robot.controller1.getRightBumperButton();
+        // climberActivate = Robot.controller1.getLeftBumperButton(); // Original purpose was to have setpoints that this steps through
+        // climberDeactivate = Robot.controller1.getRightBumperButton();
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
         
+        // 2 control schemes, switches when climberOnline is pressed on driver controller
         fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
         fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
     }
