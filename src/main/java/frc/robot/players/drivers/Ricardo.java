@@ -61,13 +61,13 @@ public class Ricardo extends PlayerConfigs {
         fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         fineControlRotator = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
         fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
-        climberActivate = Robot.controller1.getLeftStickButton();
-        climberDeactivate = Robot.controller1.getRightStickButton();
+        climberActivate = Robot.controller1.getLeftBumperButton();
+        climberDeactivate = Robot.controller1.getRightBumperButton();
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
         
         fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
-        fineControlClimberEnable = Robot.controller1.getRightBumperButton(); // Fine control enable
+        fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
     }
 }
