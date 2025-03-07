@@ -41,8 +41,8 @@ public final class Constants {
     public static final int EXTENDER = 12;
 
     // Climber: consists of rotator and extender
-    public static final int ROTATOR = 13;
-    public static final int ANCHOR = 14;
+    public static final int ANCHOR1 = 13;
+    public static final int ANCHOR2 = 14;
   }
 
   // Crane States
@@ -130,7 +130,7 @@ public final class Constants {
   public static final class ClimberConstants {
     // TODO: Placeholder values, replace with actual values
     public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
-    public static final double kAnchorEncoderDistancePerPulse = 360.0 * 1/4;
+    public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0;
 
     // Rotator limits
   // TODO: Placeholder values, replace with actual values
@@ -141,7 +141,7 @@ public final class Constants {
     // Anchor limits
   // TODO: Placeholder values, replace with actual values
     public static final double kAnchorHardDeck = 0.25;
-    public static final double kAnchorCeiling = 6.25; // inches
+    public static final double kAnchorCeiling = 4; // inches
   }
 
   public static final class IOConstants {

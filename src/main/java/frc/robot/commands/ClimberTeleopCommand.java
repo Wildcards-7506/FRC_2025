@@ -32,14 +32,14 @@ public class ClimberTeleopCommand extends Command {
         if(!Robot.climber.onClimberControl) return;
 
         if(PlayerConfigs.fineControlClimberEnable) { // fine control
-            Robot.climber.setRotatorPosition(Robot.climber.rotatorSetpoint + PlayerConfigs.fineControlRotator * 0.8);
+            // Robot.climber.setRotatorPosition(Robot.climber.rotatorSetpoint + PlayerConfigs.fineControlRotator * 0.8);
             // Robot.climber.setAnchorPosition(Robot.climber.anchorSetpoint + PlayerConfigs.fineControlAnchor * 0.1);
             Robot.climber.setAnchorVoltage(12 * PlayerConfigs.fineControlAnchor);
         }
 
         // SmartDashboard.putNumber("Climber State", Robot.climber.climberState);
         SmartDashboard.putBoolean("Climber FC", PlayerConfigs.fineControlClimberEnable);
-        SmartDashboard.putNumber("FC Rotator", PlayerConfigs.fineControlRotator);
+        // SmartDashboard.putNumber("FC Rotator", PlayerConfigs.fineControlRotator);
         SmartDashboard.putNumber("FC Anchor", PlayerConfigs.fineControlAnchor);
     }
         

@@ -19,50 +19,50 @@ public class Climber extends SubsystemBase {
     public boolean onClimberControl = false;
 
     // Rotator
-    private final SparkMax rotatorMotor;
-    private final SparkMaxConfig rotatorConfig;
-    public final SparkClosedLoopController rotatorPID;
-    public double rotatorSetpoint;
+    // private final SparkMax rotatorMotor;
+    // private final SparkMaxConfig rotatorConfig;
+    // public final SparkClosedLoopController rotatorPID;
+    // public double rotatorSetpoint;
     
     // Anchor
-    private final SparkMax anchorMotor;
+    private final SparkMax anchorMotor1;
+    private final SparkMax anchorMotor2;
     private final SparkMaxConfig anchorConfig;
-    public final SparkClosedLoopController anchorPID;
     public double anchorSetpoint;
 
     public Climber() {
         // Rotator
-        rotatorMotor = new SparkMax(CANIDS.ROTATOR, MotorType.kBrushless);
-        rotatorConfig = new SparkMaxConfig();
-        rotatorPID = rotatorMotor.getClosedLoopController();
+        // rotatorMotor = new SparkMax(CANIDS.ROTATOR, MotorType.kBrushless);
+        // rotatorConfig = new SparkMaxConfig();
+        // rotatorPID = rotatorMotor.getClosedLoopController();
 
         // Anchor
-        anchorMotor = new SparkMax(CANIDS.ANCHOR, MotorType.kBrushless);
+        anchorMotor1 = new SparkMax(CANIDS.ANCHOR1, MotorType.kBrushless);
+        anchorMotor2 = new SparkMax(CANIDS.ANCHOR2, MotorType.kBrushless);
         anchorConfig = new SparkMaxConfig();
-        anchorPID = anchorMotor.getClosedLoopController();
 
         // Configure setpoints
         // setRotatorPosition(ClimberConstants.kRotatorHardDeck);
         // setAnchorPosition(ClimberConstants.kAnchorHardDeck);
 
         // Set the PID coefficients
-        rotatorConfig
-            .smartCurrentLimit(80)
-            .idleMode(IdleMode.kBrake);
-        rotatorConfig.softLimit
-            .forwardSoftLimitEnabled(true)
-            .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimberConstants.kRotatorCeiling + 2)
-            .reverseSoftLimit(ClimberConstants.kRotatorHardDeck - 2);
-        rotatorConfig.encoder
-            .positionConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse)
-            .velocityConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse);
-        rotatorConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // TODO: PID values changed temporarily for testing
-            .pid(0.05, 0.0, 0.0);
+        // rotatorConfig
+        //     .smartCurrentLimit(80)
+        //     .idleMode(IdleMode.kBrake);
+        // rotatorConfig.softLimit
+        //     .forwardSoftLimitEnabled(true)
+        //     .reverseSoftLimitEnabled(true)
+        //     .forwardSoftLimit(ClimberConstants.kRotatorCeiling + 2)
+        //     .reverseSoftLimit(ClimberConstants.kRotatorHardDeck - 2);
+        // rotatorConfig.encoder
+        //     .positionConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse)
+        //     .velocityConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse);
+        // rotatorConfig.closedLoop
+        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //     // TODO: PID values changed temporarily for testing
+        //     .pid(0.05, 0.0, 0.0);
             
-        rotatorMotor.configure(rotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // rotatorMotor.configure(rotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         anchorConfig
             .smartCurrentLimit(100)
@@ -70,20 +70,18 @@ public class Climber extends SubsystemBase {
         anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(inchesToDegrees(ClimberConstants.kAnchorCeiling))
-            .reverseSoftLimit(inchesToDegrees(ClimberConstants.kAnchorHardDeck));
+            .forwardSoftLimit(ClimberConstants.kAnchorCeiling)
+            .reverseSoftLimit(ClimberConstants.kAnchorHardDeck);
         anchorConfig.encoder
-            .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse)
-            .velocityConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
+            .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
         anchorConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // TODO: PID values changed temporarily for testing
-            .pid(0.1, 0.0, 0.0);
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
             
-        anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        anchorMotor1.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        anchorMotor2.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         anchorSetpoint = getAnchorPosition();
-        rotatorSetpoint = getRotatorPosition();
+        // rotatorSetpoint = getRotatorPosition();
     }
 
     /**
@@ -91,66 +89,26 @@ public class Climber extends SubsystemBase {
      * 
      * @param setPoint The desired extension of the rotator in inches
      */
-    public void setRotatorPosition(double setPoint) {
-        rotatorSetpoint = filterSetPoint(setPoint, 
-                                       ClimberConstants.kRotatorHardDeck, 
-                                       ClimberConstants.kRotatorCeiling);
-        rotatorPID.setReference(rotatorSetpoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Rotator SetP", rotatorSetpoint);
-        SmartDashboard.putNumber("Rotator Pos", getRotatorPosition());
-    }
-
-    /**
-     * Sets the extension of the Anchor.
-     * 
-     * @param setPoint The desired extension of the Anchor in inches
-     */
-    // public void setAnchorPosition(double setPoint) {
-    //     // anchorSetpoint = filterSetPoint(setPoint, 
-    //     //                                ClimberConstants.kAnchorHardDeck, 
-    //     //                                ClimberConstants.kAnchorCeiling);
-    //     anchorSetpoint = setPoint;
-    //     setPoint = inchesToDegrees(anchorSetpoint);
-    //     anchorPID.setReference(setPoint, ControlType.kPosition);
-    //     SmartDashboard.putNumber("Anchor SetP", anchorSetpoint);
-    //     SmartDashboard.putNumber("Anchor Pos", getAnchorPosition());
+    // public void setRotatorPosition(double setPoint) {
+    //     rotatorSetpoint = filterSetPoint(setPoint, 
+    //                                    ClimberConstants.kRotatorHardDeck, 
+    //                                    ClimberConstants.kRotatorCeiling);
+    //     rotatorPID.setReference(rotatorSetpoint, ControlType.kPosition);
+    //     SmartDashboard.putNumber("Rotator SetP", rotatorSetpoint);
+    //     SmartDashboard.putNumber("Rotator Pos", getRotatorPosition());
     // }
 
     public void setAnchorVoltage(double volts) {
-        rotatorMotor.setVoltage(volts);
-        SmartDashboard.putNumber("Anchor SetP", volts);
+        anchorMotor1.setVoltage(volts);
+        anchorMotor2.setVoltage(volts);
         SmartDashboard.putNumber("Anchor Pos", getAnchorPosition());
     }
 
-    public double getRotatorPosition() {
-        return rotatorMotor.getEncoder().getPosition();
-    }
+    // public double getRotatorPosition() {
+    //     return rotatorMotor.getEncoder().getPosition();
+    // }
 
     public double getAnchorPosition() {
-        return degreesToInches(anchorMotor.getEncoder().getPosition());
-    }
-    
-    /**
-     * Returns the ceiling if the setpoint is above it, or the hard deck if the setpoint is below it.
-     * Otherwise, returns the setpoint.
-     * 
-     * @param setPoint The desired state of the crane.
-     * @param hardDeck The hard deck of the crane.
-     */
-    private double filterSetPoint(double setPoint, double hardDeck, double ceiling) {
-        if(setPoint < hardDeck)
-            setPoint = hardDeck;
-        if(setPoint > ceiling)
-            setPoint = ceiling;
-        return setPoint;
-    }
-
-    // TODO: Figure out conversion ratio in-person
-    private double inchesToDegrees(double inches) {
-        return inches * (8 * 360); // rotations to get extension on the 
-    }
-
-    private double degreesToInches(double degrees) {
-        return degrees / (8 * 360);
+        return anchorMotor1.getEncoder().getPosition();
     }
 }
