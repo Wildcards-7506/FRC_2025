@@ -148,7 +148,7 @@ public class Drivetrain extends SubsystemBase {
    * 
    * @param angle The desired angle in degrees.
    */
-  public void snap(double angle) {
+  public void snap(double xSpeed, double ySpeed, double angle) {
     // If alliance color is red then add 180 to the angle then subtract 360 if the angle is greater than 180
     // Default color is blue, so 0 is up, then clockwise, 90 is right, 180 is down, 270/-90 is left
     if (Robot.teamColor.get() == Alliance.Red) {
@@ -156,10 +156,7 @@ public class Drivetrain extends SubsystemBase {
     }
     if (angle > 180) angle -= 360;
     if (angle < -180) angle += 360;
-    angle = -angle; // DPAD is CW positive, but robot is CCW positive
-    SwerveModuleState[] targetStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
-        ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, Rotation2d.fromDegrees(angle)));
-    setStates(targetStates);
+    drive(xSpeed, ySpeed, 0.5 * (getHeading() - angle), true);
   }
 
   public void setStates(SwerveModuleState[] targetStates) {
