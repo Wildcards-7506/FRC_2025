@@ -35,7 +35,6 @@ public class DrivetrainTeleopCommand extends Command {
         // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
         // When robotRelative is true, the robot will drive relative to the robot's current heading
         // When robotRelative is false, the robot will drive relative to the field's current heading
-        // System.out.println(Robot.drivetrain.m_gyro.getAngle());
         if(joystickHasInput())
             // Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, !PlayerConfigs.robotRelative);
             Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, true);

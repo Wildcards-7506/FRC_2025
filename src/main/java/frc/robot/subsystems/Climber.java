@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -59,7 +57,7 @@ public class Climber extends SubsystemBase {
         //     .velocityConversionFactor(ClimberConstants.kRotatorEncoderDistancePerPulse);
         // rotatorConfig.closedLoop
         //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        //     // TODO: PID values changed temporarily for testing
+        //     // !!! PID values changed temporarily for testing
         //     .pid(0.05, 0.0, 0.0);
             
         // rotatorMotor.configure(rotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

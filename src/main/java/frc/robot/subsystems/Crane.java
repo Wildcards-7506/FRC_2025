@@ -63,7 +63,7 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig suckerConfig;
     public final SparkClosedLoopController suckerPID;
     public double suckerSetpoint;
-    private boolean prevHoldState = false; // used to grab position once for holding sucker in place
+    // private boolean prevHoldState = false; // used to grab position once for holding sucker in place
     
     public Crane() {
         // feedforward = new ArmFeedforward(CraneConstants.kSVolts, 
@@ -449,7 +449,6 @@ public class Crane extends SubsystemBase {
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        // System.out.println("Extender input: " + setPoint);
         SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
         SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }

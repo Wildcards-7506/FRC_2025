@@ -34,7 +34,6 @@ public class ClimberTeleopCommand extends Command {
         }
 
         SmartDashboard.putBoolean("CLIMBER DISABLED", false);
-        System.out.println(PlayerConfigs.fineControlClimberEnable);
         
         if(PlayerConfigs.fineControlClimberEnable) { // fine control
             System.out.println("CLIMBER ACTIVE");

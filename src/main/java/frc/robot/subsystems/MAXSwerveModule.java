@@ -114,7 +114,6 @@ public class MAXSwerveModule {
    * @param mode Brake or coast mode.
    */
   public void idleModule(IdleMode mode) {
-    // TODO: Check if idleModule works
     m_drivingSpark.configure(Configs.MAXSwerveModule.drivingConfig.idleMode(mode), 
                              ResetMode.kResetSafeParameters, 
                              PersistMode.kPersistParameters);

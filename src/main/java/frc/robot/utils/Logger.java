@@ -22,8 +22,6 @@ public class Logger{
 
     // Singleton instance
     private static Logger instance = new Logger();
-
-    // TODO: May want to convert to BufferedWrtier for efficiency.
     private FileWriter writer;
     private int id = 100000;
     private boolean empty = true;

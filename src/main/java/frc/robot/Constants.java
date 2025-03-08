@@ -58,8 +58,7 @@ public final class Constants {
 
   public static final class CraneConstants{
     // Arm Feedforward constants
-    // TODO: Tune kSVolts by looking at how much voltage is required to move the arm a smidge above where it starts
-    public static double kSVolts = 0.0; // Volts
+    // public static double kSVolts = 0.0; // Volts
     public static final double kGVolts = 1.74; // Volts
     public static final double kVVoltSecsPerDeg = 2.44 * Math.PI / 180.0; // V*s/rad to V*s/deg
     public static final double kAVoltSecsSquaredPerDeg = 0.16 * Math.PI / 180.0; // V*s^2/rad to V*s^2/deg
@@ -91,14 +90,12 @@ public final class Constants {
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
     public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
-    // TODO: Verify that measurement from butt of extender to extention limit is 17 inches, if not add offset
     /** Keep extender butt-side within extension cap. */
     public static final double kExtenderLimit1 = kExtenderLow; // 2 inches from soft limit offset
     // /** Keep extender claw-side within extension cap. */
     // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
-    // TODO: Measure the elbow offset from the horizontal position
     public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = kElbowHardDeck;
@@ -128,19 +125,15 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    // TODO: Placeholder values, replace with actual values
     public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
     // public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0;
     public static final double kAnchorEncoderDistancePerPulse = 1.0/9.0 * (3.0/4.0)/8.0;
 
     // Rotator limits
-  // TODO: Placeholder values, replace with actual values
     public static final double kRotatorHardDeck = -10;
     public static final double kRotatorCeiling = 135;
-    // public static final double kRotatorCeiling = 110;
 
     // Anchor limits
-  // TODO: Placeholder values, replace with actual values
     public static final double kAnchorHardDeck = 0.25;
 
     public static final double kAnchorCeiling = 8; // inches
