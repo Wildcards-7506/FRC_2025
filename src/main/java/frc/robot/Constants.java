@@ -120,7 +120,7 @@ public final class Constants {
 
     // Sucker limits
     public static final double kSuckerIntake = 8;
-    public static final double kSuckerEject = -8;
+    public static final double kSuckerEject = -12;
     public static final double kSuckerHold = 0;
   }
 
