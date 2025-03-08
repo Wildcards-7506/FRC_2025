@@ -59,7 +59,7 @@ public class CraneTeleopCommand extends Command {
         if(PlayerConfigs.fineControlCraneEnable) { // fine control
             Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.3);
             Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.3);
-            Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
+            // Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
             Robot.led.solidBlink(150,255,255);
         } else {
             Robot.crane.goToCraneState(Robot.crane.craneState);
@@ -69,7 +69,7 @@ public class CraneTeleopCommand extends Command {
         SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
         SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
         SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
-        SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
+        // SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
     }
     
     /**
@@ -97,8 +97,8 @@ public class CraneTeleopCommand extends Command {
             if(Robot.crane.craneState != craneState) {
                 Robot.crane.craneState = craneState;
             } else {
-                // Robot.crane.craneState = CraneState.STOW;
-                Robot.crane.craneState = CraneState.STATION;
+                Robot.crane.craneState = CraneState.STOW;
+                // Robot.crane.craneState = CraneState.STATION;
             }
         }
         return buttonPressed;

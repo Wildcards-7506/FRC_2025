@@ -48,7 +48,7 @@ public final class Constants {
   // Crane States
   public enum CraneState {
     CLIMB,
-    // STOW,
+    STOW,
     STATION,
     SHELF,
     LOW_REEF,
@@ -79,13 +79,13 @@ public final class Constants {
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
-    public static final double kExtenderStation = 3.16;
+    public static final double kExtenderStation = 5.16;
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
-    public static final double kExtenderShelf = kExtenderStart - 5 - 6;
+    public static final double kExtenderShelf = 5.16;
     public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
@@ -96,15 +96,16 @@ public final class Constants {
     // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
-    public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
-    public static final double kElbowHardDeck = 15;
-    public static final double kElbowShelf = kElbowHardDeck;
-    public static final double kElbowStation = 31;
-    public static final double kElbowHigh = 136.104;
-    public static final double kElbowClimb = 131;
-    public static final double kElbowMid = 105.033;
+    public static final double kElbowPlatformOffset = -0; // degrees
+    public static final double kElbowHorizonOffset = -51 - kElbowPlatformOffset; // measured from horizontal position to resting angle
+    public static final double kElbowHardDeck = 0;
+    public static final double kElbowShelf = 32;
+    public static final double kElbowStation = 32 + kElbowPlatformOffset;
+    public static final double kElbowHigh = 136.104 + kElbowPlatformOffset;
+    public static final double kElbowClimb = 131 + kElbowPlatformOffset;
+    public static final double kElbowMid = 105.033 + kElbowPlatformOffset;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 73.571;
+    public static final double kElbowLow = 73.571 + kElbowPlatformOffset;
     // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowClimb + 10;
 
@@ -112,14 +113,14 @@ public final class Constants {
     public static final double kWristDiffFromOldSlack = 14; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
     public static final double kWristHigh = -113.64; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 31;
-    public static final double kWristShelf = 30.8;
+    public static final double kWristStation = 16;
+    public static final double kWristShelf = 90;
     public static final double kWristLow = 106;
     public static final double kWristMid = 97.817;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
 
     // Sucker limits
-    public static final double kSuckerIntake = 8;
+    public static final double kSuckerIntake = 6;
     public static final double kSuckerEject = -12;
     public static final double kSuckerHold = 0;
   }
@@ -127,7 +128,7 @@ public final class Constants {
   public static final class ClimberConstants {
     public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
     // public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0;
-    public static final double kAnchorEncoderDistancePerPulse = 1.0/9.0 * (3.0/4.0)/8.0;
+    public static final double kAnchorEncoderDistancePerPulse = 1.0/5.0 * (3.0/4.0)/8.0;
 
     // Rotator limits
     public static final double kRotatorHardDeck = -10;

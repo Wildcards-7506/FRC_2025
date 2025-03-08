@@ -23,7 +23,7 @@ import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
     // Crane vars
-    public CraneState craneState = CraneState.STATION; // stow is the starting configuration
+    public CraneState craneState = CraneState.STOW; // stow is the starting configuration
     // private ArmFeedforward feedforward;
     /** Degree of angleMargin so that the crane can progress to the next position. */
     private double angleMargin = 8;
@@ -250,16 +250,14 @@ public class Crane extends SubsystemBase {
                 setExtenderPosition(CraneConstants.kExtenderHigh);
             }
         }
-        // if(state == CraneState.STOW) {
-        //     // If we want to go to elbow pause, we must retract extender
-        //     setWristPosition(CraneConstants.kWristHardDeck);
-        //     if(downToElbowPosition(CraneConstants.kElbowHardDeck, CraneConstants.kExtenderLimit1)) {
-        //         // If elbow is at hard deck, then we slightly retract the extender for stability
-        //         setWristPosition(CraneConstants.kWristHardDeck);
-        //         setElbowPosition(CraneConstants.kElbowHardDeck);
-        //         setExtenderPosition(CraneConstants.kExtenderStart);
-        //     }
-        // }
+        if(state == CraneState.STOW) {
+            setWristPosition(CraneConstants.kWristHardDeck);
+            if(downToElbowPosition(CraneConstants.kElbowHardDeck + 10, CraneConstants.kExtenderLimit1)) {
+                setWristPosition(CraneConstants.kWristHardDeck);
+                setElbowPosition(CraneConstants.kElbowHardDeck);
+                setExtenderPosition(CraneConstants.kExtenderStart - 1);
+            }
+        }
     }
 
     /**
@@ -280,7 +278,7 @@ public class Crane extends SubsystemBase {
         SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
         SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
         SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
-        SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
+        // SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
     }
 
     /**
