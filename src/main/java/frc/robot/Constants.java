@@ -102,7 +102,7 @@ public final class Constants {
     public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = kElbowHardDeck;
-    public static final double kElbowStation = 28.9;
+    public static final double kElbowStation = 33.6;
     public static final double kElbowHigh = 120;
     public static final double kElbowClimb = 131;
     public static final double kElbowMid = 97.713;
@@ -130,7 +130,8 @@ public final class Constants {
   public static final class ClimberConstants {
     // TODO: Placeholder values, replace with actual values
     public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
-    public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0;
+    // public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0;
+    public static final double kAnchorEncoderDistancePerPulse = 1.0/9.0 * (3.0/4.0)/8.0;
 
     // Rotator limits
   // TODO: Placeholder values, replace with actual values
@@ -141,7 +142,8 @@ public final class Constants {
     // Anchor limits
   // TODO: Placeholder values, replace with actual values
     public static final double kAnchorHardDeck = 0.25;
-    public static final double kAnchorCeiling = 4; // inches
+
+    public static final double kAnchorCeiling = 8; // inches
   }
 
   public static final class IOConstants {

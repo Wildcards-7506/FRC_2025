@@ -164,7 +164,6 @@ public class Crane extends SubsystemBase {
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         suckerConfig
-            .inverted(true)
             .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
         suckerConfig.encoder
@@ -194,13 +193,11 @@ public class Crane extends SubsystemBase {
             }
             setWristPosition(CraneConstants.kWristStation);
             // Move up with extender at start so that we don't retract into the frame if below station
-            if(upToElbowPosition(CraneConstants.kElbowStation - 8, CraneConstants.kExtenderStart)) {
-                if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
-                    && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)) {
-                    setWristPosition(CraneConstants.kWristStation);
-                    setElbowPosition(CraneConstants.kElbowStation);
-                    setExtenderPosition(CraneConstants.kExtenderStation);
-                }
+            if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
+                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderStart)) {
+                setWristPosition(CraneConstants.kWristStation);
+                setElbowPosition(CraneConstants.kElbowStation);
+                setExtenderPosition(CraneConstants.kExtenderStation);
             }
         }
         if(state == CraneState.SHELF) {
@@ -272,10 +269,10 @@ public class Crane extends SubsystemBase {
         // This sets the crane to the climb state only if this method is called
         craneState = CraneState.CLIMB; // climb state
         setWristPosition(CraneConstants.kWristHardDeck);
-        if(upToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)
-           && downToElbowPosition(CraneConstants.kElbowHigh, CraneConstants.kExtenderLimit1)) {
-            setWristPosition(CraneConstants.kWristHigh-30);
-            setElbowPosition(CraneConstants.kElbowHigh);
+        if(upToElbowPosition(CraneConstants.kElbowClimb, CraneConstants.kExtenderLimit1)
+           && downToElbowPosition(CraneConstants.kElbowClimb, CraneConstants.kExtenderLimit1)) {
+            setWristPosition(CraneConstants.kWristHigh);
+            setElbowPosition(CraneConstants.kElbowClimb);
             setExtenderPosition(CraneConstants.kExtenderHardDeck);
         }
         
@@ -355,7 +352,7 @@ public class Crane extends SubsystemBase {
      * Runs sucker with small holding voltage if it is not being ejected or intaked.
      */
     public void holdSucker() {
-        spinSucker(0.5);
+        spinSucker(0);
     }
 
     /**
