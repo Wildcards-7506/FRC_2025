@@ -115,7 +115,7 @@ public final class Constants {
     public static final double kWristDiffFromOldSlack = 14; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
     public static final double kWristHigh = -113.64; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 33.55;
+    public static final double kWristStation = 31;
     public static final double kWristShelf = 30.8;
     public static final double kWristLow = 106;
     public static final double kWristMid = 97.817;
