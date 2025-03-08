@@ -97,8 +97,8 @@ public final class AutoRoutines {
     NamedCommands.registerCommand("AutoCraneHighReef", new AutoCraneHighReef());
     NamedCommands.registerCommand("AutoAlignLeft", new AutoAlign(Robot.drivetrain, true));
     NamedCommands.registerCommand("AutoAlignRight", new AutoAlign(Robot.drivetrain, false));
-    NamedCommands.registerCommand("AutoSuckerSuck", new AutoSpinSucker(1, CraneConstants.kSuckerIntake));
-    NamedCommands.registerCommand("AutoSuckerEject", new AutoSpinSucker(1, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoSuckerSuck", new AutoSpinSucker(0.5, CraneConstants.kSuckerIntake));
+    NamedCommands.registerCommand("AutoSuckerEject", new AutoSpinSucker(0.5, CraneConstants.kSuckerEject));
   }
 
       /**

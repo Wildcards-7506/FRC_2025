@@ -186,7 +186,7 @@ public final class Constants {
     public static final int RIGHT_JOYSTICK_BUTTON = 12;
 
     // Thresholds
-    public static final double XY_DEADBAND = 0.1;
+    public static final double XY_DEADBAND = 0.05;
     public static final double TRIGGER_DEADBAND = 0.2;
   }
 

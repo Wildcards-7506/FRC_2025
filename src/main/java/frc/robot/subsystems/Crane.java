@@ -271,7 +271,7 @@ public class Crane extends SubsystemBase {
         setWristPosition(CraneConstants.kWristHardDeck);
         if(upToElbowPosition(CraneConstants.kElbowClimb, CraneConstants.kExtenderLimit1)
            && downToElbowPosition(CraneConstants.kElbowClimb, CraneConstants.kExtenderLimit1)) {
-            setWristPosition(CraneConstants.kWristHigh);
+            setWristPosition(CraneConstants.kWristHigh-30);
             setElbowPosition(CraneConstants.kElbowClimb);
             setExtenderPosition(CraneConstants.kExtenderHardDeck);
         }

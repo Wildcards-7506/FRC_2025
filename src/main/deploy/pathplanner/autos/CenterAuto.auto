@@ -27,12 +27,6 @@
           "data": {
             "pathName": "CenterEnd"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneStation"
-          }
         }
       ]
     }

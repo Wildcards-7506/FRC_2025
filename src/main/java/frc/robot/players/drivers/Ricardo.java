@@ -9,11 +9,11 @@ public class Ricardo extends PlayerConfigs {
     public void getDriverConfig() {
         // Constants
         fullTurnSpeed = 0.40;
-        fullDriveSpeed = 0.30;
-        boostTurnSpeed = 1;
+        fullDriveSpeed = 0.80;
+        fineTurnSpeed = 0.3;
+        fineDriveSpeed = 0.3;
         boostDriveSpeed = 1;
-        fineTurnSpeed = 0.1;
-        fineDriveSpeed = 0.1;
+        boostTurnSpeed = 1;
         
         // Driving and rotation
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
@@ -61,8 +61,6 @@ public class Ricardo extends PlayerConfigs {
         fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
         fineControlRotator = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
         fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
-        // climberActivate = Robot.controller1.getLeftBumperButton(); // Original purpose was to have setpoints that this steps through
-        // climberDeactivate = Robot.controller1.getRightBumperButton();
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;

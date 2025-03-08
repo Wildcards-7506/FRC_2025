@@ -28,7 +28,7 @@ public class DrivetrainTeleopCommand extends Command {
         }
 
         // Joystick Inputs
-        xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
+        xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement) ;
         yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
         inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
 

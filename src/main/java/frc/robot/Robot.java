@@ -22,7 +22,7 @@ import frc.robot.commands.DrivetrainTeleopCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.players.drivers.Ricardo;
-import frc.robot.players.drivers.TestController;
+import frc.robot.players.drivers.Dessie;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
   public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
   public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
   public static PlayerConfigs ricardo = new Ricardo();
-  public static PlayerConfigs test = new TestController();
+  public static PlayerConfigs dessie = new Dessie();
 
   // Subsystems
   public final static Drivetrain drivetrain = new Drivetrain();
@@ -73,10 +73,10 @@ public class Robot extends TimedRobot {
 
     // // Driver choosers
     driver_chooser.setDefaultOption("Ricardo", ricardo);
-    driver_chooser.addOption("Test", test);       
+    driver_chooser.addOption("Dessie", dessie);       
 
     // Operator choosers
-    operator_chooser.setDefaultOption("Test", test);
+    operator_chooser.setDefaultOption("Dessie", dessie);
     operator_chooser.addOption("Ricardo", ricardo);
 
     // Put the choosers on the dashboard
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    led.rainbow();
+    led.allianceFlow();
   }
 
   /** This function is called once when test mode is enabled. */
