@@ -164,7 +164,7 @@ public class Crane extends SubsystemBase {
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         suckerConfig
-            .smartCurrentLimit(40)
+            .smartCurrentLimit(25)
             .idleMode(IdleMode.kBrake);
         suckerConfig.encoder
             .positionConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse)

@@ -85,7 +85,7 @@ public final class Constants {
     public static final double kExtenderLow = 3.46;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
-    public static final double kExtenderShelf = kExtenderStart - 5;
+    public static final double kExtenderShelf = kExtenderStart - 5 - 6;
     public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
