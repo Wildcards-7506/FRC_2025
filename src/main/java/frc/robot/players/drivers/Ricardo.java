@@ -9,9 +9,9 @@ public class Ricardo extends PlayerConfigs {
     public void getDriverConfig() {
         // Constants
         fullTurnSpeed = 0.40;
-        fullDriveSpeed = 0.80;
+        fullDriveSpeed = 0.40;
         fineTurnSpeed = 0.3;
-        fineDriveSpeed = 0.3;
+        fineDriveSpeed = 0.1;
         boostDriveSpeed = 1;
         boostTurnSpeed = 1;
         

@@ -10,10 +10,10 @@ public class Dessie extends PlayerConfigs {
         // Constants
         fullTurnSpeed = 0.40;
         fullDriveSpeed = 0.30;
-        boostTurnSpeed = 1;
-        boostDriveSpeed = 1;
         fineTurnSpeed = 0.3;
-        fineDriveSpeed = 0.3;
+        fineDriveSpeed = 0.1;
+        boostDriveSpeed = 1;
+        boostTurnSpeed = 1;
         
         // Driving and rotation
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());

@@ -102,7 +102,7 @@ public final class Constants {
     public static final double kElbowHorizonOffset = -51; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = kElbowHardDeck;
-    public static final double kElbowStation = 33.6;
+    public static final double kElbowStation = 31;
     public static final double kElbowHigh = 136.104;
     public static final double kElbowClimb = 131;
     public static final double kElbowMid = 105.033;
@@ -122,8 +122,8 @@ public final class Constants {
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
 
     // Sucker limits
-    public static final double kSuckerIntake = 12;
-    public static final double kSuckerEject = -12;
+    public static final double kSuckerIntake = 8;
+    public static final double kSuckerEject = -8;
     public static final double kSuckerHold = 0;
   }
 

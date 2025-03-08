@@ -21,12 +21,6 @@
           "data": {
             "name": "AutoSuckerEject"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterEnd"
-          }
         }
       ]
     }
