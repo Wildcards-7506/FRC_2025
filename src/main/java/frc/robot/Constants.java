@@ -81,8 +81,8 @@ public final class Constants {
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
     public static final double kExtenderStation = 3.16;
-    public static final double kExtenderHigh = 26.5;
-    public static final double kExtenderMid = 9.48;
+    public static final double kExtenderHigh = 26.044;
+    public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
@@ -103,22 +103,22 @@ public final class Constants {
     public static final double kElbowHardDeck = 15;
     public static final double kElbowShelf = kElbowHardDeck;
     public static final double kElbowStation = 33.6;
-    public static final double kElbowHigh = 120;
+    public static final double kElbowHigh = 136.104;
     public static final double kElbowClimb = 131;
-    public static final double kElbowMid = 97.713;
+    public static final double kElbowMid = 105.033;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 66.65;
+    public static final double kElbowLow = 73.571;
     // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowClimb + 10;
 
     // Wrist limits
     public static final double kWristDiffFromOldSlack = 14; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
-    public static final double kWristHigh = -105; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
+    public static final double kWristHigh = -113.64; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 33.55;
     public static final double kWristShelf = 30.8;
     public static final double kWristLow = 106;
-    public static final double kWristMid = 100.2;
+    public static final double kWristMid = 97.817;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
 
     // Sucker limits
