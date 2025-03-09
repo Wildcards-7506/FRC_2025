@@ -27,7 +27,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LED;
-import frc.robot.utils.Logger;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -65,9 +64,7 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {
-    Logger.info("SYSTEM","Robot Started");
-    
+  public Robot() {    
     //Auto Chooser
     autoMode = new AutoRoutines();
 
@@ -108,7 +105,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Logger.info("SYSTEM","Autonomous Program Started");
     CommandScheduler.getInstance().cancelAll();
 
     // Set robot state
@@ -129,7 +125,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Logger.info("SYSTEM","Teleop Started");
     CommandScheduler.getInstance().cancelAll();
 
     // Get the selected drivers
@@ -157,8 +152,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Logger.info("SYSTEM", "Robot Disabled");
-    Logger.flush();
     CommandScheduler.getInstance().cancelAll();
     drivetrain.idleSwerve(IdleMode.kCoast);
   }
@@ -172,7 +165,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    Logger.info("SYSTEM","Test Program Started");
     CommandScheduler.getInstance().cancelAll();
     driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();

@@ -19,7 +19,6 @@ import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
-import frc.robot.utils.Logger;
 
 public class Crane extends SubsystemBase {
     // Crane vars
@@ -27,7 +26,7 @@ public class Crane extends SubsystemBase {
     // private ArmFeedforward feedforward;
     /** Degree of angleMargin so that the crane can progress to the next position. */
     private double angleMargin = 8;
-    private double extensionMargin = 0.5;
+    private double extensionMargin = 2;
 
     // Gripper
     // private final SparkMax gripperMotor;
@@ -164,7 +163,7 @@ public class Crane extends SubsystemBase {
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         suckerConfig
-            .smartCurrentLimit(25)
+            .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
         suckerConfig.encoder
             .positionConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse)
@@ -194,7 +193,7 @@ public class Crane extends SubsystemBase {
             setWristPosition(CraneConstants.kWristStation);
             // Move up with extender at start so that we don't retract into the frame if below station
             if(downToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderLimit1)
-                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderStart)) {
+                && upToElbowPosition(CraneConstants.kElbowStation, CraneConstants.kExtenderStow)) {
                 setWristPosition(CraneConstants.kWristStation);
                 setElbowPosition(CraneConstants.kElbowStation);
                 setExtenderPosition(CraneConstants.kExtenderStation);
@@ -255,7 +254,7 @@ public class Crane extends SubsystemBase {
             if(downToElbowPosition(CraneConstants.kElbowHardDeck + 10, CraneConstants.kExtenderLimit1)) {
                 setWristPosition(CraneConstants.kWristHardDeck);
                 setElbowPosition(CraneConstants.kElbowHardDeck);
-                setExtenderPosition(CraneConstants.kExtenderStart - 1);
+                setExtenderPosition(CraneConstants.kExtenderStow);
             }
         }
     }
@@ -505,16 +504,5 @@ public class Crane extends SubsystemBase {
 
     public double getSuckerCurrent() {
         return suckerMotor.getOutputCurrent();
-    }
-
-    public void intakeLog() {
-        Logger.info("ELBOW", Double.toString(getElbowPosition()) + " Actual Degrees -> " + Double.toString(elbowSetpoint) + " Target Degrees");
-        Logger.info("EXTENDER", Double.toString(getExtenderPosition()) + " Actual Inches -> " + Double.toString(extenderSetpoint) + " Target Inches");
-        Logger.info("WRIST", Double.toString(getRelativeWristPos()) + " Actual Degrees -> " + Double.toString(wristSetpoint) + " Target Degrees");
-        // Logger.info("GRIPPER", Double.toString(getGripperPosition()) + " Actual Degrees -> " + Double.toString(gripperSetpoint) + " Target Degrees");
-        if(elbowMotor.getFaults().rawBits != 0) Logger.warn("ELBOW: " + elbowMotor.getFaults().toString());
-        if(extenderMotor.getFaults().rawBits != 0) Logger.warn("EXTENDER: " + extenderMotor.getFaults().toString());
-        if(wristMotor.getFaults().rawBits != 0) Logger.warn("WRIST: " + wristMotor.getFaults().toString());
-        // if(gripperMotor.getFaults().rawBits != 0) Logger.warn("GRIPPER: " + gripperMotor.getFaults().toString());
     }
 }

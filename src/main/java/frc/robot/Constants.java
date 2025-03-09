@@ -85,6 +85,7 @@ public final class Constants {
     public static final double kExtenderLow = 3.46;
     // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
+    public static final double kExtenderStow = 20;
     public static final double kExtenderShelf = 5.16;
     public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
@@ -98,7 +99,7 @@ public final class Constants {
     // Elbow limits
     public static final double kElbowPlatformOffset = -0; // degrees
     public static final double kElbowHorizonOffset = -51 - kElbowPlatformOffset; // measured from horizontal position to resting angle
-    public static final double kElbowHardDeck = 0;
+    public static final double kElbowHardDeck = 5;
     public static final double kElbowShelf = 32;
     public static final double kElbowStation = 32 + kElbowPlatformOffset;
     public static final double kElbowHigh = 136.104 + kElbowPlatformOffset;
@@ -114,7 +115,7 @@ public final class Constants {
     public static final double kWristHigh = -113.64; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 16;
-    public static final double kWristShelf = 90;
+    public static final double kWristShelf = 70;
     public static final double kWristLow = 106;
     public static final double kWristMid = 97.817;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.

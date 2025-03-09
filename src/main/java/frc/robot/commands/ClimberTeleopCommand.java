@@ -36,7 +36,7 @@ public class ClimberTeleopCommand extends Command {
         SmartDashboard.putBoolean("CLIMBER DISABLED", false);
         
         if(PlayerConfigs.fineControlClimberEnable) { // fine control
-            System.out.println("CLIMBER ACTIVE");
+            // System.out.println("CLIMBER ACTIVE");
             // Robot.climber.setRotatorPosition(Robot.climber.rotatorSetpoint + PlayerConfigs.fineControlRotator * 0.8);
             // Robot.climber.setAnchorPosition(Robot.climber.anchorSetpoint + PlayerConfigs.fineControlAnchor * 0.1);
             SmartDashboard.putNumber("CLIMBER CONTROL", PlayerConfigs.fineControlAnchor);

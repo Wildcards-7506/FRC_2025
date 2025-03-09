@@ -11,7 +11,7 @@ public class Ricardo extends PlayerConfigs {
         fullTurnSpeed = 0.40;
         fullDriveSpeed = 0.40;
         fineTurnSpeed = 0.3;
-        fineDriveSpeed = 0.1;
+        fineDriveSpeed = 0.2;
         boostDriveSpeed = 1;
         boostTurnSpeed = 1;
         

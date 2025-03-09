@@ -41,10 +41,10 @@ public class CraneTeleopCommand extends Command {
         if (PlayerConfigs.suckerIntake) {
             Robot.crane.spinSucker(CraneConstants.kSuckerIntake); // volts
             if(Robot.crane.getSuckerCurrent() > 20){
-                System.out.println("Current High");
+                // System.out.println("Current High");
                 Robot.led.solid(60,255,255);
             } else {
-                System.out.println("Current Low");
+                // System.out.println("Current Low");
                 Robot.led.solidBlink(30,255,255);
             }
         } else if (PlayerConfigs.suckerEject) {

@@ -3,7 +3,6 @@ package frc.robot.commands.autonomous.commands;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
-import frc.robot.utils.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class GoToCraneState extends Command {
@@ -32,7 +31,6 @@ public class GoToCraneState extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        Logger.info("CRANE", "Crane moving to " + state.toString());
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -45,7 +43,6 @@ public class GoToCraneState extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        Logger.info("CRANE", "Crane in position at " + state.toString());
     }
 
     @Override
