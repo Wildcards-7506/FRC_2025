@@ -65,11 +65,9 @@ public final class Constants {
     public static final double kDefaultErrorMargin = 1.0; // degrees
 
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
-    public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; // tested 2/15/2025
     public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64; // tested 2/15/2025
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // tested 2/15/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/5; // tested 2/15/2025
-    public static final double kSuckerEncoderDistancePerPulse = 360.0 * 1/3; // tested 2/15/2025
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
@@ -79,14 +77,12 @@ public final class Constants {
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
-    // public static final double kExtenderPickup = 12;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
     public static final double kExtenderStow = 20;
     public static final double kExtenderShelf = 5.16;
     public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
-    // public static final double kExtenderClawOffset = ; // measured from edge of Claw to the soft limit of the extender
-    public static final double kPullyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
+    public static final double kPulleyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     /** Keep extender butt-side within extension cap. */
     public static final double kExtenderLimit1 = kExtenderLow; // 2 inches from soft limit offset
     // /** Keep extender claw-side within extension cap. */

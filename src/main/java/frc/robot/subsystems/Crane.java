@@ -123,12 +123,6 @@ public class Crane extends SubsystemBase {
             suckerConfig
                 .smartCurrentLimit(40)
                 .idleMode(IdleMode.kBrake);
-            suckerConfig.encoder
-                .positionConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse)
-                .velocityConversionFactor(CraneConstants.kSuckerEncoderDistancePerPulse);
-            suckerConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(0.01, 0.0, 0.0);
                 
             suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
@@ -238,11 +232,11 @@ public class Crane extends SubsystemBase {
     }
 
     private double inchesToDegrees(double inches) {
-        return inches * 360 / CraneConstants.kPullyCircumferenceInches;
+        return inches * 360 / CraneConstants.kPulleyCircumferenceInches;
     }
 
     private double degreesToInches(double degrees) {
-        return degrees * CraneConstants.kPullyCircumferenceInches / 360;
+        return degrees * CraneConstants.kPulleyCircumferenceInches / 360;
     }
     
     /**
