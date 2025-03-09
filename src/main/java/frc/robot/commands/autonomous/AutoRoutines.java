@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
+import frc.robot.commands.autonomous.commands.AutoSnapToZero;
 import frc.robot.commands.autonomous.commands.IntakeCommand;
 import frc.robot.commands.crane.actions.ReefStationCommand;
 import frc.robot.commands.crane.actions.StowCommand;
@@ -109,6 +110,7 @@ public final class AutoRoutines {
     NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
     NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(1.5, CraneConstants.kSuckerIntake));
     NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(1.5, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoSnap", new AutoSnapToZero());
   }
 
       /**

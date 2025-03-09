@@ -23,9 +23,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RightEnd"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightEnd"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneStow"
+                }
+              }
+            ]
           }
         }
       ]

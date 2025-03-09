@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneShelf"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "CenterStart"
@@ -19,7 +13,38 @@
         {
           "type": "named",
           "data": {
+            "name": "AutoCraneMidReef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoSuckerEject"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterEnd"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneStow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoSnap"
           }
         }
       ]

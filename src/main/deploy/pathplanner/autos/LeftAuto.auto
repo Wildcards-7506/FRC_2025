@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneShelf"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "LeftStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneLowReef"
           }
         },
         {
@@ -23,9 +23,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftEnd"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneStow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftEnd"
+                }
+              }
+            ]
           }
         }
       ]

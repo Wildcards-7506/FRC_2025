@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.025681818181818,
-        "y": 1.4224147727272705
+        "x": 6.401761363636364,
+        "y": 0.9736931818181813
       },
       "isLocked": false,
       "linkedName": "RightScore"
     },
     {
       "anchor": {
-        "x": 2.2177254098360653,
-        "y": 0.5126024590163922
+        "x": 3.0213920454545455,
+        "y": 0.4352272727272725
       },
       "prevControl": {
-        "x": 2.646503818926974,
-        "y": 1.5895342771982133
+        "x": 2.7381552719821167,
+        "y": 2.471829359165425
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,14 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "AutoCraneStow",
-      "waypointRelativePos": 0.43997856377277544,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
