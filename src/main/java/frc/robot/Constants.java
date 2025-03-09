@@ -66,14 +66,10 @@ public final class Constants {
 
     // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
     public static final double kGripperEncoderDistancePerPulse = 360.0 * 1/5 * 1/4 * 1/3; // tested 2/15/2025
-    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64 * 1/3; // tested 2/15/2025
+    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64; // tested 2/15/2025
     public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // tested 2/15/2025
     public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/5; // tested 2/15/2025
     public static final double kSuckerEncoderDistancePerPulse = 360.0 * 1/3; // tested 2/15/2025
-    
-    // Gripper limits
-    public static final double kGripperHardDeck = 0;
-    public static final double kGripperCeiling = 40;
     
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
@@ -111,19 +107,23 @@ public final class Constants {
     public static final double kElbowCeiling = kElbowClimb + 10;
 
     // Wrist limits
-    public static final double kWristDiffFromOldSlack = 14; // Old slack is 20 degrees, now it is 5 degrees, only affects front values
-    public static final double kWristHigh = -113.64; // negative number because referencing the angle matching shows hard deck is vertical, so we need this value to bypass that angle matching
+    public static final double kWristHigh = 0; 
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 16;
-    public static final double kWristShelf = 70;
+    public static final double kWristShelf = 90;
     public static final double kWristLow = 106;
     public static final double kWristMid = 97.817;
+    public static final double kWristStow = 0;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
-
+    public static final double kWristClimb = 0;
     // Sucker limits
     public static final double kSuckerIntake = 6;
     public static final double kSuckerEject = -12;
     public static final double kSuckerHold = 0;
+
+    //Margins
+    public static final double rotationMargin = 8;
+    public static final double extendMargin = 2;
   }
 
   public static final class ClimberConstants {

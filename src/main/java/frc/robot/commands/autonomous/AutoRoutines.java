@@ -21,16 +21,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
-import frc.robot.commands.autonomous.actions.AutoCraneHighReef;
-import frc.robot.commands.autonomous.actions.AutoCraneLowReef;
-import frc.robot.commands.autonomous.actions.AutoCraneMidReef;
-import frc.robot.commands.autonomous.actions.AutoCraneShelf;
-import frc.robot.commands.autonomous.actions.AutoCraneStation;
-import frc.robot.commands.autonomous.actions.AutoCraneStow;
-import frc.robot.commands.autonomous.commands.AutoAlign;
-import frc.robot.commands.autonomous.commands.AutoDrivetrainX;
-import frc.robot.commands.autonomous.commands.AutoSpinSucker;
-import frc.robot.commands.autonomous.commands.GoToCraneState;
+import frc.robot.commands.autonomous.commands.IntakeCommand;
+import frc.robot.commands.crane.actions.ReefStationCommand;
+import frc.robot.commands.crane.actions.StowCommand;
+import frc.robot.commands.drivetrain.DrivetrainXCommand;
 
 @SuppressWarnings("unused")
 public final class AutoRoutines {
@@ -40,7 +34,6 @@ public final class AutoRoutines {
 
   // Autonomous selector on dashboard
   private final SendableChooser<Command> autoChooser;
-  private double kAutoStartDelaySeconds;
     
   // Load the RobotConfig from the GUI settings. You should probably
   // store this in your Constants file
@@ -78,9 +71,6 @@ public final class AutoRoutines {
       },
       Robot.drivetrain // Reference to this subsystem to set requirements
     );
-
-    // Autonomous selector options
-    kAutoStartDelaySeconds = SmartDashboard.getNumber("Auto Delay",0.0);
     
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser",autoChooser);
@@ -91,16 +81,34 @@ public final class AutoRoutines {
   }
 
   private void setMarkers() {
-    NamedCommands.registerCommand("AutoCraneStation", new AutoCraneStation());
-    NamedCommands.registerCommand("AutoCraneShelf", new AutoCraneShelf());
-    NamedCommands.registerCommand("AutoCraneLowReef", new AutoCraneLowReef());
-    NamedCommands.registerCommand("AutoCraneMidReef", new AutoCraneMidReef());
-    NamedCommands.registerCommand("AutoCraneHighReef", new AutoCraneHighReef());
-    NamedCommands.registerCommand("AutoCraneStow", new AutoCraneStow());
-    NamedCommands.registerCommand("AutoAlignLeft", new AutoAlign(Robot.drivetrain, true));
-    NamedCommands.registerCommand("AutoAlignRight", new AutoAlign(Robot.drivetrain, false));
-    NamedCommands.registerCommand("AutoSuckerSuck", new AutoSpinSucker(1.5, CraneConstants.kSuckerIntake));
-    NamedCommands.registerCommand("AutoSuckerEject", new AutoSpinSucker(1.5, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoCraneStation", new ReefStationCommand(
+      CraneConstants.kElbowStation,
+      CraneConstants.kExtenderStation,
+      CraneConstants.kWristStation,
+      160));
+    NamedCommands.registerCommand("AutoCraneShelf", new ReefStationCommand(
+      CraneConstants.kElbowShelf,
+      CraneConstants.kExtenderShelf,
+      CraneConstants.kWristShelf,
+      0));
+    NamedCommands.registerCommand("AutoCraneLowReef", new ReefStationCommand(
+      CraneConstants.kElbowLow,
+      CraneConstants.kExtenderLow,
+      CraneConstants.kWristLow,
+      45));
+    NamedCommands.registerCommand("AutoCraneMidReef", new ReefStationCommand(
+      CraneConstants.kElbowMid,
+      CraneConstants.kExtenderMid,
+      CraneConstants.kWristMid,
+      90));
+    NamedCommands.registerCommand("AutoCraneHighReef", new ReefStationCommand(
+      CraneConstants.kElbowHigh,
+      CraneConstants.kExtenderHigh,
+      CraneConstants.kWristHigh,
+      135));
+    NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
+    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(1.5, CraneConstants.kSuckerIntake));
+    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(1.5, CraneConstants.kSuckerEject));
   }
 
       /**
@@ -110,9 +118,8 @@ public final class AutoRoutines {
    */
   public Command getAutonomousCommand() {
     return Commands.sequence(
-      Commands.waitSeconds(kAutoStartDelaySeconds),
       autoChooser.getSelected(),
-      new AutoDrivetrainX());
+      new DrivetrainXCommand());
   }
 
   public void resetAutoHeading() {

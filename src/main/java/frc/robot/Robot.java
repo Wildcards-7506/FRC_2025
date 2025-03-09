@@ -16,10 +16,15 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.CraneConstants;
 import frc.robot.commands.ClimberTeleopCommand;
-import frc.robot.commands.CraneTeleopCommand;
-import frc.robot.commands.DrivetrainTeleopCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
+import frc.robot.commands.crane.CraneTeleopCommand;
+import frc.robot.commands.crane.actions.ClimbPresetCommand;
+import frc.robot.commands.crane.actions.FineControlCrane;
+import frc.robot.commands.crane.actions.ReefStationCommand;
+import frc.robot.commands.crane.actions.StowCommand;
+import frc.robot.commands.drivetrain.DrivetrainTeleopCommand;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.players.drivers.Ricardo;
 import frc.robot.players.drivers.Dessie;
@@ -60,6 +65,36 @@ public class Robot extends TimedRobot {
   public final static Climber climber = new Climber();
   public final static LED led = new LED(0,14);
 
+  //Commands
+  public final static ClimbPresetCommand climbPresetCommand = new ClimbPresetCommand();
+  public final static StowCommand stowCommand = new StowCommand();
+  public final static ReefStationCommand stationCommand = new ReefStationCommand(
+      CraneConstants.kElbowStation,
+      CraneConstants.kExtenderStation,
+      CraneConstants.kWristStation,
+    75);
+  public final static ReefStationCommand shelfCommand = new ReefStationCommand(
+      CraneConstants.kElbowShelf,
+      CraneConstants.kExtenderShelf,
+      CraneConstants.kWristShelf,
+      90);
+  public final static ReefStationCommand lowCommand = new ReefStationCommand(
+    CraneConstants.kElbowLow,
+    CraneConstants.kExtenderLow,
+    CraneConstants.kWristLow,
+    105);
+  public final static ReefStationCommand midCommand = new ReefStationCommand(
+    CraneConstants.kElbowMid,
+    CraneConstants.kExtenderMid,
+    CraneConstants.kWristMid,
+    120);
+  public final static ReefStationCommand highCommand = new ReefStationCommand(
+    CraneConstants.kElbowHigh,
+    CraneConstants.kExtenderHigh,
+    CraneConstants.kWristHigh,
+    135);
+  public final static FineControlCrane fineControlCrane = new FineControlCrane();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -79,8 +114,6 @@ public class Robot extends TimedRobot {
     // Put the choosers on the dashboard
     SmartDashboard.putData("Driver",driver_chooser);
     SmartDashboard.putData("Operator",operator_chooser);
-    SmartDashboard.putBoolean("Skip Non-Path Commands", false);
-    SmartDashboard.putData(m_field);
   }
   
   /**
@@ -91,7 +124,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    SmartDashboard.putData(CommandScheduler.getInstance());
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -134,7 +169,7 @@ public class Robot extends TimedRobot {
 
     // Subsystem default commands
     drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
-    crane.setDefaultCommand(new CraneTeleopCommand());
+    new CraneTeleopCommand().schedule();;
     climber.setDefaultCommand(new ClimberTeleopCommand());
 
     // Default subsystem states
@@ -169,7 +204,7 @@ public class Robot extends TimedRobot {
     driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
     // drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
-    crane.setDefaultCommand(new CraneTeleopCommand());
+    //crane.setDefaultCommand(new CraneTeleopCommand());
     // climber.setDefaultCommand(new ClimberTeleopCommand());
     // Robot.climber.onClimberControl = true;
   }

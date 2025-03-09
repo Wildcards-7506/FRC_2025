@@ -1,11 +1,10 @@
 package frc.robot.commands.autonomous.commands;
 
 import frc.robot.Robot;
-import frc.robot.Constants.CraneConstants;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class AutoSpinSucker extends Command {
+public class IntakeCommand extends Command {
     private final Timer timer = new Timer();
     private double volts;
     private double duration;
@@ -16,7 +15,7 @@ public class AutoSpinSucker extends Command {
      * @param duration Time in seconds to run the command.
      * @param volts Voltage to run the sucker.
      */
-    public AutoSpinSucker(double duration, double volts) {
+    public IntakeCommand(double duration, double volts) {
         this.duration = duration;
         this.volts = volts;
     }
@@ -31,14 +30,13 @@ public class AutoSpinSucker extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(Robot.skipNonPath) return;
         Robot.crane.spinSucker(volts);
     }
     
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        Robot.crane.holdSucker();
+        Robot.crane.spinSucker(0);
         timer.stop();
     }
 

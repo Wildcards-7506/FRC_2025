@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.crane;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,7 +16,6 @@ public class CraneTeleopCommand extends Command {
                     prevHighReefState = false;
 
     public CraneTeleopCommand() {
-        addRequirements(Robot.crane);
     }
 
     // Called when the command is initially scheduled.
@@ -28,54 +27,68 @@ public class CraneTeleopCommand extends Command {
     public void execute() {
         // EXECUTE CRANE TELEOP ONLY WHEN CLIMBER CONTROL IS OFF
         if(Robot.climber.onClimberControl) {
-            Robot.crane.putCraneToClimbState();
+            if(!Robot.crane.getClimbMode()){
+                Robot.climbPresetCommand.schedule();
+            }
+            Robot.led.rainbow();
             return;
         }
-
-        // if(PlayerConfigs.gripperOpen)
-        //     Robot.crane.setGripperPosition(90);
-        // else
-        //     Robot.crane.setGripperPosition(0);
 
         /** Sucker */
         if (PlayerConfigs.suckerIntake) {
             Robot.crane.spinSucker(CraneConstants.kSuckerIntake); // volts
             if(Robot.crane.getSuckerCurrent() > 20){
-                // System.out.println("Current High");
                 Robot.led.solid(60,255,255);
             } else {
-                // System.out.println("Current Low");
                 Robot.led.solidBlink(30,255,255);
             }
         } else if (PlayerConfigs.suckerEject) {
             Robot.crane.spinSucker(CraneConstants.kSuckerEject); // volts
             Robot.led.solidBlink(0,255,255);
         } else {
-            Robot.crane.holdSucker();
+            Robot.crane.spinSucker(0);;
         }
 
         updateCraneState();
-        
-        if(PlayerConfigs.fineControlCraneEnable) { // fine control
-            Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.3);
-            Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.3);
-            // Robot.crane.setExtenderPosition(Robot.crane.extenderSetpoint + PlayerConfigs.fineControlExtender * 0.05);
-            Robot.led.solidBlink(150,255,255);
-        } else {
-            Robot.crane.goToCraneState(Robot.crane.craneState);
+
+        if(Robot.crane.runSetpoint){
+            if(Robot.crane.craneState == CraneState.STATION){
+                Robot.stationCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.SHELF){
+                Robot.shelfCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.LOW_REEF){
+                Robot.lowCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.MID_REEF){
+                Robot.midCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.HIGH_REEF){
+                Robot.highCommand.schedule();
+            } else {
+                Robot.stowCommand.schedule();
+            }
         }
 
+        if(PlayerConfigs.fineControlCraneEnable) {
+            Robot.fineControlCrane.schedule();
+        }
+
+        SmartDashboard.putBoolean("Running Setponts?", Robot.crane.runSetpoint);
         SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
         SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
         SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
         SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
-        // SmartDashboard.putNumber("FC Extender", PlayerConfigs.fineControlExtender);
     }
-    
-    /**
-     * Updates the crane state based on the button pressed. Holds the state of
-     * the crane until more buttons are pressed.
-     */
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
     private void updateCraneState() {
         prevStationPickupState = updateButtonState(PlayerConfigs.stationPickup, prevStationPickupState, CraneState.STATION);
         // prevLowPickupState = updateButtonState(PlayerConfigs.lowPickup, prevLowPickupState, );
@@ -98,20 +111,8 @@ public class CraneTeleopCommand extends Command {
                 Robot.crane.craneState = craneState;
             } else {
                 Robot.crane.craneState = CraneState.STOW;
-                // Robot.crane.craneState = CraneState.STATION;
-            }
+            } Robot.crane.runSetpoint = true;
         }
         return buttonPressed;
-    }
-        
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-    }
-
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        return false;
     }
 }

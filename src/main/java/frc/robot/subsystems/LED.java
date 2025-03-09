@@ -84,4 +84,13 @@ public class LED extends SubsystemBase{
         }
         update();
     }
+
+    public void solidSection(int start, int end, int hue){
+      // For every pixel
+      for (var i = start; i < end; i++) {
+        // Set the value
+        ledBuffer.setHSV(i, hue, 255, 255);
+      }
+      update();
+    }
 }

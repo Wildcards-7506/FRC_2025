@@ -1,12 +1,12 @@
-package frc.robot.commands.autonomous.commands;
+package frc.robot.commands.drivetrain;
 
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class AutoDrivetrainX extends Command{
+public class DrivetrainXCommand extends Command{
 
     /** Creates a new Auto Pitch Correction Command. */
-    public AutoDrivetrainX() {}
+    public DrivetrainXCommand() {}
 
     // Called when the command is initially scheduled.
     @Override
@@ -16,14 +16,12 @@ public class AutoDrivetrainX extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {    
-        if(!Robot.skipNonPath) {Robot.drivetrain.setX();}
+        Robot.drivetrain.setX();
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {
-        Robot.drivetrain.setX();
-    }
+    public void end(boolean interrupted) {}
 
     // Returns true when the command should end.
     @Override

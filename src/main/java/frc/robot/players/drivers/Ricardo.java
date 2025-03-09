@@ -59,7 +59,7 @@ public class Ricardo extends PlayerConfigs {
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
         fineControlRotator = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
-        fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveClimber = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;

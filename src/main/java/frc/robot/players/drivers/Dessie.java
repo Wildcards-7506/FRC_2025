@@ -49,7 +49,6 @@ public class Dessie extends PlayerConfigs {
     public void getOperatorConfig() {
         fineStrafe = 0.05;
         stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
-        lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
         shelfReef = Robot.controller1.getXButton();
         lowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
@@ -58,7 +57,7 @@ public class Dessie extends PlayerConfigs {
         suckerEject = Robot.controller1.getLeftBumperButton();
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightY());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
-        fineControlAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveClimber = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;

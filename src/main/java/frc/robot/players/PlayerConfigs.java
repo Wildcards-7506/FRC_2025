@@ -67,7 +67,7 @@ public abstract class PlayerConfigs {
 
     // ClimbersfineControlRotator
     public static double fineControlRotator;
-    public static double fineControlAnchor;
+    public static double moveClimber;
 
     /**
      * This helper method is used to get the joystick value after deadbanding.
