@@ -8,6 +8,7 @@ public class DrivetrainTeleopCommand extends Command {
     double inputRot, yInputSpeed, xInputSpeed;
 
     public DrivetrainTeleopCommand() {
+        //Prevents the drivetrain from trying to run conflicting commands at the same time
         addRequirements(Robot.drivetrain);
     }
     
@@ -18,22 +19,23 @@ public class DrivetrainTeleopCommand extends Command {
     // Called every time the scheduler runs (every ~20 ms) while the command is scheduled.
     @Override
     public void execute() {        
-        //Reset Gyro
+        //Reset Gyro if driver is pressing reset button
         if(PlayerConfigs.zeroGyro) {
             Robot.drivetrain.zeroHeading();
         }
 
-        // (!)PlayerConfigs.robotRelative instead of fieldRelative because fieldRelative is default
-        // When robotRelative is true, the robot will drive relative to the robot's current heading
-        // When robotRelative is false, the robot will drive relative to the field's current heading
-        if(PlayerConfigs.strafeRight || (PlayerConfigs.robotRelative && PlayerConfigs.snapRight)){
+        // If operator is attempting to strafe, take control from driver and turn off field relative control
+        // Allows the operator to strafe across any surface, regardless of what direction the robot is facing
+        if(PlayerConfigs.strafeRight){
             Robot.drivetrain.drive(PlayerConfigs.fineStrafe, 0, 0, false);
         }
-        else if(PlayerConfigs.strafeLeft || (PlayerConfigs.robotRelative && PlayerConfigs.snapLeft)){
+        else if(PlayerConfigs.strafeLeft){
             Robot.drivetrain.drive(-PlayerConfigs.fineStrafe, 0, 0, false);
         }
         else {
-            // Joystick Inputs
+            // If Operator is not strafing, driver controls movement under field oriented control
+            // Up on the joystick moves the robot away from the driver station 
+            // no matter what direction the robot is facing.
             xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
             yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
             inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
@@ -41,6 +43,7 @@ public class DrivetrainTeleopCommand extends Command {
         }
     }
 
+    //If driver is engaging fine control (slow) mode or boost mode, adjust the drive speed accordingly
     private double getDriveSpeed(double input) {
         return PlayerConfigs.fineControlToggle ? 
         PlayerConfigs.fineDriveSpeed * input :
@@ -49,6 +52,7 @@ public class DrivetrainTeleopCommand extends Command {
         PlayerConfigs.fullDriveSpeed * input;
     }
 
+    //If driver is engaging fine control (slow) mode or boost mode, adjust the rotational speed accordingly
     private double getTurnSpeed(double input) {
         return  PlayerConfigs.fineControlToggle ? 
                     PlayerConfigs.fineTurnSpeed * input : 
@@ -62,6 +66,8 @@ public class DrivetrainTeleopCommand extends Command {
     public void end(boolean interrupted) {}
     
     // Returns true when the command should end.
+    // Since we run this every cycle in teleop, we don't want this command to end 
+    // or we wouldn't be able to move.
     @Override
     public boolean isFinished() {
         return false;

@@ -19,131 +19,124 @@ import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
 
 public class Crane extends SubsystemBase {
-    // Crane vars
     public CraneState craneState = CraneState.STOW; // stow is the starting configuration
-    // private ArmFeedforward feedforward;
     /** Degree of angleMargin so that the crane can progress to the next position. */
     public static boolean climbMode = false;
     public boolean runSetpoint = false;
     
-        // Wrist
-        private final SparkMax wristMotor;
-        private final SparkMaxConfig wristConfig;
-        public final SparkClosedLoopController wristPID;
-        public double wristSetpoint;
-        private double prevWristDirection = 0;
+    // Wrist
+    private final SparkMax wristMotor;
+    private final SparkMaxConfig wristConfig;
+    public final SparkClosedLoopController wristPID;
+    public double wristSetpoint;
+    private double prevWristDirection = 0;
+    
+    // Elbow
+    private final SparkMax elbowMotor;
+    private final SparkMaxConfig elbowConfig;
+    public final SparkClosedLoopController elbowPID;
+    public double elbowSetpoint;
+    private double prevElbowDirection = 0;
+    
+    //Extender
+    private final SparkMax extenderMotor;
+    private final SparkMaxConfig extenderConfig;
+    public final SparkClosedLoopController extenderPID;
+    public double extenderSetpoint;
+
+    //Sucker
+    private final SparkMax suckerMotor;
+    private final SparkMaxConfig suckerConfig;
+    public double suckerSetpoint;
+    
+    public Crane() {
+        wristMotor = new SparkMax(CANIDS.WRIST, MotorType.kBrushless);
+        wristConfig = new SparkMaxConfig();
+        wristPID = wristMotor.getClosedLoopController();
+
+        elbowMotor = new SparkMax(CANIDS.ELBOW, MotorType.kBrushless);
+        elbowConfig = new SparkMaxConfig();
+        elbowPID = elbowMotor.getClosedLoopController();
+
+        extenderMotor = new SparkMax(CANIDS.EXTENDER, MotorType.kBrushless);
+        extenderConfig = new SparkMaxConfig();
+        extenderPID = extenderMotor.getClosedLoopController();
+
+        suckerMotor = new SparkMax(CANIDS.SUCKER, MotorType.kBrushless);
+        suckerConfig = new SparkMaxConfig();
+
+        wristConfig
+            .smartCurrentLimit(20)
+            .idleMode(IdleMode.kBrake);
+        wristConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kWristCeiling)
+            .reverseSoftLimit(CraneConstants.kWristHardDeck - 20);
+        wristConfig.encoder
+            .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
+        wristConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.005, 0.000003, 0.1);
+            
+        wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        elbowConfig
+            .smartCurrentLimit(80)
+            .inverted(true)
+            .idleMode(IdleMode.kBrake);
+        elbowConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kElbowCeiling + 2)
+            .reverseSoftLimit(CraneConstants.kElbowHardDeck - 2);
+        elbowConfig.encoder
+            .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
+        elbowConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.005, 0.000003, 0.1);
+            
+        elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        extenderConfig
+            .smartCurrentLimit(40)
+            .inverted(true)
+            .idleMode(IdleMode.kBrake);
+        extenderConfig.encoder
+            .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
+        extenderConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.005, 0.0, 0.1);
+            
+        extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        suckerConfig
+            .smartCurrentLimit(40)
+            .idleMode(IdleMode.kBrake);
+            
+        suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        // Set up setpoints for each motor
+        setWristPosition(CraneConstants.kWristHardDeck);
+        setElbowPosition(CraneConstants.kElbowHardDeck);
+        setExtenderPosition(CraneConstants.kExtenderStart);
+    }
         
-        // Elbow
-        private final SparkMax elbowMotor;
-        private final SparkMaxConfig elbowConfig;
-        public final SparkClosedLoopController elbowPID;
-        public double elbowSetpoint;
-        private double prevElbowDirection = 0;
-        
-        //Extender
-        private final SparkMax extenderMotor;
-        private final SparkMaxConfig extenderConfig;
-        public final SparkClosedLoopController extenderPID;
-        public double extenderSetpoint;
-    
-        //Sucker
-        private final SparkMax suckerMotor;
-        private final SparkMaxConfig suckerConfig;
-        public double suckerSetpoint;
-        
-        public Crane() {
-            wristMotor = new SparkMax(CANIDS.WRIST, MotorType.kBrushless);
-            wristConfig = new SparkMaxConfig();
-            wristPID = wristMotor.getClosedLoopController();
-    
-            elbowMotor = new SparkMax(CANIDS.ELBOW, MotorType.kBrushless);
-            elbowConfig = new SparkMaxConfig();
-            elbowPID = elbowMotor.getClosedLoopController();
-    
-            extenderMotor = new SparkMax(CANIDS.EXTENDER, MotorType.kBrushless);
-            extenderConfig = new SparkMaxConfig();
-            extenderPID = extenderMotor.getClosedLoopController();
-    
-            suckerMotor = new SparkMax(CANIDS.SUCKER, MotorType.kBrushless);
-            suckerConfig = new SparkMaxConfig();
-    
-            wristConfig
-                .smartCurrentLimit(20)
-                .idleMode(IdleMode.kBrake);
-            wristConfig.softLimit
-                .forwardSoftLimitEnabled(true)
-                .reverseSoftLimitEnabled(true)
-                .forwardSoftLimit(CraneConstants.kWristCeiling)
-                .reverseSoftLimit(CraneConstants.kWristHardDeck - 20);
-            wristConfig.encoder
-                .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
-                .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
-            wristConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(0.005, 0.000003, 0.1);
-                
-            wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
-            elbowConfig
-                .smartCurrentLimit(80)
-                .inverted(true)
-                .idleMode(IdleMode.kBrake);
-            elbowConfig.softLimit
-                .forwardSoftLimitEnabled(true)
-                .reverseSoftLimitEnabled(true)
-                .forwardSoftLimit(CraneConstants.kElbowCeiling + 2)
-                .reverseSoftLimit(CraneConstants.kElbowHardDeck - 2);
-            elbowConfig.encoder
-                .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
-                .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
-            elbowConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(0.005, 0.000003, 0.1);
-                
-            elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
-            extenderConfig
-                .smartCurrentLimit(40)
-                .inverted(true)
-                .idleMode(IdleMode.kBrake);
-            // extenderConfig.softLimit
-            //     .forwardSoftLimitEnabled(true)
-            //     .reverseSoftLimitEnabled(true)
-            //     .forwardSoftLimit(inchesToDegrees(3))
-            //     .reverseSoftLimit(inchesToDegrees(CraneConstants.kExtenderCeiling));
-            extenderConfig.encoder
-                .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
-                .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
-            extenderConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pid(0.005, 0.0, 0.1);
-                
-            extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
-            suckerConfig
-                .smartCurrentLimit(40)
-                .idleMode(IdleMode.kBrake);
-                
-            suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
-            // Set up setpoints for each motor
-            setWristPosition(CraneConstants.kWristHardDeck);
-            setElbowPosition(CraneConstants.kElbowHardDeck);
-            setExtenderPosition(CraneConstants.kExtenderStart);
-        }
-        
-        /**
-         * This method spins the sucker motor based on voltage and the direction 
-         * provided by a sign (e.g. -12).
-         * 
-         * @param volts The volts to spin the sucker motor, max around (+/-) 12 volts.
-         */
-        public void spinSucker(double volts) {
-            suckerMotor.setVoltage(volts);
-        }
-    
-        public void engageClimbMode(){
-            climbMode = true;
+    /**
+     * This method spins the sucker motor based on voltage and the direction 
+     * provided by a sign (e.g. -12).
+     * 
+     * @param volts The volts to spin the sucker motor, max around (+/-) 12 volts.
+     */
+    public void spinSucker(double volts) {
+        suckerMotor.setVoltage(volts);
+    }
+
+    public void engageClimbMode(){
+        climbMode = true;
     }
     public boolean getClimbMode(){
         return climbMode;

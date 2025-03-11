@@ -13,13 +13,13 @@ public class SetElbowCommand extends Command {
   /** Creates a new SetElbowCommand. */
   double setpoint;
   public SetElbowCommand(double setpoint) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.setpoint = setpoint;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Set LEDs to red to indicate the command is running
     Robot.led.solidSection(0,5,0);
   }
 
@@ -32,12 +32,16 @@ public class SetElbowCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //set LEDs to green to indicate the command has ended and we have hit our setpoint
     Robot.led.solidSection(0,5,60);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // If we are within 8 degrees of the setpoint, end the command.
+    // Because of the control system used, the motor will continue to move the elbow 
+    // to the setpoint even after the command ends
     return Math.abs(Robot.crane.getElbowPosition() - setpoint) < CraneConstants.rotationMargin;
   }
 }

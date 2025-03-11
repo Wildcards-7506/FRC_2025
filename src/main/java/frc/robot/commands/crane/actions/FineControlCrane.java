@@ -12,7 +12,8 @@ import frc.robot.players.PlayerConfigs;
 public class FineControlCrane extends Command {
   /** Creates a new FineControlCrane. */
   public FineControlCrane() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    //Takes control of crane subsystem and prevents other
+    //commands from being scheduled over the top of this one
     addRequirements(Robot.crane);
   }
 
@@ -23,8 +24,14 @@ public class FineControlCrane extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    /*Sets target for the motors to half a degree above or below 
+      the current setpoint of the wrist and/or elbow.
+      Functionally, this causes the motor to chase a moving setpoint, and the movement of that setpoint
+      can be controlled by the operator controller */
     Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.5);
     Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.5);
+
+    //Sets LEDs to green/red depending on what direction fine control is moving the wrist or elbow
     Robot.led.solidSection(0,8,(int)Math.round(30*PlayerConfigs.fineControlWrist + 30));
     Robot.led.solidSection(8,14,(int)Math.round(30*PlayerConfigs.fineControlElbow + 30));
   }

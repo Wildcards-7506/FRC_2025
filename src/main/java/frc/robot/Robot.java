@@ -125,7 +125,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
   /**
@@ -147,7 +146,6 @@ public class Robot extends TimedRobot {
     autoMode.resetAutoHeading();
     autoMode.getAutonomousCommand().schedule();
     drivetrain.idleSwerve(IdleMode.kBrake);
-    skipNonPath = SmartDashboard.getBoolean("Skip Non-Path Commands", false);
   }
 
   /** This function is called periodically during autonomous. */

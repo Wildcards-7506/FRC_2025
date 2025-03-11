@@ -36,8 +36,7 @@ public final class AutoRoutines {
   // Autonomous selector on dashboard
   private final SendableChooser<Command> autoChooser;
     
-  // Load the RobotConfig from the GUI settings. You should probably
-  // store this in your Constants file
+  // Load the RobotConfig from the GUI settings.
   RobotConfig config;
   
   public AutoRoutines() {
@@ -82,6 +81,8 @@ public final class AutoRoutines {
   }
 
   private void setMarkers() {
+    //Registers commands to run in autonomous. The Pathplanner application can take these
+    //pre-defined commands and place them at specific points while moving.
     NamedCommands.registerCommand("AutoCraneStation", new ReefStationCommand(
       CraneConstants.kElbowStation,
       CraneConstants.kExtenderStation,

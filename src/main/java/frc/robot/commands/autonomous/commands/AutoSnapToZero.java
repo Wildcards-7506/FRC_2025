@@ -4,6 +4,7 @@
 
 package frc.robot.commands.autonomous.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 
@@ -23,16 +24,27 @@ public class AutoSnapToZero extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //while the gyroscope is not within 3 degrees of zero, spin clockwise
     Robot.drivetrain.drive(0,0,0.5,true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    //Stop the drivetrain
+    Robot.drivetrain.drive(0,0,0,true);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return 180 - Robot.drivetrain.getHeading() < 3;
+    //If the robot heading is within 1 degree of 0, end the command and stop spinning.
+    //If playing on the red side of the field, target is 180 degrees.
+    var alliance = DriverStation.getAlliance();
+      if(alliance.get() == DriverStation.Alliance.Red){
+        return Math.abs(180 - Robot.drivetrain.getHeading()) < 1;
+      } else {
+        return Math.abs(Robot.drivetrain.getHeading()) < 1;
+      }
   }
 }

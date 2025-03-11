@@ -13,11 +13,13 @@ public class StowCommand extends SequentialCommandGroup {
     public StowCommand() {
         addRequirements(Robot.crane);
         addCommands(
+            //Simultaneously move elbow, extender, and wrist to the appropriate setpoints
             new ParallelCommandGroup(
                 new SetWristCommand(CraneConstants.kWristHardDeck),
                 new SetExtenderCommand(CraneConstants.kExtenderLimit1),
                 new SetElbowCommand(CraneConstants.kElbowHardDeck)),
             new SetExtenderCommand(CraneConstants.kExtenderStow),
+            //prevent the commands from being scheduled more than once
             Commands.runOnce(() -> Robot.crane.runSetpoint = false)
         );
     }

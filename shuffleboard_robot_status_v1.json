@@ -271,8 +271,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FC Anchor",
-              "_title": "/SmartDashboard/FC Anchor",
+              "_source0": "network_table:///SmartDashboard/FC Climber",
+              "_title": "/SmartDashboard/FC Climber",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -338,8 +338,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Anchor SetP",
-              "_title": "/SmartDashboard/Anchor SetP",
+              "_source0": "network_table:///SmartDashboard/Climber SetP",
+              "_title": "/SmartDashboard/Climber SetP",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -351,8 +351,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Anchor Pos",
-              "_title": "/SmartDashboard/Anchor Pos",
+              "_source0": "network_table:///SmartDashboard/Climber Pos",
+              "_title": "/SmartDashboard/Climber Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
