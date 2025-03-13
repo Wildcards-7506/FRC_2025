@@ -92,21 +92,22 @@ public final class Constants {
     public static final double kElbowHorizonOffset = -51 - kElbowPlatformOffset; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 5;
     public static final double kElbowShelf = 32;
-    public static final double kElbowStation = 32 + kElbowPlatformOffset;
+    public static final double kElbowStation = 32;
     public static final double kElbowHigh = 136.104 + kElbowPlatformOffset;
     public static final double kElbowClimb = 131 + kElbowPlatformOffset;
-    public static final double kElbowMid = 105.033 + kElbowPlatformOffset;
+    public static final double kElbowMid = 97.604;
     /** This is for low reef, not ground/low pickup. */
-    public static final double kElbowLow = 73.571 + kElbowPlatformOffset;
+    public static final double kElbowLow = 73.571;
+    // public static final double kElbowCeiling = 290;
     public static final double kElbowCeiling = kElbowClimb + 10;
 
     // Wrist limits
     public static final double kWristHigh = 0; 
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 16;
-    public static final double kWristShelf = 90;
-    public static final double kWristLow = 106;
-    public static final double kWristMid = 97.817;
+    public static final double kWristStation = 58.014;
+    public static final double kWristShelf = 105;
+    public static final double kWristLow = 185.749;
+    public static final double kWristMid = 200;
     public static final double kWristStow = 0;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
     public static final double kWristClimb = 0;

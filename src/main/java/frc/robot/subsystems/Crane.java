@@ -215,7 +215,7 @@ public class Crane extends SubsystemBase {
         // Full extension is setpoint = ceiling, motor = 0
         // Full retraction is setpoint = 0, motor = ceiling
         extenderSetpoint = filterSetPoint(setPoint, 
-                                          CraneConstants.kExtenderHardDeck, 
+                                          CraneConstants.kExtenderHardDeck-0.25, 
                                           CraneConstants.kExtenderCeiling);
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         setPoint = inchesToDegrees(setPoint);

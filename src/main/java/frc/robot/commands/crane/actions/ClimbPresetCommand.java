@@ -18,7 +18,7 @@ public class ClimbPresetCommand extends SequentialCommandGroup {
             //Simultaneously move elbow, extender, and wrist to appropriate setpoints for climb
             new ParallelCommandGroup(
                 new SetWristCommand(CraneConstants.kWristHigh-30),
-                new SetExtenderCommand(CraneConstants.kExtenderHardDeck),
+                new SetExtenderCommand(CraneConstants.kExtenderHardDeck - 0.25),
                 new SetElbowCommand(CraneConstants.kElbowClimb)
             )
         );

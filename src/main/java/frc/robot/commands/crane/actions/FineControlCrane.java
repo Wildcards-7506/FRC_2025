@@ -28,8 +28,8 @@ public class FineControlCrane extends Command {
       the current setpoint of the wrist and/or elbow.
       Functionally, this causes the motor to chase a moving setpoint, and the movement of that setpoint
       can be controlled by the operator controller */
-    Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.5);
-    Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.5);
+    Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 1);
+    Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 1);
 
     //Sets LEDs to green/red depending on what direction fine control is moving the wrist or elbow
     Robot.led.solidSection(0,8,(int)Math.round(30*PlayerConfigs.fineControlWrist + 30));

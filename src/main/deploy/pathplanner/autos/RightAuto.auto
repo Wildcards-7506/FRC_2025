@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneShelf"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "RightStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneShelf"
           }
         },
         {
