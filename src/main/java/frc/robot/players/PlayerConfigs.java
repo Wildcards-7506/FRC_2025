@@ -1,5 +1,6 @@
 package frc.robot.players;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Constants.IOConstants;
 
 /**
@@ -22,23 +23,15 @@ public abstract class PlayerConfigs {
     public static double turnMovement;
     public static boolean fineControlToggle;
     public static boolean boostToggle;
-    public static boolean snapUp;
-    public static boolean snapRight;
-    public static boolean snapDown;
-    public static boolean snapLeft;
-    public static boolean autoAlignLeft;
-    public static boolean autoAlignRight;
+
+    //Slew Rate Limiters
+    public static SlewRateLimiter xLimiter = new SlewRateLimiter(1);
+    public static SlewRateLimiter yLimiter = new SlewRateLimiter(1);
 
     //Operator Drivetrain control
     public static double fineStrafe;
     public static boolean strafeRight;
     public static boolean strafeLeft;
-
-    // Reef snaps
-    public static boolean snapUpRight;
-    public static boolean snapDownRight;
-    public static boolean snapDownLeft;
-    public static boolean snapUpLeft;
 
     public static boolean zeroGyro;
     // robotRelative instead of fieldRelative because fieldRelative is default

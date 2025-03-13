@@ -20,6 +20,7 @@ public class SetWristCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //set LEDs to red to indicate the command has started and we have not hit our setpoint
     Robot.led.solidSection(10,14,0);
   }
 
@@ -38,6 +39,9 @@ public class SetWristCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // If we are within 8 degrees of the setpoint, end the command.
+    // Because of the control system used, the motor will continue to move the wrist 
+    // to the setpoint even after the command ends
     return Math.abs(Robot.crane.getWristPosition() - setpoint) < CraneConstants.rotationMargin;
   }
 }

@@ -1,6 +1,5 @@
 package frc.robot.commands.crane;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
@@ -70,12 +69,6 @@ public class CraneTeleopCommand extends Command {
         if(PlayerConfigs.fineControlCraneEnable) {
             Robot.fineControlCrane.schedule();
         }
-
-        SmartDashboard.putBoolean("Running Setponts?", Robot.crane.runSetpoint);
-        SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
-        SmartDashboard.putBoolean("Crane FC", PlayerConfigs.fineControlCraneEnable);
-        SmartDashboard.putNumber("FC Elbow", PlayerConfigs.fineControlElbow);
-        SmartDashboard.putNumber("FC Wrist", PlayerConfigs.fineControlWrist);
     }
 
     // Called once the command ends or is interrupted.

@@ -41,8 +41,8 @@ public final class Constants {
     public static final int EXTENDER = 12;
 
     // Climber: consists of rotator and extender
-    public static final int ANCHOR1 = 13;
-    public static final int ANCHOR2 = 14;
+    public static final int CLIMBER1 = 13;
+    public static final int CLIMBER2 = 14;
   }
 
   // Crane States
@@ -86,7 +86,6 @@ public final class Constants {
     /** Keep extender butt-side within extension cap. */
     public static final double kExtenderLimit1 = kExtenderLow; // 2 inches from soft limit offset
     // /** Keep extender claw-side within extension cap. */
-    // public static final double kExtenderLimit2 = kExtensionCap - kExtenderClawOffset - 2; // 2 inches from soft limit offset
 
     // Elbow limits
     public static final double kElbowPlatformOffset = -0; // degrees
@@ -112,10 +111,10 @@ public final class Constants {
     public static final double kWristStow = 0;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
     public static final double kWristClimb = 0;
+
     // Sucker limits
     public static final double kSuckerIntake = 6;
     public static final double kSuckerEject = -12;
-    public static final double kSuckerHold = 0;
 
     //Margins
     public static final double rotationMargin = 8;
@@ -124,17 +123,16 @@ public final class Constants {
 
   public static final class ClimberConstants {
     public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
-    // public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0;
-    public static final double kAnchorEncoderDistancePerPulse = 1.0/5.0 * (3.0/4.0)/8.0;
+    public static final double kClimberEncoderDistancePerPulse = 1.0/5.0 * (3.0/4.0)/8.0;
 
     // Rotator limits
     public static final double kRotatorHardDeck = -10;
     public static final double kRotatorCeiling = 135;
 
-    // Anchor limits
-    public static final double kAnchorHardDeck = 0.25;
+    // Climber limits
+    public static final double kClimberHardDeck = 0.25;
 
-    public static final double kAnchorCeiling = 8; // inches
+    public static final double kClimberCeiling = 8; // inches
   }
 
   public static final class IOConstants {

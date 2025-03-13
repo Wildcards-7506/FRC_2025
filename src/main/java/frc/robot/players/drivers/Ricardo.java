@@ -22,21 +22,7 @@ public class Ricardo extends PlayerConfigs {
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
 
-        // Reef snaps
-        snapUp = Robot.controller0.getPOV() == IOConstants.DPAD_UP;
-        snapUpRight = Robot.controller0.getPOV() == IOConstants.DPAD_UP_RIGHT;
-        snapRight = Robot.controller0.getPOV() == IOConstants.DPAD_RIGHT;
-        snapDownRight = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_RIGHT;
-        snapDown = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN;
-        snapDownLeft = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_LEFT;
-        snapLeft = Robot.controller0.getPOV() == IOConstants.DPAD_LEFT;
-        snapUpLeft = Robot.controller0.getPOV() == IOConstants.DPAD_UP_LEFT;
-
         robotRelative = Robot.controller0.getRightBumperButton();
-
-        // Auto Align
-        autoAlignLeft = Robot.controller0.getXButtonReleased();
-        autoAlignRight = Robot.controller0.getAButtonReleased();
         
         // Gyro Reset
         zeroGyro = Robot.controller0.getBButton();

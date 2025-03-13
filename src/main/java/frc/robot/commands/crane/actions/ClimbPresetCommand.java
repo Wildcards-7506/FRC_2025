@@ -13,12 +13,14 @@ public class ClimbPresetCommand extends SequentialCommandGroup {
     public ClimbPresetCommand() {
         addRequirements(Robot.crane);
         addCommands(
+            //Set climber mode to true, locks out crane movement
             Commands.runOnce(() -> Robot.crane.engageClimbMode()),
+            //Simultaneously move elbow, extender, and wrist to appropriate setpoints for climb
             new ParallelCommandGroup(
-                new SetWristCommand(CraneConstants.kWristHigh),
-                new SetExtenderCommand(CraneConstants.kExtenderLimit1),
-                new SetElbowCommand(CraneConstants.kElbowClimb)),
-            new SetExtenderCommand(CraneConstants.kExtenderHardDeck-0.25)
+                new SetWristCommand(CraneConstants.kWristHigh-30),
+                new SetExtenderCommand(CraneConstants.kExtenderHardDeck - 0.25),
+                new SetElbowCommand(CraneConstants.kElbowClimb)
+            )
         );
     }
 }

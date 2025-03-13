@@ -20,20 +20,23 @@ public class ClimberTeleopCommand extends Command {
     // Called every time (~20 ms) the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // Climber toggle
+        // If driver has engaged climb mode, set a boolean status to indicate.
+        // Pressing this button will lock the robot into climb mode to prevent 
+        //the crane from moving while trying to climb
         if(PlayerConfigs.climberOnline && !prevState) {
             Robot.climber.onClimberControl = !Robot.climber.onClimberControl;
         }
         prevState = PlayerConfigs.climberOnline;
 
-        SmartDashboard.putBoolean("Climber Tog", Robot.climber.onClimberControl);
+        SmartDashboard.putBoolean("Climber Toggle", Robot.climber.onClimberControl);
 
         // DO NOT EXECUTE CLIMBER TELEOP WHILE NOT ON CLIMBER CONTROL
         if(!Robot.climber.onClimberControl) {
             return;
         }
 
-        Robot.climber.setAnchorVoltage(12 * PlayerConfigs.moveClimber);
+        //If climber mode is engaged, the climber position is set by the operator's joysticks
+        Robot.climber.setClimberVoltage(12 * PlayerConfigs.moveClimber);
     }
         
     // Called once the command ends or is interrupted.
