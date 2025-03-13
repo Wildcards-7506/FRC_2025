@@ -1,5 +1,6 @@
 package frc.robot.players;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Constants.IOConstants;
 
 /**
@@ -22,6 +23,10 @@ public abstract class PlayerConfigs {
     public static double turnMovement;
     public static boolean fineControlToggle;
     public static boolean boostToggle;
+
+    //Slew Rate Limiters
+    public static SlewRateLimiter xLimiter = new SlewRateLimiter(1);
+    public static SlewRateLimiter yLimiter = new SlewRateLimiter(1);
 
     //Operator Drivetrain control
     public static double fineStrafe;

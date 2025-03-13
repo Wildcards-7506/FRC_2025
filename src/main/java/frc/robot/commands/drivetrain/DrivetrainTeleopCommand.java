@@ -1,5 +1,6 @@
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
@@ -36,10 +37,12 @@ public class DrivetrainTeleopCommand extends Command {
             // If Operator is not strafing, driver controls movement under field oriented control
             // Up on the joystick moves the robot away from the driver station 
             // no matter what direction the robot is facing.
-            xInputSpeed = getDriveSpeed(PlayerConfigs.xMovement);
-            yInputSpeed = getDriveSpeed(PlayerConfigs.yMovement);
+            xInputSpeed = PlayerConfigs.xLimiter.calculate(getDriveSpeed(PlayerConfigs.xMovement));
+            yInputSpeed = PlayerConfigs.yLimiter.calculate(getDriveSpeed(PlayerConfigs.yMovement));
             inputRot = getTurnSpeed(PlayerConfigs.turnMovement);
             Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, true);
+            SmartDashboard.putNumber("XSpeed", xInputSpeed);
+            SmartDashboard.putNumber("YSpeed", yInputSpeed);
         }
     }
 
