@@ -15,10 +15,10 @@ public class ClimbPresetCommand extends SequentialCommandGroup {
         addCommands(
             Commands.runOnce(() -> Robot.crane.engageClimbMode()),
             new ParallelCommandGroup(
-                new SetWristCommand(CraneConstants.kWristHigh-30),
+                new SetWristCommand(CraneConstants.kWristHigh),
                 new SetExtenderCommand(CraneConstants.kExtenderLimit1),
                 new SetElbowCommand(CraneConstants.kElbowClimb)),
-            new SetExtenderCommand(CraneConstants.kExtenderHardDeck)
+            new SetExtenderCommand(CraneConstants.kExtenderHardDeck-0.25)
         );
     }
 }

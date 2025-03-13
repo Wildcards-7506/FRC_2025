@@ -23,8 +23,8 @@ public class FineControlCrane extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 0.5);
-    Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 0.5);
+    Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 1);
+    Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 1);
     Robot.led.solidSection(0,8,(int)Math.round(30*PlayerConfigs.fineControlWrist + 30));
     Robot.led.solidSection(8,14,(int)Math.round(30*PlayerConfigs.fineControlElbow + 30));
   }
