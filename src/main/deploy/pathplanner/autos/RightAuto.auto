@@ -44,14 +44,14 @@
                 "data": {
                   "pathName": "RightSource"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoIntake"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
           }
         },
         {
