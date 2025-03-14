@@ -93,24 +93,24 @@ public final class AutoRoutines {
       CraneConstants.kExtenderShelf,
       CraneConstants.kWristShelf,
       0));
-    NamedCommands.registerCommand("AutoCraneLowReef", new ReefStationCommand(
+    NamedCommands.registerCommand("AutoCraneLow", new ReefStationCommand(
       CraneConstants.kElbowLow,
       CraneConstants.kExtenderLow,
       CraneConstants.kWristLow,
       45));
-    NamedCommands.registerCommand("AutoCraneMidReef", new ReefStationCommand(
+    NamedCommands.registerCommand("AutoCraneMid", new ReefStationCommand(
       CraneConstants.kElbowMid,
       CraneConstants.kExtenderMid,
       CraneConstants.kWristMid,
       90));
-    NamedCommands.registerCommand("AutoCraneHighReef", new ReefStationCommand(
+    NamedCommands.registerCommand("AutoCraneHigh", new ReefStationCommand(
       CraneConstants.kElbowHigh,
       CraneConstants.kExtenderHigh,
       CraneConstants.kWristHigh,
       135));
     NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
-    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(1.5, CraneConstants.kSuckerIntake));
-    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(1.5, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(2, CraneConstants.kSuckerIntake));
+    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(0.5, CraneConstants.kSuckerEject));
     NamedCommands.registerCommand("AutoSnap", new AutoSnapToZero());
   }
 

@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "CenterStart"
+            "name": "AutoCraneMid"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "AutoCraneShelf"
+            "pathName": "CenterStart"
           }
         },
         {

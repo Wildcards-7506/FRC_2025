@@ -43,6 +43,6 @@ public class IntakeCommand extends Command {
     @Override
     public boolean isFinished() {
         // Timeout in seconds
-        return timer.get() > duration;
+        return timer.get() > duration || timer.get()>0.5 && Robot.crane.getSuckerCurrent() > 20;
     }
 }

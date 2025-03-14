@@ -5,15 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RightStart"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneShelf"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneLow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightStart"
+                }
+              }
+            ]
           }
         },
         {
@@ -27,18 +34,55 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneStation"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "RightEnd"
+                  "pathName": "RightSource"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoCraneStow"
+                  "name": "AutoIntake"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneLow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightEnd"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoSuckerEject"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneStow"
           }
         }
       ]

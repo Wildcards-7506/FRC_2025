@@ -5,15 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftStart"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneShelf"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneLow"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftStart"
+                }
+              }
+            ]
           }
         },
         {
@@ -29,7 +36,32 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoCraneStow"
+                  "name": "AutoCraneStation"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftSource"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneLow"
                 }
               },
               {
@@ -39,6 +71,18 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoSuckerEject"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneStow"
           }
         }
       ]
