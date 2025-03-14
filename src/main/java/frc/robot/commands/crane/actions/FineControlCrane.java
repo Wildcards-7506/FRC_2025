@@ -19,7 +19,9 @@ public class FineControlCrane extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.led.enableStreamer = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -30,15 +32,12 @@ public class FineControlCrane extends Command {
       can be controlled by the operator controller */
     Robot.crane.setWristPosition(Robot.crane.wristSetpoint + PlayerConfigs.fineControlWrist * 1);
     Robot.crane.setElbowPosition(Robot.crane.elbowSetpoint + PlayerConfigs.fineControlElbow * 1);
-
-    //Sets LEDs to green/red depending on what direction fine control is moving the wrist or elbow
-    Robot.led.solidSection(0,8,(int)Math.round(30*PlayerConfigs.fineControlWrist + 30));
-    Robot.led.solidSection(8,14,(int)Math.round(30*PlayerConfigs.fineControlElbow + 30));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

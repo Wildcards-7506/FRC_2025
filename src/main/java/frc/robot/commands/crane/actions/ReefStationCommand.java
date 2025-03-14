@@ -12,6 +12,7 @@ public class ReefStationCommand extends SequentialCommandGroup {
     public ReefStationCommand(double elbowSetpoint, double extenderSetpoint, double wristSetpoint, int hue) {
         addRequirements(Robot.crane);
         addCommands(
+            Commands.runOnce(() -> Robot.led.enableStreamer = false),
             //Simultaneously move elbow, extender, and wrist to the appropriate setpoints
             new ParallelCommandGroup(
                 new SetElbowCommand(elbowSetpoint),
@@ -19,7 +20,10 @@ public class ReefStationCommand extends SequentialCommandGroup {
                 new SetWristCommand(wristSetpoint)
             ),
             //prevent the commands from being scheduled more than once
-            Commands.runOnce(() -> Robot.crane.runSetpoint = false)
+            Commands.runOnce(() -> Robot.crane.runSetpoint = false),
+            Commands.runOnce(() -> Robot.led.streamerColor = hue),
+            Commands.runOnce(() -> Robot.led.streamerBrightness = 255),
+            Commands.runOnce(() -> Robot.led.enableStreamer = true)
         );
     }
 }

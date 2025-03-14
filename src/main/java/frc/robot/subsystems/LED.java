@@ -10,9 +10,15 @@ public class LED extends SubsystemBase{
     private AddressableLED ledString;
     private AddressableLEDBuffer ledBuffer;
     private int bufferSize;
+    public boolean enableStreamer = false;
+    public int streamerColor = 0;
+    public int streamerBrightness = 0;
 
     // Store what the last hue of the first pixel is
     private int m_rainbowFirstPixelHue;
+    private int streamerLight = 0;
+    private int increment = -1;
+    private int stall = 0;
 
     public LED(int PWMPort, int BufferSize){
         this.bufferSize = BufferSize;
@@ -22,6 +28,13 @@ public class LED extends SubsystemBase{
         ledString.setLength(BufferSize);
         ledString.setData(ledBuffer);
         ledString.start();
+    }
+
+    @Override
+    public void periodic() {
+        if(enableStreamer){
+          streamer(streamerColor);
+        }
     }
 
     public void update() {
@@ -76,11 +89,11 @@ public class LED extends SubsystemBase{
         update();
     }
 
-    public void solidBlink(int hue, int sat, int val) {
+    public void solidBlink(int hue, double flashRate) {
         // For every pixel
         for (var i = 0; i < bufferSize; i++) {
           // Set the value
-          ledBuffer.setHSV(i, hue, sat, val * (Timer.getFPGATimestamp() % 0.5 < 0.25 ? 1 : 0));
+          ledBuffer.setHSV(i, hue, 255, 255 * (Timer.getFPGATimestamp() % flashRate < flashRate/2 ? 1 : 0));
         }
         update();
     }
@@ -92,5 +105,24 @@ public class LED extends SubsystemBase{
         ledBuffer.setHSV(i, hue, 255, 255);
       }
       update();
+    }
+
+    public void streamer(int hue){
+      if(stall % 3 == 0){
+        if(streamerLight == bufferSize-1 || streamerLight == 0){
+          increment = increment * -1;
+        }
+        streamerLight += increment;
+        // For every pixel
+        for (var i = 0; i < bufferSize; i++) {
+          // Set the value
+          ledBuffer.setHSV(i, hue, 255, streamerBrightness);
+        }
+        ledBuffer.setHSV(streamerLight, 0, 0, 255);
+        ledBuffer.setHSV(Math.min(bufferSize - 1, Math.max(streamerLight - increment,0)), hue, 60, 200);
+        ledBuffer.setHSV(Math.min(bufferSize - 1, Math.max(streamerLight - 2*increment,0)), hue, 120, 160);
+        update();
+      }
+      stall++;
     }
 }

@@ -72,27 +72,37 @@ public class Robot extends TimedRobot {
       CraneConstants.kElbowStation,
       CraneConstants.kExtenderStation,
       CraneConstants.kWristStation,
-    75);
+    160);
   public final static ReefStationCommand shelfCommand = new ReefStationCommand(
       CraneConstants.kElbowShelf,
       CraneConstants.kExtenderShelf,
       CraneConstants.kWristShelf,
-      90);
+      15);
   public final static ReefStationCommand lowCommand = new ReefStationCommand(
     CraneConstants.kElbowLow,
     CraneConstants.kExtenderLow,
     CraneConstants.kWristLow,
-    105);
+    120);
   public final static ReefStationCommand midCommand = new ReefStationCommand(
     CraneConstants.kElbowMid,
     CraneConstants.kExtenderMid,
     CraneConstants.kWristMid,
-    120);
+    150);
   public final static ReefStationCommand highCommand = new ReefStationCommand(
     CraneConstants.kElbowHigh,
     CraneConstants.kExtenderHigh,
     CraneConstants.kWristHigh,
-    135);
+    0);
+  public final static ReefStationCommand algaeHighCommand = new ReefStationCommand(
+    CraneConstants.kElbowAlgaeHigh,
+    CraneConstants.kExtenderAlgae,
+    CraneConstants.kWristAlgae,
+    90);
+  public final static ReefStationCommand algaeLowCommand = new ReefStationCommand(
+    CraneConstants.kElbowAlgaeLow,
+    CraneConstants.kExtenderAlgae,
+    CraneConstants.kWristAlgae,
+    70);
   public final static FineControlCrane fineControlCrane = new FineControlCrane();
 
   /**
@@ -146,6 +156,7 @@ public class Robot extends TimedRobot {
     autoMode.resetAutoHeading();
     autoMode.getAutonomousCommand().schedule();
     drivetrain.idleSwerve(IdleMode.kBrake);
+    led.enableStreamer = true;
   }
 
   /** This function is called periodically during autonomous. */
@@ -164,6 +175,7 @@ public class Robot extends TimedRobot {
     driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
     teamColor = DriverStation.getAlliance();
+    led.enableStreamer = true;
 
     // Subsystem default commands
     drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());

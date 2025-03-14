@@ -12,7 +12,9 @@ public class CraneTeleopCommand extends Command {
                     prevShelfReefState = false,
                     prevlowReefState = false,
                     prevMidReefState = false,
-                    prevHighReefState = false;
+                    prevHighReefState = false,
+                    prevAlgaeHighReefState = false,
+                    prevAlgaeLowReefState = false;
 
     public CraneTeleopCommand() {
     }
@@ -37,13 +39,13 @@ public class CraneTeleopCommand extends Command {
         if (PlayerConfigs.suckerIntake) {
             Robot.crane.spinSucker(CraneConstants.kSuckerIntake); // volts
             if(Robot.crane.getSuckerCurrent() > 20){
-                Robot.led.solid(60,255,255);
+                Robot.led.solidBlink(60,0.25);
             } else {
-                Robot.led.solidBlink(30,255,255);
+                Robot.led.solidBlink(30,0.5);
             }
         } else if (PlayerConfigs.suckerEject) {
             Robot.crane.spinSucker(CraneConstants.kSuckerEject); // volts
-            Robot.led.solidBlink(0,255,255);
+            Robot.led.solidBlink(0,0.5);
         } else {
             Robot.crane.spinSucker(0);;
         }
@@ -61,6 +63,10 @@ public class CraneTeleopCommand extends Command {
                 Robot.midCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.HIGH_REEF){
                 Robot.highCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.ALGAE_HIGH){
+                Robot.algaeHighCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.ALGAE_LOW){
+                Robot.algaeLowCommand.schedule();
             } else {
                 Robot.stowCommand.schedule();
             }
@@ -89,6 +95,9 @@ public class CraneTeleopCommand extends Command {
         prevlowReefState = updateButtonState(PlayerConfigs.lowReef, prevlowReefState, CraneState.LOW_REEF);
         prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, CraneState.MID_REEF);
         prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, CraneState.HIGH_REEF);
+        prevAlgaeHighReefState = updateButtonState(PlayerConfigs.algaeHigh, prevAlgaeHighReefState, CraneState.ALGAE_HIGH);
+        prevAlgaeLowReefState = updateButtonState(PlayerConfigs.algaeLow, prevAlgaeLowReefState, CraneState.ALGAE_LOW);
+
     }
 
     /**

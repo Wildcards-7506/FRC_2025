@@ -4,6 +4,7 @@
 
 package frc.robot.commands.crane;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
@@ -12,6 +13,7 @@ import frc.robot.Constants.CraneConstants;
 public class SetExtenderCommand extends Command {
   /** Creates a new SetElbowCommand. */
   double setpoint;
+  Timer timer = new Timer();
   public SetExtenderCommand(double setpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.setpoint = setpoint;
@@ -22,6 +24,8 @@ public class SetExtenderCommand extends Command {
   public void initialize() {
     //set LEDs to red to indicate the command has started and we have not hit our setpoint
     Robot.led.solidSection(5,10,0);
+    timer.reset();
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +47,7 @@ public class SetExtenderCommand extends Command {
     // If we are within 2 inches of the setpoint, end the command.
     // Because of the control system used, the motor will continue to move the extender 
     // to the setpoint even after the command ends
-    return Math.abs(Robot.crane.getExtenderPosition() - setpoint) < CraneConstants.extendMargin;
+    return Math.abs(Robot.crane.getExtenderPosition() - setpoint) < CraneConstants.extendMargin  || 
+    timer.get() > 0.5 && Math.abs(Robot.crane.getElbowVelocity()) < 0.01;
   }
 }

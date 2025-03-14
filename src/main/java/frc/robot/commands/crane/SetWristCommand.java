@@ -4,6 +4,7 @@
 
 package frc.robot.commands.crane;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
@@ -12,9 +13,13 @@ import frc.robot.Constants.CraneConstants;
 public class SetWristCommand extends Command {
   /** Creates a new SetElbowCommand. */
   double setpoint;
+  Timer timer = new Timer();
+  
   public SetWristCommand(double setpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.setpoint = setpoint;
+    timer.reset();
+    timer.start();
   }
 
   // Called when the command is initially scheduled.
@@ -42,6 +47,7 @@ public class SetWristCommand extends Command {
     // If we are within 8 degrees of the setpoint, end the command.
     // Because of the control system used, the motor will continue to move the wrist 
     // to the setpoint even after the command ends
-    return Math.abs(Robot.crane.getWristPosition() - setpoint) < CraneConstants.rotationMargin;
+    return Math.abs(Robot.crane.getWristPosition() - setpoint) < CraneConstants.rotationMargin  || 
+    timer.get() > 0.5 && Math.abs(Robot.crane.getElbowVelocity()) < 0.01;
   }
 }

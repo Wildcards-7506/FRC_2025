@@ -252,14 +252,29 @@ public class Crane extends SubsystemBase {
         return elbowMotor.getEncoder().getPosition();
     }
 
+    //Returns the speed of elbow rotation
+    public double getElbowVelocity(){
+        return elbowMotor.getEncoder().getVelocity();
+    }
+
     /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
     public double getExtenderPosition() {
         return CraneConstants.kExtenderStart - degreesToInches(extenderMotor.getEncoder().getPosition());
     }
 
+    //Returns the speed of extension
+    public double getExtenderVelocity(){
+        return extenderMotor.getEncoder().getVelocity();
+    }
+
     /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
         return wristMotor.getEncoder().getPosition();
+    }
+
+    //Returns the speed of wrist rotation
+    public double getWristVelocity(){
+        return wristMotor.getEncoder().getVelocity();
     }
 
     /** Returns the angle of the sucker in degrees, CCW+. */

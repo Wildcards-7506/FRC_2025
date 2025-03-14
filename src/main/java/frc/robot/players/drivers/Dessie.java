@@ -34,11 +34,13 @@ public class Dessie extends PlayerConfigs {
     @Override
     public void getOperatorConfig() {
         fineStrafe = 0.05;
-        stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
+        stationPickup = Robot.controller1.getRightBumperButton();
         shelfReef = Robot.controller1.getXButton();
         lowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
+        algaeHigh = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
+        algaeLow = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
         suckerIntake = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
         suckerEject = Robot.controller1.getLeftBumperButton();
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightY());
