@@ -5,6 +5,7 @@
 package frc.robot.commands.crane;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
@@ -25,19 +26,21 @@ public class SetElbowCommand extends Command {
     Robot.led.solidSection(0,5,0);
     timer.reset();
     timer.start();
+    SmartDashboard.putString("Elbow", "Starting");
   }
-
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     Robot.crane.setElbowPosition(setpoint);
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     //set LEDs to green to indicate the command has ended and we have hit our setpoint
     Robot.led.solidSection(0,5,60);
+    SmartDashboard.putString("Elbow", "Stopped");
   }
 
   // Returns true when the command should end.

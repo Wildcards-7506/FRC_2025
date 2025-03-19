@@ -125,8 +125,7 @@
               "_showGlyph": false,
               "Game/Game": "k2025Reefscape",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/path": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           },
           "9,0": {
@@ -207,7 +206,7 @@
               "_showGlyph": false
             }
           },
-          "6,3": {
+          "8,4": {
             "size": [
               1,
               1
@@ -222,46 +221,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "7,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/x",
-              "_title": "x",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/y",
-              "_title": "y",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "9,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/rot",
-              "_title": "rot",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "0,4": {
+          "6,3": {
             "size": [
               1,
               1
@@ -272,62 +232,6 @@
               "_title": "Crane State",
               "_glyph": 148,
               "_showGlyph": false
-            }
-          },
-          "1,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Crane FC",
-              "_title": "Crane FC",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FC Elbow",
-              "_title": "FC Elbow",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "3,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FC Wrist",
-              "_title": "FC Wrist",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "4,4": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Climber Tog",
-              "_title": "Climber Tog",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
             }
           },
           "5,4": {
@@ -369,34 +273,84 @@
               "_showGlyph": false
             }
           },
-          "8,4": {
+          "0,4": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/CLIMBER DISABLED",
-              "_title": "CLIMBER DISABLED",
+              "_source0": "network_table:///SmartDashboard/Climber Toggle",
+              "_title": "Climber Toggle",
               "_glyph": 148,
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "9,4": {
+          "7,3": {
             "size": [
               1,
               1
             ],
             "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Climber FC",
-              "_title": "Climber FC",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elbow",
+              "_title": "Elbow",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extender",
+              "_title": "Extender",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist",
+              "_title": "Wrist",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/XSpeed",
+              "_title": "XSpeed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/YSpeed",
+              "_title": "YSpeed",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

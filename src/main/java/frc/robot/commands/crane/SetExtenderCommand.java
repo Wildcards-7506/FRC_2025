@@ -5,6 +5,7 @@
 package frc.robot.commands.crane;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
@@ -26,6 +27,7 @@ public class SetExtenderCommand extends Command {
     Robot.led.solidSection(5,10,0);
     timer.reset();
     timer.start();
+    SmartDashboard.putString("Extender", "Starting");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +41,7 @@ public class SetExtenderCommand extends Command {
   public void end(boolean interrupted) {
     //set LEDs to green to indicate the command has ended and we have hit our setpoint
     Robot.led.solidSection(5,10,60);
+    SmartDashboard.putString("Extender", "Stopped");
   }
 
   // Returns true when the command should end.

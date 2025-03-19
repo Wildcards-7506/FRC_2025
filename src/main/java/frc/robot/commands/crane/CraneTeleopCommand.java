@@ -1,5 +1,6 @@
 package frc.robot.commands.crane;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
@@ -75,6 +76,13 @@ public class CraneTeleopCommand extends Command {
         if(PlayerConfigs.fineControlCraneEnable) {
             Robot.fineControlCrane.schedule();
         }
+
+        SmartDashboard.putNumber("Elbow SetP", Robot.crane.elbowSetpoint);
+        SmartDashboard.putNumber("Elbow Pos", Robot.crane.getElbowPosition());
+        SmartDashboard.putNumber("Extender SetP", Robot.crane.extenderSetpoint);
+        SmartDashboard.putNumber("Extender Pos", Robot.crane.getExtenderPosition());
+        SmartDashboard.putNumber("Wrist SetP", Robot.crane.wristSetpoint);
+        SmartDashboard.putNumber("Wrist Pos", Robot.crane.getWristPosition());
     }
 
     // Called once the command ends or is interrupted.
@@ -114,6 +122,7 @@ public class CraneTeleopCommand extends Command {
             } else {
                 Robot.crane.craneState = CraneState.STOW;
             } Robot.crane.runSetpoint = true;
+            SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
         }
         return buttonPressed;
     }
