@@ -18,8 +18,9 @@ public class StowCommand extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 new SetWristCommand(CraneConstants.kWristHardDeck),
                 new SetExtenderCommand(CraneConstants.kExtenderLimit1),
-                new SetElbowCommand(CraneConstants.kElbowHardDeck)),
+                new SetElbowCommand(CraneConstants.kElbowHardDeck + 10)), // Pause 10 degrees above to extend before moving to stow
             new SetExtenderCommand(CraneConstants.kExtenderStow),
+            new SetElbowCommand(CraneConstants.kElbowHardDeck),
             //prevent the commands from being scheduled more than once
             Commands.runOnce(() -> Robot.crane.runSetpoint = false),
             Commands.runOnce(() -> Robot.led.streamerBrightness = 0),
