@@ -1,6 +1,5 @@
 package frc.robot.commands.crane;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CraneConstants;
@@ -78,10 +77,10 @@ public class CraneTeleopCommand extends Command {
             Robot.fineControlCrane.schedule();
         }
 
-        SmartDashboard.putNumber("Elbow SetP", Robot.crane.wristSetpoint);
-        SmartDashboard.putNumber("Elbow Pos", Robot.crane.getWristPosition());
-        SmartDashboard.putNumber("Extender SetP", Robot.crane.wristSetpoint);
-        SmartDashboard.putNumber("Extender Pos", Robot.crane.getWristPosition());
+        SmartDashboard.putNumber("Elbow SetP", Robot.crane.elbowSetpoint);
+        SmartDashboard.putNumber("Elbow Pos", Robot.crane.getElbowPosition());
+        SmartDashboard.putNumber("Extender SetP", Robot.crane.extenderSetpoint);
+        SmartDashboard.putNumber("Extender Pos", Robot.crane.getExtenderPosition());
         SmartDashboard.putNumber("Wrist SetP", Robot.crane.wristSetpoint);
         SmartDashboard.putNumber("Wrist Pos", Robot.crane.getWristPosition());
     }
