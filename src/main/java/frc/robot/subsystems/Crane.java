@@ -66,7 +66,7 @@ public class Crane extends SubsystemBase {
         suckerConfig = new SparkMaxConfig();
 
         wristConfig
-            .smartCurrentLimit(20)
+            .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
         wristConfig.softLimit
             .forwardSoftLimitEnabled(true)
