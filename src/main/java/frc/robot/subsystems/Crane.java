@@ -72,13 +72,14 @@ public class Crane extends SubsystemBase {
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
             .forwardSoftLimit(CraneConstants.kWristCeiling)
-            .reverseSoftLimit(CraneConstants.kWristHardDeck - 20);
+            .reverseSoftLimit(CraneConstants.kWristHardDeck);
         wristConfig.encoder
             .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.005, 0.000003, 0.1);
+            // .pid(0.005, 0.000003, 0.1);
+            .pid(0.005, 0.0, 0.1);
             
         wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -96,7 +97,8 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.005, 0.000003, 0.1);
+            // .pid(0.007, 0.000005, 0.05);
+            .pid(0.007, 0.0, 0.05);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -162,8 +164,8 @@ public class Crane extends SubsystemBase {
         prevWristDirection = Math.signum(getWristPosition() - wristSetpoint);
         setPoint = wristSetpoint;
         wristPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
-        SmartDashboard.putNumber("Wrist Pos", getWristPosition());
+        // SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
+        // SmartDashboard.putNumber("Wrist Pos", getWristPosition());
     }
 
     /**
@@ -200,8 +202,8 @@ public class Crane extends SubsystemBase {
         double counterGravityVolts = voltsInUse * Math.cos(Math.toRadians(angleFromHorizon));
 
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, counterGravityVolts);
-        SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);
-        SmartDashboard.putNumber("Elbow Pos", getElbowPosition());
+        // SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);
+        // SmartDashboard.putNumber("Elbow Pos", getElbowPosition());
     }
 
     /**
@@ -220,8 +222,8 @@ public class Crane extends SubsystemBase {
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
-        SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
+        // SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
+        // SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
 
     private double inchesToDegrees(double inches) {

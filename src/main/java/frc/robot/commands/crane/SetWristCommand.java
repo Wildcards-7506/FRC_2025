@@ -5,6 +5,7 @@
 package frc.robot.commands.crane;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
@@ -27,6 +28,7 @@ public class SetWristCommand extends Command {
   public void initialize() {
     //set LEDs to red to indicate the command has started and we have not hit our setpoint
     Robot.led.solidSection(10,14,0);
+    SmartDashboard.putString("Wrist", "Starting");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +41,7 @@ public class SetWristCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     Robot.led.solidSection(10,14,60);
+    SmartDashboard.putString("Wrist", "Stopped");
   }
 
   // Returns true when the command should end.
