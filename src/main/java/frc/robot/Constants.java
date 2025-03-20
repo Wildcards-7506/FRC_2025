@@ -41,8 +41,10 @@ public final class Constants {
     public static final int EXTENDER = 12;
 
     // Climber: consists of rotator and extender
-    public static final int CLIMBER1 = 13;
-    public static final int CLIMBER2 = 14;
+    public static final int CLIMBER1 = 13; // One of these is the extender/jack/climber motor that lifts the robot up
+    public static final int CLIMBER2 = 14; // One of these is the extender/jack/climber motor that lifts the robot up
+    public static final int TENSIONER = 16; // Motor that keeps tension on the climber
+    public static final int WINCH = 17; // Actual motor that rotates the drum and reels in the climber
   }
 
   // Crane States
@@ -128,17 +130,16 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    public static final double kRotatorEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
+    public static final double kWinchEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
     public static final double kClimberEncoderDistancePerPulse = 1.0/5.0 * (3.0/4.0)/8.0;
-
-    // Rotator limits
-    public static final double kRotatorHardDeck = -10;
-    public static final double kRotatorCeiling = 135;
 
     // Climber limits
     public static final double kClimberHardDeck = 0.25;
-
     public static final double kClimberCeiling = 8; // inches
+
+    // Winch limits
+    public static final double kWinchCeiling = 360; // Bringing the climber out limit
+    public static final double kWinchHardDeck = 0; // Retraction limit when cage is coming into the robot
   }
 
   public static final class IOConstants {
