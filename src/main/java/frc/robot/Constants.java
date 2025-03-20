@@ -41,8 +41,7 @@ public final class Constants {
     public static final int EXTENDER = 12;
 
     // Climber: consists of rotator and extender
-    public static final int CLIMBER1 = 13; // One of these is the extender/jack/climber motor that lifts the robot up
-    public static final int CLIMBER2 = 14; // One of these is the extender/jack/climber motor that lifts the robot up
+    public static final int ANCHOR = 13; // One of these is the extender/jack/climber motor that lifts the robot up
     public static final int TENSIONER = 16; // Motor that keeps tension on the climber
     public static final int WINCH = 17; // Actual motor that rotates the drum and reels in the climber
   }
@@ -130,8 +129,8 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    public static final double kWinchEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3;
-    public static final double kClimberEncoderDistancePerPulse = 1.0/5.0 * (3.0/4.0)/8.0;
+    public static final double kWinchEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3; // degrees
+    public static final double kAnchorEncoderDistancePerPulse = 1/4; // inches
 
     // Climber limits
     public static final double kClimberHardDeck = 0.25;
