@@ -36,7 +36,7 @@ public class ClimberTeleopCommand extends Command {
         }
 
         //If climber mode is engaged, the climber position is set by the operator's joysticks
-        Robot.climber.setClimberVoltage(12 * PlayerConfigs.moveClimber);
+        Robot.climber.setAnchorVoltage(12 * PlayerConfigs.moveAnchor);
     }
         
     // Called once the command ends or is interrupted.

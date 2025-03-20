@@ -133,8 +133,8 @@ public final class Constants {
     public static final double kAnchorEncoderDistancePerPulse = 1/4; // inches
 
     // Climber limits
-    public static final double kClimberHardDeck = 0.25;
-    public static final double kClimberCeiling = 8; // inches
+    public static final double kAnchorHardDeck = 0.25;
+    public static final double kAnchorCeiling = 6.25; // inches
 
     // Winch limits
     public static final double kWinchCeiling = 360; // Bringing the climber out limit

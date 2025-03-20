@@ -48,8 +48,8 @@ public class Climber extends SubsystemBase {
         anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimberConstants.kClimberCeiling) 
-            .reverseSoftLimit(ClimberConstants.kClimberHardDeck);
+            .forwardSoftLimit(ClimberConstants.kAnchorCeiling) 
+            .reverseSoftLimit(ClimberConstants.kAnchorHardDeck);
         anchorConfig.encoder
             .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
         anchorConfig.closedLoop
@@ -81,11 +81,11 @@ public class Climber extends SubsystemBase {
             
         winchMotor.configure(winchConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        anchorSetpoint = getClimberPosition();
+        anchorSetpoint = getAnchorPosition();
         winchSetpoint = getWinchPosition();
     }
 
-    public void setClimberVoltage(double volts) {
+    public void setAnchorVoltage(double volts) {
         anchorMotor.setVoltage(volts);
     }
 
@@ -120,7 +120,7 @@ public class Climber extends SubsystemBase {
         return setPoint;
     }
 
-    public double getClimberPosition() {
+    public double getAnchorPosition() {
         return anchorMotor.getEncoder().getPosition();
     }
 

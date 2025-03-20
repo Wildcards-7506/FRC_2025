@@ -46,7 +46,8 @@ public class Dessie extends PlayerConfigs {
         suckerEject = Robot.controller1.getLeftBumperButton();
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightY());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
-        moveClimber = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveWinch = applyAxisDeadband(-Robot.controller1.getLeftY());
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
