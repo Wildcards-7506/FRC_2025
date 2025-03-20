@@ -48,20 +48,20 @@ public class DrivetrainTeleopCommand extends Command {
 
     //If driver is engaging fine control (slow) mode or boost mode, adjust the drive speed accordingly
     private double getDriveSpeed(double input) {
-        return PlayerConfigs.fineControlToggle ? 
-        PlayerConfigs.fineDriveSpeed * input :
+        return PlayerConfigs.fullControlToggle ? 
+        PlayerConfigs.fullDriveSpeed * input :
         PlayerConfigs.boostToggle ?
         PlayerConfigs.boostDriveSpeed * input :
-        PlayerConfigs.fullDriveSpeed * input;
+        PlayerConfigs.fineDriveSpeed * input;
     }
 
     //If driver is engaging fine control (slow) mode or boost mode, adjust the rotational speed accordingly
     private double getTurnSpeed(double input) {
-        return  PlayerConfigs.fineControlToggle ? 
-                    PlayerConfigs.fineTurnSpeed * input : 
+        return  PlayerConfigs.fullControlToggle ? 
+                    PlayerConfigs.fullTurnSpeed * input : 
                 PlayerConfigs.boostToggle ?
                     PlayerConfigs.boostTurnSpeed * input :
-                    PlayerConfigs.fullTurnSpeed * input;
+                    PlayerConfigs.fineTurnSpeed * input;
     }
     
     // Called once the command ends or is interrupted.

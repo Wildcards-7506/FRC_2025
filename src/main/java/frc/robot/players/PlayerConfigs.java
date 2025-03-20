@@ -21,7 +21,7 @@ public abstract class PlayerConfigs {
     public static double xMovement;
     public static double yMovement;
     public static double turnMovement;
-    public static boolean fineControlToggle;
+    public static boolean fullControlToggle;
     public static boolean boostToggle;
 
     //Slew Rate Limiters
