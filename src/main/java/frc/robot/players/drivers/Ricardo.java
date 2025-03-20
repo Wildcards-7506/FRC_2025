@@ -28,7 +28,8 @@ public class Ricardo extends PlayerConfigs {
         zeroGyro = Robot.controller0.getBButton();
 
         // Climber toggle
-        climberOnline = Robot.controller0.getStartButton(); // Climber engage
+        // TODO: Disabled temporarily until climber code is done
+        // climberOnline = Robot.controller0.getStartButton(); // Climber engage
     }
 
     @Override
