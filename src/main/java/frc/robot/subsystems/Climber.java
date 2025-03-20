@@ -18,10 +18,9 @@ public class Climber extends SubsystemBase {
     public boolean onClimberControl = false;
     
     // Climber
-    private final SparkMax climberMotor1;
-    // private final SparkMax climberMotor2;
-    private final SparkMaxConfig climberConfig;
-    public double climberSetpoint;
+    private final SparkMax anchorMotor;
+    private final SparkMaxConfig anchorConfig;
+    public double anchorSetpoint;
     
     private final SparkMax tensionerMotor;
     private final SparkMaxConfig tensionerConfig;
@@ -33,9 +32,8 @@ public class Climber extends SubsystemBase {
 
     public Climber() {
 
-        climberMotor1 = new SparkMax(CANIDS.CLIMBER1, MotorType.kBrushless);
-        // climberMotor2 = new SparkMax(CANIDS.CLIMBER2, MotorType.kBrushless);
-        climberConfig = new SparkMaxConfig();
+        anchorMotor = new SparkMax(CANIDS.ANCHOR, MotorType.kBrushless);
+        anchorConfig = new SparkMaxConfig();
 
         tensionerMotor = new SparkMax(CANIDS.TENSIONER, MotorType.kBrushless);
         tensionerConfig = new SparkMaxConfig();
@@ -44,21 +42,20 @@ public class Climber extends SubsystemBase {
         winchConfig = new SparkMaxConfig();
         winchPID = winchMotor.getClosedLoopController();
 
-        climberConfig
+        anchorConfig
             .smartCurrentLimit(100)
             .idleMode(IdleMode.kBrake);
-        climberConfig.softLimit
+        anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
             .forwardSoftLimit(ClimberConstants.kClimberCeiling) 
             .reverseSoftLimit(ClimberConstants.kClimberHardDeck);
-        climberConfig.encoder
-            .positionConversionFactor(ClimberConstants.kClimberEncoderDistancePerPulse);
-        climberConfig.closedLoop
+        anchorConfig.encoder
+            .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
+        anchorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
             
-        climberMotor1.configure(climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        // climberMotor2.configure(climberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         tensionerConfig
             .smartCurrentLimit(20)
@@ -84,13 +81,12 @@ public class Climber extends SubsystemBase {
             
         winchMotor.configure(winchConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        climberSetpoint = getClimberPosition();
+        anchorSetpoint = getClimberPosition();
         winchSetpoint = getWinchPosition();
     }
 
     public void setClimberVoltage(double volts) {
-        climberMotor1.setVoltage(volts);
-        // climberMotor2.setVoltage(volts);
+        anchorMotor.setVoltage(volts);
     }
 
     /**
@@ -125,7 +121,7 @@ public class Climber extends SubsystemBase {
     }
 
     public double getClimberPosition() {
-        return climberMotor1.getEncoder().getPosition();
+        return anchorMotor.getEncoder().getPosition();
     }
 
     public double getWinchPosition() {
