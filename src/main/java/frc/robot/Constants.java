@@ -77,7 +77,7 @@ public final class Constants {
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderOffset = 3.5;
     public static final double kExtenderHardDeck = 1;
-    public static final double kExtenderStation = 5.16;
+    public static final double kExtenderStation = 3.91;
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
@@ -97,7 +97,7 @@ public final class Constants {
     public static final double kElbowHorizonOffset = -51 - kElbowPlatformOffset; // measured from horizontal position to resting angle
     public static final double kElbowHardDeck = 5;
     public static final double kElbowShelf = 32;
-    public static final double kElbowStation = 32;
+    public static final double kElbowStation = 25;
     public static final double kElbowHigh = 136.104 + kElbowPlatformOffset;
     public static final double kElbowAlgaeLow = 70;
     public static final double kElbowAlgaeHigh = 80;
@@ -115,7 +115,7 @@ public final class Constants {
     public static final double kWristHigh = 0; 
     public static final double kWristAlgae = 0; 
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 58.014;
+    public static final double kWristStation = 53.014;
     public static final double kWristStow = 0;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
     public static final double kWristClimb = 0;
