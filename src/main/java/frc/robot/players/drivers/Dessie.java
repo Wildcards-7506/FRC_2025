@@ -29,7 +29,7 @@ public class Dessie extends PlayerConfigs {
 
         // Climber toggle
         // TODO: Disabled temporarily until climber code is done
-        // climberOnline = Robot.controller0.getStartButton(); // Climber engage
+        climberOnline = Robot.controller0.getStartButton(); // Climber engage
     }
 
     @Override
