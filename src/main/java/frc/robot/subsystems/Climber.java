@@ -65,7 +65,6 @@ public class Climber extends SubsystemBase {
 
         winchConfig
             .smartCurrentLimit(80)
-            .inverted(true)
             .idleMode(IdleMode.kBrake);
         winchConfig.softLimit
             .forwardSoftLimitEnabled(true)
@@ -77,7 +76,7 @@ public class Climber extends SubsystemBase {
             .velocityConversionFactor(ClimberConstants.kWinchEncoderDistancePerPulse);
         winchConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pid(0.005, 0.000003, 0.1);
+            .pid(0.05, 0.0, 0.1);
             
         winchMotor.configure(winchConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -102,7 +101,7 @@ public class Climber extends SubsystemBase {
         winchSetpoint = filterSetPoint(setPoint, 
                                        ClimberConstants.kWinchHardDeck, 
                                        ClimberConstants.kWinchCeiling);
-        winchPID.setReference(setPoint, ControlType.kPosition);
+        winchPID.setReference(winchSetpoint, ControlType.kPosition);
     }
     
     /**

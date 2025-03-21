@@ -43,7 +43,7 @@ public final class Constants {
     // Climber: consists of rotator and extender
     public static final int WINCH = 21; // Actual motor that rotates the winch (drum and rope) in the climber
     public static final int TENSIONER = 22; // Motor that keeps tension on the climber winch as it unwinds
-    public static final int ANCHOR = 23; // Motor that lifts up robot
+    public static final int ANCHOR = 25; // Motor that lifts up robot
   }
 
   // Crane States
@@ -130,14 +130,14 @@ public final class Constants {
 
   public static final class ClimberConstants {
     public static final double kWinchEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3; // degrees
-    public static final double kAnchorEncoderDistancePerPulse = 1/4; // inches
+    public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0; // inches
 
     // Climber limits
     public static final double kAnchorHardDeck = 0.25;
     public static final double kAnchorCeiling = 6.25; // inches
 
     // Winch limits
-    public static final double kWinchCeiling = 360; // Bringing the climber out limit
+    public static final double kWinchCeiling = 7 * 360; // Bringing the climber out limit in degrees
     public static final double kWinchHardDeck = 3; // Retraction limit when cage is coming into the robot
   }
 
