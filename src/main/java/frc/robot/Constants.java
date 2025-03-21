@@ -41,9 +41,9 @@ public final class Constants {
     public static final int EXTENDER = 12;
 
     // Climber: consists of rotator and extender
-    public static final int ANCHOR = 13; // One of these is the extender/jack/climber motor that lifts the robot up
-    public static final int TENSIONER = 16; // Motor that keeps tension on the climber
-    public static final int WINCH = 17; // Actual motor that rotates the drum and reels in the climber
+    public static final int WINCH = 21; // Actual motor that rotates the winch (drum and rope) in the climber
+    public static final int TENSIONER = 22; // Motor that keeps tension on the climber winch as it unwinds
+    public static final int ANCHOR = 23; // Motor that lifts up robot
   }
 
   // Crane States
