@@ -41,7 +41,7 @@ public class ClimberTeleopCommand extends Command {
         if(PlayerConfigs.moveWinch <= 0) {
             Robot.climber.setTensionerVoltage(0);
         } else {
-            Robot.climber.setTensionerVoltage(3);
+            Robot.climber.setTensionerVoltage(6);
         }
 
         SmartDashboard.putNumber("AnchorPos", Robot.climber.getAnchorPosition());

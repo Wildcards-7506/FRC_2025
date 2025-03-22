@@ -29,6 +29,8 @@ public class Climber extends SubsystemBase {
     private final SparkMaxConfig winchConfig;
     private final SparkClosedLoopController winchPID;
     public double winchSetpoint;
+    // Determines when winch should be restricted from retracting too far
+    private boolean keepAboveFinalRetractLimit = false;
 
     public Climber() {
 
@@ -58,13 +60,13 @@ public class Climber extends SubsystemBase {
         anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         tensionerConfig
-            .smartCurrentLimit(20)
+            .smartCurrentLimit(40)
             .idleMode(IdleMode.kCoast);
             
         tensionerMotor.configure(tensionerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         winchConfig
-            .smartCurrentLimit(80)
+            .smartCurrentLimit(100)
             .idleMode(IdleMode.kBrake);
         winchConfig.softLimit
             .forwardSoftLimitEnabled(true)
@@ -101,6 +103,15 @@ public class Climber extends SubsystemBase {
         winchSetpoint = filterSetPoint(setPoint, 
                                        ClimberConstants.kWinchHardDeck, 
                                        ClimberConstants.kWinchCeiling);
+        // If winch is past the final retract limit, then prevent it from retracting past final limit
+        // Only turns true if we intend it to be past the limit and the winch is physically past the limit
+        if(winchSetpoint > ClimberConstants.kWinchHoldLimit && getWinchPosition() > ClimberConstants.kWinchHoldLimit) {
+            keepAboveFinalRetractLimit = true;
+        }
+        // If climber has cage, then don't reel winch in too far
+        if(keepAboveFinalRetractLimit && winchSetpoint < ClimberConstants.kWinchHoldLimit) {
+            winchSetpoint = ClimberConstants.kWinchHoldLimit;
+        }
         winchPID.setReference(winchSetpoint, ControlType.kPosition);
     }
     
