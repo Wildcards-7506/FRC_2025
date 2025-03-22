@@ -80,7 +80,8 @@ public final class Constants {
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
-    public static final double kExtenderAlgae = 6;
+    public static final double kExtenderAlgaeLow = 3.91;
+    public static final double kExtenderAlgaeHigh = 3.46;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
     public static final double kExtenderStow = 20;
     public static final double kExtenderShelf = 5.16;
@@ -98,8 +99,8 @@ public final class Constants {
     public static final double kElbowShelf = 32;
     public static final double kElbowStation = 25;
     public static final double kElbowHigh = 136.104 + kElbowPlatformOffset;
-    public static final double kElbowAlgaeLow = 70;
-    public static final double kElbowAlgaeHigh = 80;
+    public static final double kElbowAlgaeLow = 25;
+    public static final double kElbowAlgaeHigh = 73.571;
     public static final double kElbowClimb = 131 + kElbowPlatformOffset;
     public static final double kElbowMid = 97.604;
     /** This is for low reef, not ground/low pickup. */
@@ -112,7 +113,8 @@ public final class Constants {
     public static final double kWristLow = 185.749;
     public static final double kWristMid = 200;
     public static final double kWristHigh = 0; 
-    public static final double kWristAlgae = 0; 
+    public static final double kWristAlgaeLow = 92; 
+    public static final double kWristAlgaeHigh = 149.62; 
     public static final double kWristHardDeck = 0;
     public static final double kWristStation = 53.014;
     public static final double kWristStow = 0;
@@ -130,7 +132,7 @@ public final class Constants {
 
   public static final class ClimberConstants {
     public static final double kWinchEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3; // degrees
-    public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0; // inches
+    public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0; // inches
 
     // Climber limits
     public static final double kAnchorHardDeck = 0.25;
