@@ -39,11 +39,24 @@ public class ClimberTeleopCommand extends Command {
         Robot.climber.setAnchorVoltage(12 * PlayerConfigs.moveAnchor);
         Robot.climber.setWinchPosition(Robot.climber.getWinchPosition() + PlayerConfigs.moveWinch * 10); // * 7.2 to get 360 deg per sec
         if(PlayerConfigs.moveWinch <= 0) {
-            Robot.climber.setTensionerVoltage(0);
+            Robot.climber.setTensionerVoltage(1);
         } else {
             Robot.climber.setTensionerVoltage(6);
         }
 
+        //if the anchor is not down, red lights
+        if(Robot.climber.getAnchorPosition() < 6){
+            Robot.led.solidBlink(0,0.5);
+        //if we haven't retracted far enough, blink yellow
+        } else if(Robot.climber.getWinchPosition() > 400){
+            Robot.led.solidBlink(30,0.5);
+        //if we have retracted too far, fast blink red
+        } else if(Robot.climber.getWinchPosition() < 380){
+            Robot.led.solidBlink(0,0.2);
+        //if we're in the level zone, solid green
+        } else {
+            Robot.led.solid(60,255,255);
+        }
         SmartDashboard.putNumber("AnchorPos", Robot.climber.getAnchorPosition());
         SmartDashboard.putNumber("WinchPos", Robot.climber.getWinchPosition());
     }
