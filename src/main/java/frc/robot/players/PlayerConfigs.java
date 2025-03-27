@@ -21,7 +21,7 @@ public abstract class PlayerConfigs {
     public static double xMovement;
     public static double yMovement;
     public static double turnMovement;
-    public static boolean fineControlToggle;
+    public static boolean fullControlToggle;
     public static boolean boostToggle;
 
     //Slew Rate Limiters
@@ -61,8 +61,8 @@ public abstract class PlayerConfigs {
     public static boolean climberOnline; // Climber toggle is specifically controlled by driver (not operator)
 
     // ClimbersfineControlRotator
-    public static double fineControlRotator;
-    public static double moveClimber;
+    public static double moveAnchor;
+    public static double moveWinch;
 
     /**
      * This helper method is used to get the joystick value after deadbanding.

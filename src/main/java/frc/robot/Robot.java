@@ -95,13 +95,13 @@ public class Robot extends TimedRobot {
     0);
   public final static ReefStationCommand algaeHighCommand = new ReefStationCommand(
     CraneConstants.kElbowAlgaeHigh,
-    CraneConstants.kExtenderAlgae,
-    CraneConstants.kWristAlgae,
+    CraneConstants.kExtenderAlgaeHigh,
+    CraneConstants.kWristAlgaeHigh,
     90);
   public final static ReefStationCommand algaeLowCommand = new ReefStationCommand(
     CraneConstants.kElbowAlgaeLow,
-    CraneConstants.kExtenderAlgae,
-    CraneConstants.kWristAlgae,
+    CraneConstants.kExtenderAlgaeLow,
+    CraneConstants.kWristAlgaeLow,
     70);
   public final static FineControlCrane fineControlCrane = new FineControlCrane();
 

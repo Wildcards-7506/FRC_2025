@@ -20,7 +20,7 @@ public class Dessie extends PlayerConfigs {
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
         turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
+        fullControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
 
         robotRelative = Robot.controller0.getRightBumperButton();
         
@@ -28,6 +28,7 @@ public class Dessie extends PlayerConfigs {
         zeroGyro = Robot.controller0.getBButton();
 
         // Climber toggle
+        // TODO: Disabled temporarily until climber code is done
         climberOnline = Robot.controller0.getStartButton(); // Climber engage
     }
 
@@ -45,7 +46,8 @@ public class Dessie extends PlayerConfigs {
         suckerEject = Robot.controller1.getLeftBumperButton();
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightY());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
-        moveClimber = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveWinch = applyAxisDeadband(-Robot.controller1.getLeftY());
 
         strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
         strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
