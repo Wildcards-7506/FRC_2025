@@ -1,0 +1,129 @@
+package frc.robot.commands.crane;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.CraneState;
+import frc.robot.Robot;
+import frc.robot.players.PlayerConfigs;
+
+public class CraneTeleopCommand extends Command {
+    private boolean prevStationPickupState = false,
+                    // prevLowPickupState = false,
+                    prevShelfReefState = false,
+                    prevlowReefState = false,
+                    prevMidReefState = false,
+                    prevHighReefState = false,
+                    prevAlgaeHighReefState = false,
+                    prevAlgaeLowReefState = false;
+
+    public CraneTeleopCommand() {
+    }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {}
+
+    // Called every time (~20 ms) the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        // EXECUTE CRANE TELEOP ONLY WHEN CLIMBER CONTROL IS OFF
+        if(Robot.climber.onClimberControl) {
+            if(!Robot.crane.getClimbMode()){
+                Robot.climbPresetCommand.schedule();
+            }
+            Robot.led.rainbow();
+            return;
+        }
+
+        /** Sucker */
+        if (PlayerConfigs.suckerIntake) {
+            Robot.crane.spinSucker(CraneConstants.kSuckerIntake); // volts
+            if(Robot.crane.getSuckerCurrent() > 20){
+                Robot.led.solidBlink(60,0.25);
+            } else {
+                Robot.led.solidBlink(30,0.5);
+            }
+        } else if (PlayerConfigs.suckerEject) {
+            Robot.crane.spinSucker(CraneConstants.kSuckerEject); // volts
+            Robot.led.solidBlink(0,0.5);
+        } else {
+            Robot.crane.spinSucker(0);;
+        }
+
+        updateCraneState();
+
+        if(Robot.crane.runSetpoint){
+            if(Robot.crane.craneState == CraneState.STATION){
+                Robot.stationCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.SHELF){
+                Robot.shelfCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.LOW_REEF){
+                Robot.lowCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.MID_REEF){
+                Robot.midCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.HIGH_REEF){
+                Robot.highCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.ALGAE_HIGH){
+                Robot.algaeHighCommand.schedule();
+            } else if(Robot.crane.craneState == CraneState.ALGAE_LOW){
+                Robot.algaeLowCommand.schedule();
+            } else {
+                Robot.stowCommand.schedule();
+            }
+        }
+
+        if(PlayerConfigs.fineControlCraneEnable) {
+            Robot.fineControlCrane.schedule();
+        }
+
+        SmartDashboard.putNumber("Elbow SetP", Robot.crane.elbowSetpoint);
+        SmartDashboard.putNumber("Elbow Pos", Robot.crane.getElbowPosition());
+        SmartDashboard.putNumber("Extender SetP", Robot.crane.extenderSetpoint);
+        SmartDashboard.putNumber("Extender Pos", Robot.crane.getExtenderPosition());
+        SmartDashboard.putNumber("Wrist SetP", Robot.crane.wristSetpoint);
+        SmartDashboard.putNumber("Wrist Pos", Robot.crane.getWristPosition());
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
+    private void updateCraneState() {
+        prevStationPickupState = updateButtonState(PlayerConfigs.stationPickup, prevStationPickupState, CraneState.STATION);
+        // prevLowPickupState = updateButtonState(PlayerConfigs.lowPickup, prevLowPickupState, );
+        prevShelfReefState = updateButtonState(PlayerConfigs.shelfReef, prevShelfReefState, CraneState.SHELF);
+        prevlowReefState = updateButtonState(PlayerConfigs.lowReef, prevlowReefState, CraneState.LOW_REEF);
+        prevMidReefState = updateButtonState(PlayerConfigs.midReef, prevMidReefState, CraneState.MID_REEF);
+        prevHighReefState = updateButtonState(PlayerConfigs.highReef, prevHighReefState, CraneState.HIGH_REEF);
+        prevAlgaeHighReefState = updateButtonState(PlayerConfigs.algaeHigh, prevAlgaeHighReefState, CraneState.ALGAE_HIGH);
+        prevAlgaeLowReefState = updateButtonState(PlayerConfigs.algaeLow, prevAlgaeLowReefState, CraneState.ALGAE_LOW);
+
+    }
+
+    /**
+     * Updates the button state based on the button pressed.
+     * @param buttonPressed The button pressed.
+     * @param prevState The previous state of the button.
+     * @param craneState The desired state of the crane.
+     * @return The updated state of the button.
+     */
+    private boolean updateButtonState(boolean buttonPressed, boolean prevState, CraneState craneState) {
+        if(buttonPressed && !prevState) {
+            if(Robot.crane.craneState != craneState) {
+                Robot.crane.craneState = craneState;
+            } else {
+                Robot.crane.craneState = CraneState.STOW;
+            } Robot.crane.runSetpoint = true;
+            SmartDashboard.putString("Crane State", Robot.crane.craneState.toString());
+        }
+        return buttonPressed;
+    }
+}

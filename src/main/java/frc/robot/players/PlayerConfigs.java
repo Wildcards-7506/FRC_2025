@@ -1,5 +1,6 @@
 package frc.robot.players;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Constants.IOConstants;
 
 /**
@@ -20,18 +21,17 @@ public abstract class PlayerConfigs {
     public static double xMovement;
     public static double yMovement;
     public static double turnMovement;
-    public static boolean fineControlToggle;
+    public static boolean fullControlToggle;
     public static boolean boostToggle;
-    public static boolean snapUp;
-    public static boolean snapRight;
-    public static boolean snapDown;
-    public static boolean snapLeft;
 
-    // Reef snaps
-    public static boolean snapUpRight;
-    public static boolean snapDownRight;
-    public static boolean snapDownLeft;
-    public static boolean snapUpLeft;
+    //Slew Rate Limiters
+    public static SlewRateLimiter xLimiter = new SlewRateLimiter(1);
+    public static SlewRateLimiter yLimiter = new SlewRateLimiter(1);
+
+    //Operator Drivetrain control
+    public static double fineStrafe;
+    public static boolean strafeRight;
+    public static boolean strafeLeft;
 
     public static boolean zeroGyro;
     // robotRelative instead of fieldRelative because fieldRelative is default
@@ -46,25 +46,23 @@ public abstract class PlayerConfigs {
     public static boolean lowReef; // Likely same button as lowReef
     public static boolean midReef;
     public static boolean highReef;
-    public static boolean gripperOpen;
+    public static boolean algaeHigh;
+    public static boolean algaeLow;
+    public static boolean suckerIntake;
+    public static boolean suckerEject;
     public static double fineControlWrist;
     public static double fineControlElbow;
-    public static double fineControlExtender;
-    public static boolean climberActivate;
-    public static boolean climberDeactivate;
+    // public static double fineControlExtender;
+    // public static boolean climberActivate; // Original purpose was to have setpoints that this steps through
+    // public static boolean climberDeactivate;
     
-    public static boolean fineControlEnable; // Fine control enable
-    public static boolean climberOnline; // Climber engage
-    
-    // Shooter
-    // public static boolean armScoringMechanism;
-    // public static boolean shooterActive;
-    // public static boolean fire;
-    // public static boolean reject;
-    // public static boolean intake;
+    public static boolean fineControlCraneEnable; // Fine control enable
+    public static boolean fineControlClimberEnable; // Fine control enable
+    public static boolean climberOnline; // Climber toggle is specifically controlled by driver (not operator)
 
-    // Climbers
-    // public static double climberEngage;
+    // ClimbersfineControlRotator
+    public static double moveAnchor;
+    public static double moveWinch;
 
     /**
      * This helper method is used to get the joystick value after deadbanding.

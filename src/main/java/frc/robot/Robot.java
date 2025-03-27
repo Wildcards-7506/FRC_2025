@@ -11,20 +11,27 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.CraneTeleopCommand;
-import frc.robot.commands.DrivetrainTeleopCommand;
+import frc.robot.Constants.CraneConstants;
+import frc.robot.commands.ClimberTeleopCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
+import frc.robot.commands.crane.CraneTeleopCommand;
+import frc.robot.commands.crane.actions.ClimbPresetCommand;
+import frc.robot.commands.crane.actions.FineControlCrane;
+import frc.robot.commands.crane.actions.ReefStationCommand;
+import frc.robot.commands.crane.actions.StowCommand;
+import frc.robot.commands.drivetrain.DrivetrainTeleopCommand;
 import frc.robot.players.PlayerConfigs;
 import frc.robot.players.drivers.Ricardo;
-import frc.robot.players.drivers.TestController;
+import frc.robot.players.drivers.Dessie;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utils.Logger;
+import frc.robot.subsystems.LED;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -50,35 +57,73 @@ public class Robot extends TimedRobot {
   public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
   public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
   public static PlayerConfigs ricardo = new Ricardo();
-  public static PlayerConfigs test = new TestController();
+  public static PlayerConfigs dessie = new Dessie();
 
   // Subsystems
   public final static Drivetrain drivetrain = new Drivetrain();
   public final static Crane crane = new Crane();
+  public final static Climber climber = new Climber();
+  public final static LED led = new LED(0,14);
+
+  //Commands
+  public final static ClimbPresetCommand climbPresetCommand = new ClimbPresetCommand();
+  public final static StowCommand stowCommand = new StowCommand();
+  public final static ReefStationCommand stationCommand = new ReefStationCommand(
+      CraneConstants.kElbowStation,
+      CraneConstants.kExtenderStation,
+      CraneConstants.kWristStation,
+    160);
+  public final static ReefStationCommand shelfCommand = new ReefStationCommand(
+      CraneConstants.kElbowShelf,
+      CraneConstants.kExtenderShelf,
+      CraneConstants.kWristShelf,
+      15);
+  public final static ReefStationCommand lowCommand = new ReefStationCommand(
+    CraneConstants.kElbowLow,
+    CraneConstants.kExtenderLow,
+    CraneConstants.kWristLow,
+    120);
+  public final static ReefStationCommand midCommand = new ReefStationCommand(
+    CraneConstants.kElbowMid,
+    CraneConstants.kExtenderMid,
+    CraneConstants.kWristMid,
+    150);
+  public final static ReefStationCommand highCommand = new ReefStationCommand(
+    CraneConstants.kElbowHigh,
+    CraneConstants.kExtenderHigh,
+    CraneConstants.kWristHigh,
+    0);
+  public final static ReefStationCommand algaeHighCommand = new ReefStationCommand(
+    CraneConstants.kElbowAlgaeHigh,
+    CraneConstants.kExtenderAlgaeHigh,
+    CraneConstants.kWristAlgaeHigh,
+    90);
+  public final static ReefStationCommand algaeLowCommand = new ReefStationCommand(
+    CraneConstants.kElbowAlgaeLow,
+    CraneConstants.kExtenderAlgaeLow,
+    CraneConstants.kWristAlgaeLow,
+    70);
+  public final static FineControlCrane fineControlCrane = new FineControlCrane();
 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {
-    Logger.info("SYSTEM","Robot Started");
-    
+  public Robot() {    
     //Auto Chooser
     autoMode = new AutoRoutines();
 
     // // Driver choosers
     driver_chooser.setDefaultOption("Ricardo", ricardo);
-    driver_chooser.addOption("Test", test);       
+    driver_chooser.addOption("Dessie", dessie);       
 
     // Operator choosers
-    operator_chooser.setDefaultOption("Test", test);
+    operator_chooser.setDefaultOption("Dessie", dessie);
     operator_chooser.addOption("Ricardo", ricardo);
 
     // Put the choosers on the dashboard
     SmartDashboard.putData("Driver",driver_chooser);
     SmartDashboard.putData("Operator",operator_chooser);
-    SmartDashboard.putBoolean("Skip Non-Path Commands", false);
-    SmartDashboard.putData(m_field);
   }
   
   /**
@@ -89,7 +134,8 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -103,7 +149,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Logger.info("SYSTEM","Autonomous Program Started");
     CommandScheduler.getInstance().cancelAll();
 
     // Set robot state
@@ -111,29 +156,31 @@ public class Robot extends TimedRobot {
     autoMode.resetAutoHeading();
     autoMode.getAutonomousCommand().schedule();
     drivetrain.idleSwerve(IdleMode.kBrake);
-    skipNonPath = SmartDashboard.getBoolean("Skip Non-Path Commands", false);
+    led.enableStreamer = true;
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
+    led.rainbow();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Logger.info("SYSTEM","Teleop Started");
     CommandScheduler.getInstance().cancelAll();
 
     // Get the selected drivers
     driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
     teamColor = DriverStation.getAlliance();
+    led.enableStreamer = true;
 
     // Subsystem default commands
     drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
-    crane.setDefaultCommand(new CraneTeleopCommand());
+    new CraneTeleopCommand().schedule();;
+    climber.setDefaultCommand(new ClimberTeleopCommand());
 
     // Default subsystem states
     drivetrain.idleSwerve(IdleMode.kBrake);
@@ -150,30 +197,33 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Logger.info("SYSTEM", "Robot Disabled");
-    Logger.flush();
     CommandScheduler.getInstance().cancelAll();
     drivetrain.idleSwerve(IdleMode.kCoast);
   }
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    led.allianceFlow();
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    Logger.info("SYSTEM","Test Program Started");
     CommandScheduler.getInstance().cancelAll();
     driver = driver_chooser.getSelected();
     operator = operator_chooser.getSelected();
-    crane.setDefaultCommand(new CraneTeleopCommand());
+    // drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
+    //crane.setDefaultCommand(new CraneTeleopCommand());
+    // climber.setDefaultCommand(new ClimberTeleopCommand());
+    // Robot.climber.onClimberControl = true;
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
     CommandScheduler.getInstance().run();
+    driver.getDriverConfig();
     operator.getOperatorConfig();
   }
 

@@ -7,53 +7,52 @@ import frc.robot.players.PlayerConfigs;
 public class Ricardo extends PlayerConfigs {
     @Override
     public void getDriverConfig() {
-        //Constants
-        fullTurnSpeed = 0.40;
-        fullDriveSpeed = 0.30;
-        boostTurnSpeed = 1;
+        // Constants
+        fullTurnSpeed = 0.50;
+        fullDriveSpeed = 0.50;
+        fineTurnSpeed = 0.3; // current default state
+        fineDriveSpeed = 0.2; // current default state
         boostDriveSpeed = 1;
-        fineTurnSpeed = 0.1;
-        fineDriveSpeed = 0.1;
+        boostTurnSpeed = 1;
         
-        //Driving and rotation
+        // Driving and rotation
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
         turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        snapUp = Robot.controller0.getPOV() == IOConstants.DPAD_UP;
-        snapRight = Robot.controller0.getPOV() == IOConstants.DPAD_RIGHT;
-        snapDown = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN;
-        snapLeft = Robot.controller0.getPOV() == IOConstants.DPAD_LEFT;
-
-        // Reef snaps
-        snapUpRight = Robot.controller0.getPOV() == IOConstants.DPAD_UP_RIGHT;
-        snapDownRight = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_RIGHT;
-        snapDownLeft = Robot.controller0.getPOV() == IOConstants.DPAD_DOWN_LEFT;
-        snapUpLeft = Robot.controller0.getPOV() == IOConstants.DPAD_UP_LEFT;
+        fullControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
 
         robotRelative = Robot.controller0.getRightBumperButton();
         
-        //Gyro Reset
+        // Gyro Reset
         zeroGyro = Robot.controller0.getBButton();
+
+        // Climber toggle
+        // TODO: Disabled temporarily until climber code is done
+        climberOnline = Robot.controller0.getStartButton(); // Climber engage
     }
 
     @Override
     public void getOperatorConfig() {
+        fineStrafe = 0.05;
         stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
         lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
         shelfReef = Robot.controller1.getXButton();
         lowReef = Robot.controller1.getAButton();
         midReef = Robot.controller1.getBButton();
         highReef = Robot.controller1.getYButton();
-        gripperOpen = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
+        suckerIntake = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
+        suckerEject = Robot.controller1.getLeftBumperButton();
         fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
         fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
-        fineControlExtender = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
-        climberActivate = Robot.controller1.getLeftBumperButton();
-        climberDeactivate = Robot.controller1.getRightBumperButton();
+        moveAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
+        moveWinch = applyAxisDeadband(-Robot.controller1.getLeftY());
+
+        strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
+        strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
         
-        fineControlEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
-        climberOnline = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT; // Climber engage
+        // 2 control schemes, switches when climberOnline is pressed on driver controller
+        fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
+        fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
     }
 }

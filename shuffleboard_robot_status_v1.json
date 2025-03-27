@@ -11,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,4": {
+          "5,0": {
             "size": [
               3,
               1
@@ -24,33 +24,7 @@
               "_showGlyph": false
             }
           },
-          "7,4": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Network Table Tree",
-              "_source0": "network_table:///PathPlanner",
-              "_title": "PathPlanner",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "0,2": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Alerts",
-              "_source0": "network_table:///SmartDashboard/Alerts",
-              "_title": "Alerts",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,4": {
+          "7,1": {
             "size": [
               1,
               1
@@ -63,7 +37,7 @@
               "_showGlyph": false
             }
           },
-          "3,4": {
+          "5,1": {
             "size": [
               1,
               1
@@ -76,7 +50,7 @@
               "_showGlyph": false
             }
           },
-          "4,4": {
+          "6,1": {
             "size": [
               1,
               1
@@ -89,20 +63,7 @@
               "_showGlyph": false
             }
           },
-          "3,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Skip Non-Path Commands",
-              "_title": "Skip Non-Path Commands",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,4": {
+          "5,2": {
             "size": [
               1,
               1
@@ -119,55 +80,63 @@
           },
           "0,0": {
             "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Alerts",
+              "_source0": "network_table:///SmartDashboard/Alerts",
+              "_title": "Alerts",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,1": {
+            "size": [
               2,
               1
             ],
             "content": {
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "/SmartDashboard/Field",
+              "_title": "Field",
               "_glyph": 148,
               "_showGlyph": false,
-              "Game/Game": "k2024Crescendo",
+              "Game/Game": "k2025Reefscape",
               "Visuals/Robot Icon Size": 50.0,
               "Visuals/Show Outside Circles": false
             }
           },
-          "3,2": {
+          "9,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Gripper Setpoint",
-              "_title": "Gripper Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Wrist Setpoint",
-              "_title": "/SmartDashboard/Wrist Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "5,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elbow Setpoint",
-              "_title": "/SmartDashboard/Elbow Setpoint",
+              "_source0": "network_table:///SmartDashboard/Wrist SetP",
+              "_title": "Wrist SetP",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -179,8 +148,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Extender Setpoint",
-              "_title": "/SmartDashboard/Extender Setpoint",
+              "_source0": "network_table:///SmartDashboard/Wrist Pos",
+              "_title": "Wrist Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -192,8 +161,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Crane State",
-              "_title": "/SmartDashboard/Crane State",
+              "_source0": "network_table:///SmartDashboard/Elbow SetP",
+              "_title": "Elbow SetP",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -204,13 +173,24 @@
               1
             ],
             "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Fine Control",
-              "_title": "/SmartDashboard/Fine Control",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elbow Pos",
+              "_title": "Elbow Pos",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "_showGlyph": false
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extender SetP",
+              "_title": "Extender SetP",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           },
           "5,3": {
@@ -220,10 +200,25 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FC Elbow",
-              "_title": "FC Elbow",
+              "_source0": "network_table:///SmartDashboard/Extender Pos",
+              "_title": "Extender Pos",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "8,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Skip Non-Path Commands",
+              "_title": "Skip Non-Path Commands",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           },
           "6,3": {
@@ -233,8 +228,127 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FC Wrist",
-              "_title": "FC Wrist",
+              "_source0": "network_table:///SmartDashboard/Crane State",
+              "_title": "Crane State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_PipelineName",
+              "_title": "limelight_PipelineName",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Stream",
+              "_title": "limelight_Stream",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight_Interface",
+              "_title": "limelight_Interface",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Climber Toggle",
+              "_title": "Climber Toggle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elbow",
+              "_title": "Elbow",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extender",
+              "_title": "Extender",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Wrist",
+              "_title": "Wrist",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/XSpeed",
+              "_title": "XSpeed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/YSpeed",
+              "_title": "YSpeed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -257,9 +371,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.857142925262451,
-    "y": -6.857142925262451,
-    "width": 1476.5714111328125,
-    "height": 880.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
   }
 }

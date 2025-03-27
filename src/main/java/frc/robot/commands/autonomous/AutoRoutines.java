@@ -19,7 +19,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
-import frc.robot.commands.autonomous.subsystem.AutoDrivetrainX;
+import frc.robot.Constants.CraneConstants;
+import frc.robot.Constants.CraneState;
+import frc.robot.commands.autonomous.commands.AutoSnapToZero;
+import frc.robot.commands.autonomous.commands.IntakeCommand;
+import frc.robot.commands.crane.actions.ReefStationCommand;
+import frc.robot.commands.crane.actions.StowCommand;
+import frc.robot.commands.drivetrain.DrivetrainXCommand;
 
 @SuppressWarnings("unused")
 public final class AutoRoutines {
@@ -29,10 +35,8 @@ public final class AutoRoutines {
 
   // Autonomous selector on dashboard
   private final SendableChooser<Command> autoChooser;
-  private double kAutoStartDelaySeconds;
     
-  // Load the RobotConfig from the GUI settings. You should probably
-  // store this in your Constants file
+  // Load the RobotConfig from the GUI settings.
   RobotConfig config;
   
   public AutoRoutines() {
@@ -67,9 +71,6 @@ public final class AutoRoutines {
       },
       Robot.drivetrain // Reference to this subsystem to set requirements
     );
-
-    // Autonomous selector options
-    kAutoStartDelaySeconds = SmartDashboard.getNumber("Auto Delay",0.0);
     
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser",autoChooser);
@@ -80,15 +81,37 @@ public final class AutoRoutines {
   }
 
   private void setMarkers() {
-    // Examples:
-    // NamedCommands.registerCommand("AutoShoot", new AutoShoot());
-    // NamedCommands.registerCommand("AutoIntake", new AutoIntake_Trigger(5, false,12,2.4));
-    // NamedCommands.registerCommand("AutoShooterSpinup", new AutoShooterSpinUp(ShooterConstants.kLArmedRPM, ShooterConstants.kRArmedRPM));
-    // NamedCommands.registerCommand("AutoIntakeStowToGround", new AutoIntakeStowToGround());
-    // NamedCommands.registerCommand("AutoIntakeGroundToStow", new AutoIntakeGroundToStow());
-    // NamedCommands.registerCommand("AutoIntakeGroundToAmp", new AutoIntakeGroundToAmp());
-    // NamedCommands.registerCommand("AutoIntakeAmpToGround", new AutoIntakeAmpToGround());
-    // NamedCommands.registerCommand("AutoIntakeStowToAmp", new AutoIntakeStowToAmp());
+    //Registers commands to run in autonomous. The Pathplanner application can take these
+    //pre-defined commands and place them at specific points while moving.
+    NamedCommands.registerCommand("AutoCraneStation", new ReefStationCommand(
+      CraneConstants.kElbowStation,
+      CraneConstants.kExtenderStation,
+      CraneConstants.kWristStation,
+      160));
+    NamedCommands.registerCommand("AutoCraneShelf", new ReefStationCommand(
+      CraneConstants.kElbowShelf,
+      CraneConstants.kExtenderShelf,
+      CraneConstants.kWristShelf,
+      0));
+    NamedCommands.registerCommand("AutoCraneLow", new ReefStationCommand(
+      CraneConstants.kElbowLow,
+      CraneConstants.kExtenderLow,
+      CraneConstants.kWristLow,
+      45));
+    NamedCommands.registerCommand("AutoCraneMid", new ReefStationCommand(
+      CraneConstants.kElbowMid,
+      CraneConstants.kExtenderMid,
+      CraneConstants.kWristMid,
+      90));
+    NamedCommands.registerCommand("AutoCraneHigh", new ReefStationCommand(
+      CraneConstants.kElbowHigh,
+      CraneConstants.kExtenderHigh,
+      CraneConstants.kWristHigh,
+      135));
+    NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
+    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(2, CraneConstants.kSuckerIntake));
+    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(0.5, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoSnap", new AutoSnapToZero());
   }
 
   /**
@@ -98,9 +121,8 @@ public final class AutoRoutines {
    */
   public Command getAutonomousCommand() {
     return Commands.sequence(
-      Commands.waitSeconds(kAutoStartDelaySeconds),
       autoChooser.getSelected(),
-      new AutoDrivetrainX());
+      new DrivetrainXCommand());
   }
 
   public void resetAutoHeading() {

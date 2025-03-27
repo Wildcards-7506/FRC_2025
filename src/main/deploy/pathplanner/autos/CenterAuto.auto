@@ -1,0 +1,56 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneMid"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoSuckerEject"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterEnd"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneStow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoSnap"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
