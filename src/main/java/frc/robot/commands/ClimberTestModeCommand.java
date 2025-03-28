@@ -7,7 +7,6 @@ import frc.robot.players.PlayerConfigs;
 
 public class ClimberTestModeCommand extends Command {
     // Holds previous state for toggle functionality
-    private boolean prevState = false;
 
     public ClimberTestModeCommand() {
         addRequirements(Robot.climber);
@@ -23,7 +22,7 @@ public class ClimberTestModeCommand extends Command {
 
         //If climber mode is engaged, the climber position is set by the operator's joysticks
         Robot.climber.setAnchorVoltage(-12 * PlayerConfigs.moveAnchor);
-        Robot.climber.setWinchPosition(Robot.climber.getWinchPosition() + PlayerConfigs.moveWinch * 10); // * 7.2 to get 360 deg per sec
+        Robot.climber.setWinchPosition(Robot.climber.getWinchPosition() + PlayerConfigs.moveWinch * 10, false); // * 7.2 to get 360 deg per sec
         SmartDashboard.putNumber("AnchorPos", Robot.climber.getAnchorPosition());
         SmartDashboard.putNumber("WinchPos", Robot.climber.getWinchPosition());
     }

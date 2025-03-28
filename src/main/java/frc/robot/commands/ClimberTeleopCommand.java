@@ -37,7 +37,7 @@ public class ClimberTeleopCommand extends Command {
 
         //If climber mode is engaged, the climber position is set by the operator's joysticks
         Robot.climber.setAnchorVoltage(-12 * PlayerConfigs.moveAnchor);
-        Robot.climber.setWinchPosition(Robot.climber.getWinchPosition() + PlayerConfigs.moveWinch * 10); // * 7.2 to get 360 deg per sec
+        Robot.climber.setWinchPosition(Robot.climber.getWinchPosition() + PlayerConfigs.moveWinch * 15, true); // * 7.2 to get 360 deg per sec
         if(PlayerConfigs.moveWinch <= 0) {
             Robot.climber.setTensionerVoltage(0);
         } else {

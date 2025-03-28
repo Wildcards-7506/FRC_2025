@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.commands.ClimberTeleopCommand;
+import frc.robot.commands.ClimberTestModeCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
 import frc.robot.commands.crane.CraneTeleopCommand;
 import frc.robot.commands.crane.actions.ClimbPresetCommand;
@@ -225,7 +226,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     driver.getDriverConfig();
     operator.getOperatorConfig();
-    
+    new ClimberTestModeCommand().schedule();
   }
 
   /** This function is called once when the robot is first started up. */

@@ -99,7 +99,7 @@ public class Climber extends SubsystemBase {
         tensionerMotor.setVoltage(volts);
     }
 
-    public void setWinchPosition(double setPoint) {
+    public void setWinchPosition(double setPoint, boolean filter) {
         winchSetpoint = filterSetPoint(setPoint, 
                                        ClimberConstants.kWinchHardDeck, 
                                        ClimberConstants.kWinchCeiling);
@@ -110,7 +110,7 @@ public class Climber extends SubsystemBase {
         }
         // If climber has cage, then don't reel winch in too far
         if(keepAboveFinalRetractLimit && winchSetpoint < ClimberConstants.kWinchHoldLimit) {
-            winchSetpoint = ClimberConstants.kWinchHoldLimit;
+            winchSetpoint = filter ? ClimberConstants.kWinchHoldLimit : winchSetpoint;
         }
         winchPID.setReference(winchSetpoint, ControlType.kPosition);
     }
