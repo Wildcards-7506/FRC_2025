@@ -20,7 +20,7 @@ public class Dessie extends PlayerConfigs {
         yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
         turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
         boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        fullControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
+        fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
 
         robotRelative = Robot.controller0.getRightBumperButton();
         
