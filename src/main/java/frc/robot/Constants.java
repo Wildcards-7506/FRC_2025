@@ -139,10 +139,10 @@ public final class Constants {
     public static final double kAnchorCeiling = 6.25; // inches
 
     // Winch limits
-    public static final double kWinchCeiling = 750; // Bringing the climber out limit in degrees
+    public static final double kWinchCeiling = 780; // Bringing the climber out limit in degrees
     public static final double kWinchHardDeck = 0; // Retraction limit when cage is coming into the robot
     // Prevent climber from retracting too far with cage acquired
-    public static final double kWinchHoldLimit = 340; // The final retraction limit
+    public static final double kWinchHoldLimit = 300; // The final retraction limit
   }
 
   public static final class IOConstants {
