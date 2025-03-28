@@ -5,22 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoCraneLow"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "RightStart"
-                }
-              }
-            ]
+            "pathName": "RightStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneStation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneShelf"
           }
         },
         {
