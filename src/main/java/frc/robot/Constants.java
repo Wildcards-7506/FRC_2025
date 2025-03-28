@@ -98,7 +98,7 @@ public final class Constants {
     public static final double kElbowHardDeck = 5;
     public static final double kElbowShelf = 32;
     public static final double kElbowStation = 25;
-    public static final double kElbowHigh = 136.104 + kElbowPlatformOffset;
+    public static final double kElbowHigh = 125.516;
     public static final double kElbowAlgaeLow = 25;
     public static final double kElbowAlgaeHigh = 73.571;
     public static final double kElbowClimb = 131 + kElbowPlatformOffset;
@@ -112,7 +112,7 @@ public final class Constants {
     public static final double kWristShelf = 105;
     public static final double kWristLow = 185.749;
     public static final double kWristMid = 200;
-    public static final double kWristHigh = 0; 
+    public static final double kWristHigh = 30.693; 
     public static final double kWristAlgaeLow = 100; 
     public static final double kWristAlgaeHigh = 149.62; 
     public static final double kWristHardDeck = 0;
