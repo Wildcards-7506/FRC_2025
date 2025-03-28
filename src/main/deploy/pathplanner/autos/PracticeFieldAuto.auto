@@ -5,15 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneLow"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "PracticeFieldPath"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneStation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneLow"
           }
         },
         {
