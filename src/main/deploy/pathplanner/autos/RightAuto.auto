@@ -34,55 +34,18 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "AutoCraneStation"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "RightSource"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoSuckerSuck"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoCraneLow"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "RightEnd"
+                  "name": "AutoCraneStow"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoSuckerEject"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneStow"
           }
         }
       ]

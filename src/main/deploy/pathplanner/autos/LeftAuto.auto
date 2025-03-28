@@ -36,7 +36,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoCraneStation"
+                  "name": "AutoCraneStow"
                 }
               },
               {
@@ -46,43 +46,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoSuckerSuck"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoCraneLow"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftEnd"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoSuckerEject"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneStow"
           }
         }
       ]

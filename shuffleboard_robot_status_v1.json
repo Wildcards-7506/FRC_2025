@@ -352,6 +352,32 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/AnchorPos",
+              "_title": "AnchorPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/WinchPos",
+              "_title": "WinchPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }

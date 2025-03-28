@@ -225,6 +225,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     driver.getDriverConfig();
     operator.getOperatorConfig();
+    
   }
 
   /** This function is called once when the robot is first started up. */

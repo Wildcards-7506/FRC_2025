@@ -32,7 +32,6 @@ public class CraneTeleopCommand extends Command {
             if(!Robot.crane.getClimbMode()){
                 Robot.climbPresetCommand.schedule();
             }
-            Robot.led.rainbow();
             return;
         }
 
