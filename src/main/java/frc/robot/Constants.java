@@ -80,8 +80,8 @@ public final class Constants {
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
-    public static final double kExtenderAlgaeLow = 3.91;
-    public static final double kExtenderAlgaeHigh = 3.46;
+    public static final double kExtenderAlgaeLow = 4;
+    public static final double kExtenderAlgaeHigh = 4;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
     public static final double kExtenderStow = 20;
     public static final double kExtenderShelf = 5.16;
