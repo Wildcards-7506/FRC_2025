@@ -225,6 +225,10 @@ public class Crane extends SubsystemBase {
         // SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
 
+    public void neutralExtend(){
+        extenderMotor.stopMotor();
+    }
+
     private double inchesToDegrees(double inches) {
         return inches * 360 / CraneConstants.kPulleyCircumferenceInches;
     }

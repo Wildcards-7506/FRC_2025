@@ -218,6 +218,7 @@ public class Robot extends TimedRobot {
     //crane.setDefaultCommand(new CraneTeleopCommand());
     // climber.setDefaultCommand(new ClimberTeleopCommand());
     // Robot.climber.onClimberControl = true;
+    Robot.climber.testModeConfig();
   }
 
   /** This function is called periodically during test mode. */

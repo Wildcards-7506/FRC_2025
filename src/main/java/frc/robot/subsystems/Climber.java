@@ -100,9 +100,9 @@ public class Climber extends SubsystemBase {
     }
 
     public void setWinchPosition(double setPoint, boolean filter) {
-        winchSetpoint = filterSetPoint(setPoint, 
+        winchSetpoint = filter ? filterSetPoint(setPoint, 
                                        ClimberConstants.kWinchHardDeck, 
-                                       ClimberConstants.kWinchCeiling);
+                                       ClimberConstants.kWinchCeiling) : setPoint;
         // If winch is past the final retract limit, then prevent it from retracting past final limit
         // Only turns true if we intend it to be past the limit and the winch is physically past the limit
         if(winchSetpoint > ClimberConstants.kWinchHoldLimit && getWinchPosition() > ClimberConstants.kWinchHoldLimit) {
@@ -136,5 +136,22 @@ public class Climber extends SubsystemBase {
 
     public double getWinchPosition() {
         return winchMotor.getEncoder().getPosition();
+    }
+
+    public void testModeConfig(){
+        winchConfig
+            .smartCurrentLimit(100)
+            .idleMode(IdleMode.kBrake);
+        winchConfig.softLimit
+            .forwardSoftLimitEnabled(false)
+            .reverseSoftLimitEnabled(false);
+        winchConfig.encoder
+            .positionConversionFactor(ClimberConstants.kWinchEncoderDistancePerPulse)
+            .velocityConversionFactor(ClimberConstants.kWinchEncoderDistancePerPulse);
+        winchConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .pid(0.05, 0.0, 0.1);
+            
+        winchMotor.configure(winchConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 }

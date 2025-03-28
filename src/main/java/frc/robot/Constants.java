@@ -80,8 +80,8 @@ public final class Constants {
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
     public static final double kExtenderLow = 3.46;
-    public static final double kExtenderAlgaeLow = 4;
-    public static final double kExtenderAlgaeHigh = 4;
+    public static final double kExtenderAlgaeLow = 5;
+    public static final double kExtenderAlgaeHigh = 5;
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
     public static final double kExtenderStow = 20;
     public static final double kExtenderShelf = 5.16;
@@ -119,7 +119,7 @@ public final class Constants {
     public static final double kWristStation = 53.014;
     public static final double kWristStow = 0;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
-    public static final double kWristClimb = 0;
+    public static final double kWristClimb = 20;
 
     // Sucker limits
     public static final double kSuckerIntake = 6;
