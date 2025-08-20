@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.commands.ClimberTeleopCommand;
@@ -42,8 +40,8 @@ import frc.robot.subsystems.LED;
 public class Robot extends TimedRobot {
   // Modes & people
   private AutoRoutines autoMode;
-  public PlayerConfigs driver;
-  public PlayerConfigs operator;
+  public PlayerConfigs driver = new Ricardo();
+  public PlayerConfigs operator = new Dessie();
   public static boolean skipNonPath;
 
   // Field Information
@@ -53,12 +51,6 @@ public class Robot extends TimedRobot {
   // Controllers
   public static final XboxController controller0 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
   public static final XboxController controller1 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
-
-  // Drivers
-  public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
-  public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
-  public static PlayerConfigs ricardo = new Ricardo();
-  public static PlayerConfigs dessie = new Dessie();
 
   // Subsystems
   public final static Drivetrain drivetrain = new Drivetrain();
@@ -113,18 +105,6 @@ public class Robot extends TimedRobot {
   public Robot() {    
     //Auto Chooser
     autoMode = new AutoRoutines();
-
-    // // Driver choosers
-    driver_chooser.setDefaultOption("Ricardo", ricardo);
-    driver_chooser.addOption("Dessie", dessie);       
-
-    // Operator choosers
-    operator_chooser.setDefaultOption("Dessie", dessie);
-    operator_chooser.addOption("Ricardo", ricardo);
-
-    // Put the choosers on the dashboard
-    SmartDashboard.putData("Driver",driver_chooser);
-    SmartDashboard.putData("Operator",operator_chooser);
   }
   
   /**
@@ -173,8 +153,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
 
     // Get the selected drivers
-    driver = driver_chooser.getSelected();
-    operator = operator_chooser.getSelected();
     teamColor = DriverStation.getAlliance();
     led.enableStreamer = true;
 
@@ -212,12 +190,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
-    driver = driver_chooser.getSelected();
-    operator = operator_chooser.getSelected();
-    // drivetrain.setDefaultCommand(new DrivetrainTeleopCommand());
-    //crane.setDefaultCommand(new CraneTeleopCommand());
-    // climber.setDefaultCommand(new ClimberTeleopCommand());
-    // Robot.climber.onClimberControl = true;
     Robot.climber.testModeConfig();
   }
 

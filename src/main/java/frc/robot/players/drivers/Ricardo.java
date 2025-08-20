@@ -34,25 +34,6 @@ public class Ricardo extends PlayerConfigs {
 
     @Override
     public void getOperatorConfig() {
-        fineStrafe = 0.05;
-        stationPickup = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
-        lowPickup = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
-        shelfReef = Robot.controller1.getXButton();
-        lowReef = Robot.controller1.getAButton();
-        midReef = Robot.controller1.getBButton();
-        highReef = Robot.controller1.getYButton();
-        suckerIntake = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        suckerEject = Robot.controller1.getLeftBumperButton();
-        fineControlWrist = applyAxisDeadband(Robot.controller1.getRightX());
-        fineControlElbow = applyAxisDeadband(-Robot.controller1.getLeftY()); // Inverted because joystick y up is negative
-        moveAnchor = applyAxisDeadband(-Robot.controller1.getRightY()); // Inverted because joystick y up is negative
-        moveWinch = applyAxisDeadband(-Robot.controller1.getLeftY());
-
-        strafeLeft = Robot.controller1.getPOV() == IOConstants.DPAD_LEFT;
-        strafeRight = Robot.controller1.getPOV() == IOConstants.DPAD_RIGHT;
-        
-        // 2 control schemes, switches when climberOnline is pressed on driver controller
-        fineControlCraneEnable = Robot.controller1.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
-        fineControlClimberEnable = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND; // Fine control enable
+        //Not Applicable
     }
 }

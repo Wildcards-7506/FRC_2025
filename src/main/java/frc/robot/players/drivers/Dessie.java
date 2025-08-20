@@ -7,29 +7,7 @@ import frc.robot.players.PlayerConfigs;
 public class Dessie extends PlayerConfigs {
     @Override
     public void getDriverConfig() {
-        // Constants
-        fullTurnSpeed = 0.40;
-        fullDriveSpeed = 0.30;
-        fineTurnSpeed = 0.3;
-        fineDriveSpeed = 0.1;
-        boostDriveSpeed = 1;
-        boostTurnSpeed = 1;
-        
-        // Driving and rotation
-        xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
-        yMovement = applyAxisDeadband(-Robot.controller0.getLeftY());
-        turnMovement = applyAxisDeadband(-Robot.controller0.getRightX());
-        boostToggle = Robot.controller0.getRightTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        fineControlToggle = Robot.controller0.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-
-        robotRelative = Robot.controller0.getRightBumperButton();
-        
-        // Gyro Reset
-        zeroGyro = Robot.controller0.getBButton();
-
-        // Climber toggle
-        // TODO: Disabled temporarily until climber code is done
-        climberOnline = Robot.controller0.getStartButton(); // Climber engage
+        // Not Applicable
     }
 
     @Override

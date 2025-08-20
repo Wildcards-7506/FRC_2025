@@ -28,14 +28,12 @@ public class Crane extends SubsystemBase {
     private final SparkMaxConfig wristConfig;
     public final SparkClosedLoopController wristPID;
     public double wristSetpoint;
-    private double prevWristDirection = 0;
     
     // Elbow
     private final SparkMax elbowMotor;
     private final SparkMaxConfig elbowConfig;
     public final SparkClosedLoopController elbowPID;
     public double elbowSetpoint;
-    private double prevElbowDirection = 0;
     
     //Extender
     private final SparkMax extenderMotor;
@@ -96,7 +94,6 @@ public class Crane extends SubsystemBase {
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
         elbowConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // .pid(0.007, 0.000005, 0.05);
             .pid(0.007, 0.0, 0.05);
             
         elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -149,22 +146,10 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired angle of the wrist in degrees
      */
     public void setWristPosition(double setPoint) {
-        wristSetpoint = filterSetPoint(setPoint, 
+        setPoint = filterSetPoint(setPoint, 
                                        CraneConstants.kWristHardDeck, 
                                        CraneConstants.kWristCeiling);
-        /*
-         * don't let integral accumulate if more than a few degrees away from setpoint
-         */
-        if(Math.abs(getWristPosition() - wristSetpoint) > 10 ||
-           Math.abs(getWristPosition() - wristSetpoint) < 0.25 ||
-           prevWristDirection != Math.signum(getWristPosition() - wristSetpoint)) {
-            wristPID.setIAccum(0.0);
-        }
-        prevWristDirection = Math.signum(getWristPosition() - wristSetpoint);
-        setPoint = wristSetpoint;
         wristPID.setReference(setPoint, ControlType.kPosition);
-        // SmartDashboard.putNumber("Wrist SetP", wristSetpoint);
-        // SmartDashboard.putNumber("Wrist Pos", getWristPosition());
     }
 
     /**
@@ -176,15 +161,6 @@ public class Crane extends SubsystemBase {
         elbowSetpoint = filterSetPoint(setPoint, 
                                        CraneConstants.kElbowHardDeck, 
                                        CraneConstants.kElbowCeiling);
-        /*
-         * don't let integral accumulate if more than a few degrees away from setpoint
-         */
-        if(Math.abs(getElbowPosition() - elbowSetpoint) > 10 ||
-           Math.abs(getElbowPosition() - elbowSetpoint) < 0.25 ||
-           prevElbowDirection != Math.signum(getElbowPosition() - elbowSetpoint)) {
-            elbowPID.setIAccum(0.0);
-        }
-        prevElbowDirection = Math.signum(getElbowPosition() - elbowSetpoint);
         /*
          * Set this value to the voltage reading when crane is retracted and elbow is at horizon, like in mid / low reef
          */
@@ -201,8 +177,6 @@ public class Crane extends SubsystemBase {
         double counterGravityVolts = voltsInUse * Math.cos(Math.toRadians(angleFromHorizon));
 
         elbowPID.setReference(elbowSetpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, counterGravityVolts);
-        // SmartDashboard.putNumber("Elbow SetP", elbowSetpoint);
-        // SmartDashboard.putNumber("Elbow Pos", getElbowPosition());
     }
 
     /**
@@ -221,8 +195,6 @@ public class Crane extends SubsystemBase {
         setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
         setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
-        // SmartDashboard.putNumber("Extender SetP", extenderSetpoint);
-        // SmartDashboard.putNumber("Extender Pos", getExtenderPosition());
     }
 
     public void neutralExtend(){
