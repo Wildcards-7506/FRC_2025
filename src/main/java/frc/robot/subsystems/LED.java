@@ -54,6 +54,7 @@ public class LED extends SubsystemBase{
         m_rainbowFirstPixelHue += 3;
         // Check bounds
         m_rainbowFirstPixelHue %= 180;
+
         update();
     }
 

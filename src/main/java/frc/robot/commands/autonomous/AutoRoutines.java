@@ -110,7 +110,7 @@ public final class AutoRoutines {
       135));
     NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
     NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(2, CraneConstants.kSuckerIntake));
-    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(0.5, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(0.5, -8));
     NamedCommands.registerCommand("AutoSnap", new AutoSnapToZero());
   }
 

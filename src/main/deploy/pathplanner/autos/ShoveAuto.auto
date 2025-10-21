@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RightStart"
+            "pathName": "Shove Start"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shove End"
           }
         },
         {
@@ -32,25 +38,6 @@
           "type": "wait",
           "data": {
             "waitTime": 3.5
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "RightSource"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AutoCraneStow"
-                }
-              }
-            ]
           }
         }
       ]

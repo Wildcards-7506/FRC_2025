@@ -116,7 +116,7 @@ public final class Constants {
     public static final double kWristAlgaeLow = 100; 
     public static final double kWristAlgaeHigh = 149.62; 
     public static final double kWristHardDeck = 0;
-    public static final double kWristStation = 53.014;
+    public static final double kWristStation = 58.014;
     public static final double kWristStow = 0;
     public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
     public static final double kWristClimb = 20;

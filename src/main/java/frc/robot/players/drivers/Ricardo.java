@@ -8,12 +8,12 @@ public class Ricardo extends PlayerConfigs {
     @Override
     public void getDriverConfig() {
         // Constants
-        fullTurnSpeed = 0.50;
-        fullDriveSpeed = 0.50;
-        fineTurnSpeed = 0.3; // current default state
-        fineDriveSpeed = 0.2; // current default state
-        boostDriveSpeed = 1;
-        boostTurnSpeed = 1;
+        fullTurnSpeed = 0.30;
+        fullDriveSpeed = 0.20;
+        fineTurnSpeed = 0.2; // current default state
+        fineDriveSpeed = 0.1; // current default state
+        boostDriveSpeed = 0.5;
+        boostTurnSpeed = 0.25;
         
         // Driving and rotation
         xMovement = applyAxisDeadband(Robot.controller0.getLeftX());
