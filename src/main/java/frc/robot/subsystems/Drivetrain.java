@@ -222,6 +222,7 @@ public class Drivetrain extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
+    System.out.println("Gyro reset called, resetting.");
     m_gyro.reset();
   }
 

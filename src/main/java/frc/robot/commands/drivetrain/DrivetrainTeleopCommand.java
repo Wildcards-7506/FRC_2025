@@ -22,6 +22,7 @@ public class DrivetrainTeleopCommand extends Command {
     public void execute() {        
         //Reset Gyro if driver is pressing reset button
         if(PlayerConfigs.zeroGyro) {
+            System.out.println("Resetting heading via driver command.");
             Robot.drivetrain.zeroHeading();
         }
 

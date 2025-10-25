@@ -126,6 +126,7 @@ public final class AutoRoutines {
   }
 
   public void resetAutoHeading() {
+    System.out.println("Resetting heading via AUTO command.");
     Robot.drivetrain.zeroHeading();
   }
 }
