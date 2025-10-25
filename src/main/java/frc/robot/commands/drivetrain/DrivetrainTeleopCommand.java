@@ -12,17 +12,16 @@ public class DrivetrainTeleopCommand extends Command {
         //Prevents the drivetrain from trying to run conflicting commands at the same time
         addRequirements(Robot.drivetrain);
     }
-    
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {}
-    
+
     // Called every time the scheduler runs (every ~20 ms) while the command is scheduled.
     @Override
-    public void execute() {        
+    public void execute() {
         //Reset Gyro if driver is pressing reset button
         if(PlayerConfigs.zeroGyro) {
-            System.out.println("Resetting heading via driver command.");
             Robot.drivetrain.zeroHeading();
         }
 
@@ -36,7 +35,7 @@ public class DrivetrainTeleopCommand extends Command {
         }
         else {
             // If Operator is not strafing, driver controls movement under field oriented control
-            // Up on the joystick moves the robot away from the driver station 
+            // Up on the joystick moves the robot away from the driver station
             // no matter what direction the robot is facing.
             climbModeMultiplier = Robot.climber.onClimberControl ? 0.25 : 1.0;
             xInputSpeed = PlayerConfigs.xLimiter.calculate(getDriveSpeed(PlayerConfigs.xMovement)) * climbModeMultiplier;
@@ -50,26 +49,23 @@ public class DrivetrainTeleopCommand extends Command {
 
     //If driver is engaging fine control (slow) mode or boost mode, adjust the drive speed accordingly
     private double getDriveSpeed(double input) {
-        return PlayerConfigs.fineControlToggle ? 
-        PlayerConfigs.fineDriveSpeed * input :
-        PlayerConfigs.boostToggle ?
-        PlayerConfigs.boostDriveSpeed * input :
-        PlayerConfigs.fullDriveSpeed * input;
+
+        return PlayerConfigs.boostToggle ?
+                PlayerConfigs.boostDriveSpeed * input :
+                PlayerConfigs.fullDriveSpeed * input;
     }
 
     //If driver is engaging fine control (slow) mode or boost mode, adjust the rotational speed accordingly
     private double getTurnSpeed(double input) {
-        return  PlayerConfigs.fineControlToggle ? 
-                    PlayerConfigs.fineTurnSpeed * input : 
-                PlayerConfigs.boostToggle ?
-                    PlayerConfigs.boostTurnSpeed * input :
-                    PlayerConfigs.fullTurnSpeed * input;
+        return PlayerConfigs.boostToggle ?
+                PlayerConfigs.boostTurnSpeed * input :
+                PlayerConfigs.fullTurnSpeed * input;
     }
-    
+
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {}
-    
+
     // Returns true when the command should end.
     // Since we run this every cycle in teleop, we don't want this command to end 
     // or we wouldn't be able to move.
