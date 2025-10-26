@@ -64,6 +64,8 @@ public abstract class PlayerConfigs {
     public static double moveAnchor;
     public static double moveWinch;
 
+    public static boolean useFieldRelative;
+
     /**
      * This helper method is used to get the joystick value after deadbanding.
      * 

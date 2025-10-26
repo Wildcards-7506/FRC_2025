@@ -38,14 +38,18 @@ public class DrivetrainTeleopCommand extends Command {
             // If Operator is not strafing, driver controls movement under field oriented control
             // Up on the joystick moves the robot away from the driver station
             // no matter what direction the robot is facing.
+
             climbModeMultiplier = Robot.climber.onClimberControl ? 0.25 : 1.0;
             if (PlayerConfigs.boostToggle && Robot.climber.onClimberControl) {
-                climbModeMultiplier = 1.0;
+                climbModeMultiplier = 0.5;
             }
 
             xInputSpeed = PlayerConfigs.xLimiter.calculate(getDriveSpeed(PlayerConfigs.xMovement)) * climbModeMultiplier;
             yInputSpeed = PlayerConfigs.yLimiter.calculate(getDriveSpeed(PlayerConfigs.yMovement)) * climbModeMultiplier;
             inputRot = getTurnSpeed(PlayerConfigs.turnMovement) * climbModeMultiplier;
+
+            boolean useFieldRelative = SmartDashboard.getBoolean("Drive Train Type", true);
+
             Robot.drivetrain.drive(xInputSpeed, yInputSpeed, inputRot, true);
             SmartDashboard.putNumber("XSpeed", xInputSpeed);
             SmartDashboard.putNumber("YSpeed", yInputSpeed);

@@ -54,6 +54,9 @@ public class Robot extends TimedRobot {
   public static final XboxController controller0 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
   public static final XboxController controller1 = new XboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
 
+  // Drive train chooser
+  public static SendableChooser<Boolean> use_field_relative_chooser = new SendableChooser<>();
+
   // Drivers
   public static SendableChooser<PlayerConfigs> driver_chooser = new SendableChooser<>();
   public static SendableChooser<PlayerConfigs> operator_chooser = new SendableChooser<>();
@@ -122,9 +125,14 @@ public class Robot extends TimedRobot {
     operator_chooser.setDefaultOption("Dessie", dessie);
     operator_chooser.addOption("Ricardo", ricardo);
 
+    // Drive Controls
+      use_field_relative_chooser.setDefaultOption("Use Field Relative", true);
+      use_field_relative_chooser.addOption("Use Bot Relative", false);
+
     // Put the choosers on the dashboard
     SmartDashboard.putData("Driver",driver_chooser);
     SmartDashboard.putData("Operator",operator_chooser);
+    SmartDashboard.putData("Drive Train Type", use_field_relative_chooser);
   }
   
   /**

@@ -24,6 +24,7 @@ public class ClimberTeleopCommand extends Command {
         // Pressing this button will lock the robot into climb mode to prevent 
         //the crane from moving while trying to climb
         if(PlayerConfigs.climberOnline && !prevState) {
+            System.out.println("Climber is now " + (Robot.climber.onClimberControl ? "on" : "off"));
             Robot.climber.onClimberControl = !Robot.climber.onClimberControl;
         }
         prevState = PlayerConfigs.climberOnline;
