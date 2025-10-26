@@ -39,6 +39,10 @@ public class DrivetrainTeleopCommand extends Command {
             // Up on the joystick moves the robot away from the driver station
             // no matter what direction the robot is facing.
             climbModeMultiplier = Robot.climber.onClimberControl ? 0.25 : 1.0;
+            if (PlayerConfigs.boostToggle && Robot.climber.onClimberControl) {
+                climbModeMultiplier = 1.0;
+            }
+
             xInputSpeed = PlayerConfigs.xLimiter.calculate(getDriveSpeed(PlayerConfigs.xMovement)) * climbModeMultiplier;
             yInputSpeed = PlayerConfigs.yLimiter.calculate(getDriveSpeed(PlayerConfigs.yMovement)) * climbModeMultiplier;
             inputRot = getTurnSpeed(PlayerConfigs.turnMovement) * climbModeMultiplier;
