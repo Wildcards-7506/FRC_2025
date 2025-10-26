@@ -11,6 +11,7 @@ import frc.robot.commands.crane.SetWristCommand;
 
 public class StowCommand extends SequentialCommandGroup {
     public StowCommand() {
+        System.out.println("Stow preset called");
         addRequirements(Robot.crane);
         addCommands(
             Commands.runOnce(() -> Robot.led.enableStreamer = false),

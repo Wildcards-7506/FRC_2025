@@ -54,18 +54,25 @@ public class CraneTeleopCommand extends Command {
 
         if(Robot.crane.runSetpoint){
             if(Robot.crane.craneState == CraneState.STATION){
+                System.out.println("Running crane teleop command | CraneState.STATION");
                 Robot.stationCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.SHELF){
+                System.out.println("Running crane teleop command | CraneState.SHELF");
                 Robot.shelfCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.LOW_REEF){
+                System.out.println("Running crane teleop command | CraneState.LOW_REEF");
                 Robot.lowCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.MID_REEF){
+                System.out.println("Running crane teleop command | CraneState.MID_REEF");
                 Robot.midCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.HIGH_REEF){
+                System.out.println("Running crane teleop command | CraneState.HIGH_REEF");
                 Robot.highCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.ALGAE_HIGH){
+                System.out.println("Running crane teleop command | CraneState.ALGAE_HIGH");
                 Robot.algaeHighCommand.schedule();
             } else if(Robot.crane.craneState == CraneState.ALGAE_LOW){
+                System.out.println("Running crane teleop command | CraneState.ALGAE_LOW");
                 Robot.algaeLowCommand.schedule();
             } else {
                 Robot.stowCommand.schedule();
@@ -73,6 +80,7 @@ public class CraneTeleopCommand extends Command {
         }
 
         if(PlayerConfigs.fineControlCraneEnable) {
+            System.out.println("Running crane teleop configuation | PlayerConfigs.fineControlCraneEnable");
             Robot.fineControlCrane.schedule();
         }
 

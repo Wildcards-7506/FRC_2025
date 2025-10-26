@@ -4,7 +4,8 @@ import frc.robot.Constants.IOConstants;
 import frc.robot.Robot;
 import frc.robot.players.PlayerConfigs;
 
-public class Ricardo extends PlayerConfigs {
+public class
+Ricardo extends PlayerConfigs {
     @Override
     public void getDriverConfig() {
         // Constants

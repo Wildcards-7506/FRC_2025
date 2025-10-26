@@ -11,6 +11,7 @@ import frc.robot.commands.crane.SetWristCommand;
 
 public class ClimbPresetCommand extends SequentialCommandGroup {
     public ClimbPresetCommand() {
+        System.out.println("Climb preset called");
         addRequirements(Robot.crane);
         addCommands(
             //Set climber mode to true, locks out crane movement
