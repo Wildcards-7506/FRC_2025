@@ -5,15 +5,13 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.IOConstants;
+import frc.robot.commands.CraneCommands;
 import frc.robot.commands.autonomous.AutoRoutines;
-import frc.robot.commands.crane.actions.ClimbPresetCommand;
 import frc.robot.commands.crane.actions.FineControlCrane;
-import frc.robot.commands.crane.actions.StowCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
@@ -26,9 +24,6 @@ import frc.robot.subsystems.LED;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // Modes & people
-    private AutoRoutines autoMode;
-
     // Controllers
     public final CommandXboxController controller0 = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
     public final CommandXboxController controller1 = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
@@ -42,71 +37,17 @@ public class RobotContainer {
     public final LED led;
 
     //Commands
-    public final ClimbPresetCommand climbPresetCommand;
-    public final StowCommand stowCommand;
-    public final Command stationCommand;
-    public final Command shelfCommand;
-    public final Command lowCommand;
-    public final Command midCommand;
-    public final Command highCommand;
-    public final Command algaeHighCommand;
-    public final Command algaeLowCommand;
+    public final CraneCommands craneCommands;
     public final FineControlCrane fineControlCrane;
 
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
   public RobotContainer() {
-    //Auto Chooser
-    autoMode = new AutoRoutines();
-
     drivetrain = new Drivetrain();
     crane = new Crane();
+    craneCommands = new CraneCommands(crane);
     climber = new Climber();
     led = new LED(0,14);
 
-    climbPresetCommand = new ClimbPresetCommand();
-
-    stowCommand = new StowCommand();
-
-    stationCommand = new crane.ReefStationCommand(
-      CraneConstants.kElbowStation,
-      CraneConstants.kExtenderStation,
-      CraneConstants.kWristStation);
-
-    shelfCommand = new ReefStationCommand(
-      CraneConstants.kElbowShelf,
-      CraneConstants.kExtenderShelf,
-      CraneConstants.kWristShelf,
-      15);
-
-    lowCommand = new ReefStationCommand(
-    CraneConstants.kElbowLow,
-    CraneConstants.kExtenderLow,
-    CraneConstants.kWristLow,
-    120);
-
-    midCommand = new ReefStationCommand(
-    CraneConstants.kElbowMid,
-    CraneConstants.kExtenderMid,
-    CraneConstants.kWristMid,
-    150);
-
-    highCommand = new ReefStationCommand(
-    CraneConstants.kElbowHigh,
-    CraneConstants.kExtenderHigh,
-    CraneConstants.kWristHigh,
-    0);
-
-    algaeHighCommand = new ReefStationCommand(
-    CraneConstants.kElbowAlgaeHigh,
-    CraneConstants.kExtenderAlgaeHigh,
-    CraneConstants.kWristAlgaeHigh,
-    90);
-
-    algaeLowCommand = new ReefStationCommand(
-    CraneConstants.kElbowAlgaeLow,
-    CraneConstants.kExtenderAlgaeLow,
-    CraneConstants.kWristAlgaeLow,
-    70);
 
     fineControlCrane = new FineControlCrane();
 
@@ -180,22 +121,32 @@ public class RobotContainer {
         Commands.runOnce(() -> drivetrain.setX())
     );
 
+    //Intake
+    controller1.leftTrigger().whileTrue(Commands.runEnd(() -> crane.spinSucker(CraneConstants.kSuckerIntake), () -> crane.spinSucker(0)));
+    controller1.leftBumper().whileTrue(Commands.runEnd(() -> crane.spinSucker(CraneConstants.kSuckerEject), () -> crane.spinSucker(0)));
+
     //Crane
     controller0.start().onTrue(
         Commands.runOnce(() -> climbMode = true)
-        .andThen(climbPresetCommand)
+        .andThen(craneCommands.climbPrepCommand)
     );
+    controller1.rightBumper().onTrue(craneCommands.stationCommand);
+    controller1.x().onTrue(craneCommands.shelfCommand);
+    controller1.a().onTrue(craneCommands.lowCommand);
+    controller1.b().onTrue(craneCommands.midCommand);
+    controller1.y().onTrue(craneCommands.highCommand);
+    controller1.start().onTrue(craneCommands.stowCommand);
+    controller1.povUp().onTrue(craneCommands.algaeHighCommand);
+    controller1.povDown().onTrue(craneCommands.algaeLowCommand);
 
-    stationPickup = Robot.controller1.getRightBumperButton();
-        shelfReef = Robot.controller1.getXButton();
-        lowReef = Robot.controller1.getAButton();
-        midReef = Robot.controller1.getBButton();
-        highReef = Robot.controller1.getYButton();
-        algaeHigh = Robot.controller1.getPOV() == IOConstants.DPAD_UP;
-        algaeLow = Robot.controller1.getPOV() == IOConstants.DPAD_DOWN;
-        suckerIntake = Robot.controller1.getLeftTriggerAxis() > IOConstants.TRIGGER_DEADBAND;
-        suckerEject = Robot.controller1.getLeftBumperButton();
-
+    //Fine Control - Upper Mech
+    // controller1.rightTrigger().whileTrue(
+    //      Commands.either(
+    //          ,
+    //          ,
+    //          () -> climbMode);
+    // );
+    
   }
 
       /**

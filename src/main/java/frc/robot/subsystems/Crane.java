@@ -25,7 +25,6 @@ public class Crane extends SubsystemBase {
     /** Degree of angleMargin so that the crane can progress to the next position. */
     public static boolean climbMode = false;
     public boolean runSetpoint = false;
-    private Timer timer = new Timer();
     
     // Wrist
     private final SparkMax wristMotor;
@@ -189,25 +188,5 @@ public class Crane extends SubsystemBase {
 
     public double getSuckerCurrent() {
         return suckerMotor.getOutputCurrent();
-    }
-
-    public Command ReefStationCommand(double elbowSetpoint, double extenderSetpoint, double wristSetpoint) {
-        //Simultaneously move elbow, extender, and wrist to the appropriate setpoints
-
-        return Commands.runOnce(() -> {
-            timer.reset();
-            timer.start();
-        })
-        .andThen(Commands.runOnce(() -> setElbowPosition(elbowSetpoint)))
-        .alongWith(Commands.runOnce(() -> setWristPosition(wristSetpoint)))
-        .alongWith(Commands.runOnce(() -> setExtenderPosition(extenderSetpoint)))
-        .until(() -> 
-            (Math.abs(getElbowPosition() - elbowSetpoint) < CraneConstants.rotationMargin || 
-            timer.get() > 0.5 && Math.abs(getElbowVelocity()) < 0.01)
-            && (Math.abs(getExtenderPosition() - extenderSetpoint) < CraneConstants.extendMargin  || 
-            timer.get() > 0.5 && Math.abs(getElbowVelocity()) < 0.01)
-            && (Math.abs(getWristPosition() - elbowSetpoint) < CraneConstants.rotationMargin  || 
-            timer.get() > 0.5 && Math.abs(getElbowVelocity()) < 0.01)
-        );
     }
 }

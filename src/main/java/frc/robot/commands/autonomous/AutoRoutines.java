@@ -20,12 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
-import frc.robot.Constants.CraneState;
-import frc.robot.commands.autonomous.commands.AutoSnapToZero;
-import frc.robot.commands.autonomous.commands.IntakeCommands;
-import frc.robot.commands.crane.actions.ReefStationCommand;
-import frc.robot.commands.crane.actions.StowCommand;
-import frc.robot.commands.drivetrain.DrivetrainXCommand;
 
 @SuppressWarnings("unused")
 public final class AutoRoutines {
@@ -50,10 +44,10 @@ public final class AutoRoutines {
     }
 
     AutoBuilder.configure(
-      Robot.drivetrain::getPose, // Robot pose supplier
-      Robot.drivetrain::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-      Robot.drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-      (speeds, feedforwards) -> Robot.drivetrain.driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+      Robot.robotContainer.drivetrain::getPose, // Robot pose supplier
+      Robot.robotContainer.drivetrain::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+      Robot.robotContainer.drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+      (speeds, feedforwards) -> Robot.robotContainer.drivetrain.driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
       new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
         new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
@@ -69,7 +63,7 @@ public final class AutoRoutines {
           return alliance.get() == DriverStation.Alliance.Red;
         return false;
       },
-      Robot.drivetrain // Reference to this subsystem to set requirements
+      Robot.robotContainer.drivetrain // Reference to this subsystem to set requirements
     );
     
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -77,41 +71,18 @@ public final class AutoRoutines {
 
     // Set up custom logging to add the current path to a field 2d widget
     PathPlannerLogging.setLogActivePathCallback((poses) 
-    -> Robot.m_field.getObject("path").setPoses(poses));
+    -> Robot.field.getObject("path").setPoses(poses));
   }
 
   private void setMarkers() {
     //Registers commands to run in autonomous. The Pathplanner application can take these
     //pre-defined commands and place them at specific points while moving.
-    NamedCommands.registerCommand("AutoCraneStation", new ReefStationCommand(
-      CraneConstants.kElbowStation,
-      CraneConstants.kExtenderStation,
-      CraneConstants.kWristStation,
-      160));
-    NamedCommands.registerCommand("AutoCraneShelf", new ReefStationCommand(
-      CraneConstants.kElbowShelf,
-      CraneConstants.kExtenderShelf,
-      CraneConstants.kWristShelf,
-      0));
-    NamedCommands.registerCommand("AutoCraneLow", new ReefStationCommand(
-      CraneConstants.kElbowLow,
-      CraneConstants.kExtenderLow,
-      CraneConstants.kWristLow,
-      45));
-    NamedCommands.registerCommand("AutoCraneMid", new ReefStationCommand(
-      CraneConstants.kElbowMid,
-      CraneConstants.kExtenderMid,
-      CraneConstants.kWristMid,
-      90));
-    NamedCommands.registerCommand("AutoCraneHigh", new ReefStationCommand(
-      CraneConstants.kElbowHigh,
-      CraneConstants.kExtenderHigh,
-      CraneConstants.kWristHigh,
-      135));
-    NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
-    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommands(2, CraneConstants.kSuckerIntake));
-    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommands(0.5, CraneConstants.kSuckerEject));
-    NamedCommands.registerCommand("AutoSnap", new AutoSnapToZero());
+    NamedCommands.registerCommand("AutoCraneStation", Robot.robotContainer.craneCommands.stationCommand);
+    NamedCommands.registerCommand("AutoCraneShelf", Robot.robotContainer.craneCommands.shelfCommand);
+    NamedCommands.registerCommand("AutoCraneLow", Robot.robotContainer.craneCommands.lowCommand);
+    NamedCommands.registerCommand("AutoCraneStow", Robot.robotContainer.craneCommands.stowCommand);
+    NamedCommands.registerCommand("AutoSuckerSuck", Commands.run(() -> Robot.robotContainer.crane.spinSucker(CraneConstants.kSuckerIntake)).withTimeout(2));
+    NamedCommands.registerCommand("AutoSuckerEject", Commands.run(() -> Robot.robotContainer.crane.spinSucker(CraneConstants.kSuckerIntake)).withTimeout(2));
   }
 
   /**
@@ -120,12 +91,10 @@ public final class AutoRoutines {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Commands.sequence(
-      autoChooser.getSelected(),
-      new DrivetrainXCommand());
+    return autoChooser.getSelected();
   }
 
   public void resetAutoHeading() {
-    Robot.drivetrain.zeroHeading();
+    Robot.robotContainer.drivetrain.zeroHeading();
   }
 }

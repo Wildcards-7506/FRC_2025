@@ -8,32 +8,14 @@ import java.util.Optional;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.CraneConstants;
-import frc.robot.commands.ClimberTeleopCommand;
 import frc.robot.commands.ClimberTestModeCommand;
 import frc.robot.commands.autonomous.AutoRoutines;
-import frc.robot.commands.crane.CraneTeleopCommand;
-import frc.robot.commands.crane.actions.ClimbPresetCommand;
-import frc.robot.commands.crane.actions.FineControlCrane;
-import frc.robot.commands.crane.actions.ReefStationCommand;
-import frc.robot.commands.crane.actions.StowCommand;
-import frc.robot.players.PlayerConfigs;
-import frc.robot.players.drivers.Ricardo;
-import frc.robot.players.drivers.Dessie;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Crane;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.LED;
+
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -41,10 +23,10 @@ import frc.robot.subsystems.LED;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  private Command autonomousCommand;
   public static RobotContainer robotContainer;
-  private Field2d field = new Field2d();
+  public static Field2d field = new Field2d();
   public static Optional<Alliance> teamColor;
+  public AutoRoutines autoMode = new AutoRoutines();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -83,7 +65,7 @@ public class Robot extends TimedRobot {
     teamColor = DriverStation.getAlliance();
     autoMode.resetAutoHeading();
     autoMode.getAutonomousCommand().schedule();
-    drivetrain.idleSwerve(IdleMode.kBrake);
+    robotContainer.drivetrain.idleSwerve(IdleMode.kBrake);
   }
 
   /** This function is called periodically during autonomous. */
@@ -98,10 +80,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     CommandScheduler.getInstance().cancelAll();
     teamColor = DriverStation.getAlliance();
-
-    // Subsystem default commands
-    new CraneTeleopCommand().schedule();;
-    climber.setDefaultCommand(new ClimberTeleopCommand());
 
     // Default subsystem states
     robotContainer.drivetrain.idleSwerve(IdleMode.kBrake);
