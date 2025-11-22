@@ -12,9 +12,6 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
@@ -71,14 +68,13 @@ public class Crane extends SubsystemBase {
         wristConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(CraneConstants.kWristCeiling)
-            .reverseSoftLimit(CraneConstants.kWristHardDeck);
+            .forwardSoftLimit(CraneConstants.kWristMax)
+            .reverseSoftLimit(CraneConstants.kWristMin);
         wristConfig.encoder
             .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
         wristConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // .pid(0.005, 0.000003, 0.1);
             .pid(0.005, 0.0, 0.1);
             
         elbowConfig
@@ -88,8 +84,8 @@ public class Crane extends SubsystemBase {
         elbowConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(CraneConstants.kElbowCeiling + 2)
-            .reverseSoftLimit(CraneConstants.kElbowHardDeck - 2);
+            .forwardSoftLimit(CraneConstants.kElbowMax)
+            .reverseSoftLimit(CraneConstants.kElbowMin);
         elbowConfig.encoder
             .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);

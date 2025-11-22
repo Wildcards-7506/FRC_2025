@@ -1,17 +1,14 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.commands.CraneCommands;
-import frc.robot.commands.autonomous.AutoRoutines;
-import frc.robot.commands.crane.actions.FineControlCrane;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
@@ -38,7 +35,6 @@ public class RobotContainer {
 
     //Commands
     public final CraneCommands craneCommands;
-    public final FineControlCrane fineControlCrane;
 
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
   public RobotContainer() {
@@ -47,9 +43,6 @@ public class RobotContainer {
     craneCommands = new CraneCommands(crane);
     climber = new Climber();
     led = new LED(0,14);
-
-
-    fineControlCrane = new FineControlCrane();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -139,13 +132,30 @@ public class RobotContainer {
     controller1.povUp().onTrue(craneCommands.algaeHighCommand);
     controller1.povDown().onTrue(craneCommands.algaeLowCommand);
 
-    //Fine Control - Upper Mech
-    // controller1.rightTrigger().whileTrue(
-    //      Commands.either(
-    //          ,
-    //          ,
-    //          () -> climbMode);
-    // );
+    //Climber and Crane Fine Control
+    controller1.rightTrigger().whileTrue(
+        Commands.either(
+            Commands.runOnce(() -> {
+                climber.setAnchorVoltage(12 * controller1.getRightY());
+                climber.setWinchPosition(climber.getWinchPosition() - controller1.getLeftY() * 15); 
+                climber.setTensionerVoltage(4);
+            }).alongWith(
+                Commands.repeatingSequence(
+                    Commands.either(
+                        Commands.runOnce(() -> led.solid(60, 255, 255)),
+                        Commands.runOnce(() -> led.solid(0, 255, 255)), 
+                        () -> climber.getWinchPosition() > 380 && climber.getWinchPosition() < 400
+                    ),
+                    new WaitCommand(0.5),
+                    Commands.runOnce(() -> led.solid(0,0,0)),
+                    new WaitCommand(0.5))
+            ),
+            Commands.runOnce(() -> {
+                crane.setElbowPosition(crane.getElbowPosition() - controller1.getLeftY() * 20);
+                crane.setWristPosition(crane.getWristPosition() + controller1.getRightY() * 20);
+            }),
+            () -> climbMode)
+    );
     
   }
 
@@ -158,13 +168,4 @@ public class RobotContainer {
     public double applyAxisDeadband(double axis) {
         return Math.abs(axis) > IOConstants.XY_DEADBAND ? axis : 0.0;
     }
-
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    // public Command getAutonomousCommand() {
-    //     return autoRoutineBuilder.build();
-    // }
 }

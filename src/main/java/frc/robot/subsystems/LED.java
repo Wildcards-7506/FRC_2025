@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LED extends SubsystemBase{
@@ -74,23 +73,5 @@ public class LED extends SubsystemBase{
           ledBuffer.setHSV(i, hue, sat, val);
         }
         update();
-    }
-
-    public void solidBlink(int hue, double flashRate) {
-        // For every pixel
-        for (var i = 0; i < bufferSize; i++) {
-          // Set the value
-          ledBuffer.setHSV(i, hue, 255, 255 * (Timer.getFPGATimestamp() % flashRate < flashRate/2 ? 1 : 0));
-        }
-        update();
-    }
-
-    public void solidSection(int start, int end, int hue){
-      // For every pixel
-      for (var i = start; i < end; i++) {
-        // Set the value
-        ledBuffer.setHSV(i, hue, 255, 255);
-      }
-      update();
     }
 }

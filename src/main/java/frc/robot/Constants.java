@@ -75,7 +75,7 @@ public final class Constants {
     // Extender limits
     // Extender setpoints are measured with 2 inch soft limit included
     public static final double kExtenderOffset = 3.5;
-    public static final double kExtenderHardDeck = 1;
+    public static final double kExtenderMin = 1;
     public static final double kExtenderStation = 3.91;
     public static final double kExtenderHigh = 26.044;
     public static final double kExtenderMid = 9.44;
@@ -85,7 +85,7 @@ public final class Constants {
     public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
     public static final double kExtenderStow = 20;
     public static final double kExtenderShelf = 5.16;
-    public static final double kExtenderCeiling = 26.5; // starting + tail end offset - 2 inch margin
+    public static final double kExtenderMax = 26.5; // starting + tail end offset - 2 inch margin
     public static final double kExtensionCap = 17; // 17 inches
     public static final double kPulleyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
     /** Keep extender butt-side within extension cap. */
@@ -93,33 +93,29 @@ public final class Constants {
     // /** Keep extender claw-side within extension cap. */
 
     // Elbow limits
-    public static final double kElbowPlatformOffset = -0; // degrees
-    public static final double kElbowHorizonOffset = -51 - kElbowPlatformOffset; // measured from horizontal position to resting angle
-    public static final double kElbowHardDeck = 5;
-    public static final double kElbowShelf = 32;
-    public static final double kElbowStation = 25;
+    public static final double kElbowMin = 3.0;
+    public static final double kElbowShelf = 32.0;
+    public static final double kElbowStation = 25.0;
     public static final double kElbowHigh = 125.516;
-    public static final double kElbowAlgaeLow = 25;
+    public static final double kElbowAlgaeLow = 25.0;
     public static final double kElbowAlgaeHigh = 73.571;
-    public static final double kElbowClimb = 131 + kElbowPlatformOffset;
+    public static final double kElbowClimb = 131.0;
     public static final double kElbowMid = 97.604;
-    /** This is for low reef, not ground/low pickup. */
     public static final double kElbowLow = 73.571;
-    // public static final double kElbowCeiling = 290;
-    public static final double kElbowCeiling = kElbowClimb + 10;
+    public static final double kElbowMax = 143.0;
 
     // Wrist limits
     public static final double kWristShelf = 105;
     public static final double kWristLow = 185.749;
     public static final double kWristMid = 200;
     public static final double kWristHigh = 30.693; 
-    public static final double kWristAlgaeLow = 100; 
+    public static final double kWristAlgaeLow = 100.0; 
     public static final double kWristAlgaeHigh = 149.62; 
-    public static final double kWristHardDeck = 0;
+    public static final double kWristMin = 0.0;
     public static final double kWristStation = 53.014;
-    public static final double kWristStow = 0;
-    public static final double kWristCeiling = kWristMid + kElbowMid + 10; // This is absolute max adding the angle match from elbow at mid and the reference for mid from wrist.
-    public static final double kWristClimb = 20;
+    public static final double kWristStow = 0.0;
+    public static final double kWristMax = 310.0;
+    public static final double kWristClimb = 20.0;
 
     // Sucker limits
     public static final double kSuckerIntake = 6;
@@ -135,13 +131,12 @@ public final class Constants {
     public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0; // inches
 
     // Climber limits
-    public static final double kAnchorHardDeck = 0.25;
-    public static final double kAnchorCeiling = 6.25; // inches
+    public static final double kAnchorMin = 0.25;
+    public static final double kAnchorMax = 6.25; // inches
 
     // Winch limits
-    public static final double kWinchCeiling = 780; // Bringing the climber out limit in degrees
-    public static final double kWinchHardDeck = 0; // Retraction limit when cage is coming into the robot
-    // Prevent climber from retracting too far with cage acquired
+    public static final double kWinchMax = 780; // Bringing the climber out limit in degrees
+    public static final double kWinchMin = 0; // Retraction limit when cage is coming into the robot
     public static final double kWinchHoldLimit = 300; // The final retraction limit
   }
 
@@ -149,41 +144,7 @@ public final class Constants {
     //Controller Assignments
     public static final int DRIVER_CONTROLLER_0 = 0;
     public static final int DRIVER_CONTROLLER_1 = 1;
-    
-    //Control Axes
-    public static final int LEFT_STICK_X = 0;
-    public static final int LEFT_STICK_Y = 1;
-    public static final int RIGHT_STICK_X = 2;
-    public static final int RIGHT_STICK_Y = 3;
-
-    //Control D-Pad
-    public static final int DPAD_X = 2;
-    public static final int DPAD_Y = 3;
-    public static final int DPAD_UP = 0;
-    public static final int DPAD_UP_RIGHT = 45;
-    public static final int DPAD_RIGHT = 90;
-    public static final int DPAD_DOWN_RIGHT = 135;
-    public static final int DPAD_DOWN = 180;
-    public static final int DPAD_DOWN_LEFT = 225;
-    public static final int DPAD_LEFT = 270;
-    public static final int DPAD_UP_LEFT = 315;
-
-    //Control Buttons
-    public static final int BUTTON_A = 2;
-    public static final int BUTTON_B = 3;
-    public static final int BUTTON_X = 1;
-    public static final int BUTTON_Y = 4;
-    public static final int LEFT_BUMPER = 5;
-    public static final int RIGHT_BUMPER = 6;
-
-    public static final int LEFT_TRIGGER = 7;
-    public static final int RIGHT_TRIGGER = 8;
-
-    public static final int BUTTON_BACK = 9;
-    public static final int BUTTON_START = 10;
-    public static final int LEFT_JOYSTICK_BUTTON = 11;
-    public static final int RIGHT_JOYSTICK_BUTTON = 12;
-
+  
     // Thresholds
     public static final double XY_DEADBAND = 0.05;
     public static final double TRIGGER_DEADBAND = 0.2;

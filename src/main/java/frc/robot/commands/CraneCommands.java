@@ -20,11 +20,11 @@ public class CraneCommands{
 
     public Command stowCommand = new SequentialCommandGroup(
         new ParallelCommandGroup(
-            setWristCommand(CraneConstants.kWristHardDeck),
+            setWristCommand(CraneConstants.kWristMin),
             setExtenderCommand(CraneConstants.kExtenderLimit1),
-            setElbowCommand(CraneConstants.kElbowHardDeck + 10)),
+            setElbowCommand(CraneConstants.kElbowMin + 10)),
         setExtenderCommand(CraneConstants.kExtenderStow),
-        setElbowCommand(CraneConstants.kElbowHardDeck)
+        setElbowCommand(CraneConstants.kElbowMin)
     );
 
     public Command stationCommand = new ParallelCommandGroup(
@@ -64,7 +64,7 @@ public class CraneCommands{
 
     public Command climbPrepCommand = new ParallelCommandGroup(
         setWristCommand(CraneConstants.kWristHigh),
-        setExtenderCommand(CraneConstants.kExtenderHardDeck - 0.25),
+        setExtenderCommand(CraneConstants.kExtenderMin - 0.25),
         setElbowCommand(CraneConstants.kElbowClimb),
         Commands.runOnce(() -> crane.neutralExtend())
     );

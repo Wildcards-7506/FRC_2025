@@ -46,8 +46,8 @@ public class Climber extends SubsystemBase {
         anchorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimberConstants.kAnchorCeiling) 
-            .reverseSoftLimit(ClimberConstants.kAnchorHardDeck);
+            .forwardSoftLimit(ClimberConstants.kAnchorMax) 
+            .reverseSoftLimit(ClimberConstants.kAnchorMin);
         anchorConfig.encoder
             .positionConversionFactor(ClimberConstants.kAnchorEncoderDistancePerPulse);
         anchorConfig.closedLoop
@@ -63,8 +63,8 @@ public class Climber extends SubsystemBase {
         winchConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimberConstants.kWinchCeiling)
-            .reverseSoftLimit(ClimberConstants.kWinchHardDeck);
+            .forwardSoftLimit(ClimberConstants.kWinchMax)
+            .reverseSoftLimit(ClimberConstants.kWinchMin);
         winchConfig.encoder
             .positionConversionFactor(ClimberConstants.kWinchEncoderDistancePerPulse)
             .velocityConversionFactor(ClimberConstants.kWinchEncoderDistancePerPulse);
