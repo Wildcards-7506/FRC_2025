@@ -221,6 +221,10 @@ public final class Constants {
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
     public static final boolean kGyroReversed = false;
+
+    public static final double standardSpeed = 0.5;
+    public static final double fineSpeed = 0.3;
+    public static final double microSpeed = 0.05;
   }
 
   public static final class ModuleConstants {

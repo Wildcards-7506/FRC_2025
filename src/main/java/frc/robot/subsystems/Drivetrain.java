@@ -71,8 +71,6 @@ public class Drivetrain extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
     });
-
-    Robot.m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
   /**

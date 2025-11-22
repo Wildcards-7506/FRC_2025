@@ -6,12 +6,15 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
@@ -22,6 +25,7 @@ public class Crane extends SubsystemBase {
     /** Degree of angleMargin so that the crane can progress to the next position. */
     public static boolean climbMode = false;
     public boolean runSetpoint = false;
+    private Timer timer = new Timer();
     
     // Wrist
     private final SparkMax wristMotor;
@@ -78,8 +82,6 @@ public class Crane extends SubsystemBase {
             // .pid(0.005, 0.000003, 0.1);
             .pid(0.005, 0.0, 0.1);
             
-        wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         elbowConfig
             .smartCurrentLimit(80)
             .inverted(true)
@@ -96,8 +98,6 @@ public class Crane extends SubsystemBase {
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.007, 0.0, 0.05);
             
-        elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         extenderConfig
             .smartCurrentLimit(40)
             .inverted(true)
@@ -109,18 +109,14 @@ public class Crane extends SubsystemBase {
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.005, 0.0, 0.1);
             
-        extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
         suckerConfig
             .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
-            
+        
+        wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        // Set up setpoints for each motor
-        setWristPosition(CraneConstants.kWristHardDeck);
-        setElbowPosition(CraneConstants.kElbowHardDeck);
-        setExtenderPosition(CraneConstants.kExtenderStart);
     }
         
     /**
@@ -133,22 +129,12 @@ public class Crane extends SubsystemBase {
         suckerMotor.setVoltage(volts);
     }
 
-    public void engageClimbMode(){
-        climbMode = true;
-    }
-    public boolean getClimbMode(){
-        return climbMode;
-    }
-
     /**
      * Sets the angle of the wrist, shaft CCW+.
      * 
      * @param setPoint The desired angle of the wrist in degrees
      */
     public void setWristPosition(double setPoint) {
-        setPoint = filterSetPoint(setPoint, 
-                                       CraneConstants.kWristHardDeck, 
-                                       CraneConstants.kWristCeiling);
         wristPID.setReference(setPoint, ControlType.kPosition);
     }
 
@@ -158,25 +144,7 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired angle of the elbow in degrees
      */
     public void setElbowPosition(double setPoint) {
-        elbowSetpoint = filterSetPoint(setPoint, 
-                                       CraneConstants.kElbowHardDeck, 
-                                       CraneConstants.kElbowCeiling);
-        /*
-         * Set this value to the voltage reading when crane is retracted and elbow is at horizon, like in mid / low reef
-         */
-        double voltsAtMaxHorizon = 1.0; // 1.31 V calculated, try lower and build up
-        double voltsAtMinHorizon = 0.43; // 0.56 V calculated, try lower and build up
-        double voltsInUse = 0.0;
-
-        // Angle of elbow from horizon line
-        double angleFromHorizon = getElbowPosition() + CraneConstants.kElbowHorizonOffset;
-
-        // Scale the voltage to the extender position as a percentage of the ceiling
-        voltsInUse = (getExtenderPosition() / CraneConstants.kExtenderCeiling) * (voltsAtMaxHorizon - voltsAtMinHorizon) + voltsAtMinHorizon;
-
-        double counterGravityVolts = voltsInUse * Math.cos(Math.toRadians(angleFromHorizon));
-
-        elbowPID.setReference(elbowSetpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, counterGravityVolts);
+        elbowPID.setReference(setPoint, ControlType.kPosition);
     }
 
     /**
@@ -187,41 +155,11 @@ public class Crane extends SubsystemBase {
      * @param setPoint The desired extension of the extender in inches
      */
     public void setExtenderPosition(double setPoint) {
-        // Full extension is setpoint = ceiling, motor = 0
-        // Full retraction is setpoint = 0, motor = ceiling
-        extenderSetpoint = filterSetPoint(setPoint, 
-                                          CraneConstants.kExtenderHardDeck-0.25, 
-                                          CraneConstants.kExtenderCeiling);
-        setPoint = CraneConstants.kExtenderStart - extenderSetpoint;
-        setPoint = inchesToDegrees(setPoint);
         extenderPID.setReference(setPoint, ControlType.kPosition);
     }
 
     public void neutralExtend(){
         extenderMotor.stopMotor();
-    }
-
-    private double inchesToDegrees(double inches) {
-        return inches * 360 / CraneConstants.kPulleyCircumferenceInches;
-    }
-
-    private double degreesToInches(double degrees) {
-        return degrees * CraneConstants.kPulleyCircumferenceInches / 360;
-    }
-    
-    /**
-     * Returns the ceiling if the setpoint is above it, or the hard deck if the setpoint is below it.
-     * Otherwise, returns the setpoint.
-     * 
-     * @param setPoint The desired state of the crane.
-     * @param hardDeck The hard deck of the crane.
-     */
-    private double filterSetPoint(double setPoint, double hardDeck, double ceiling) {
-        if(setPoint < hardDeck)
-            setPoint = hardDeck;
-        if(setPoint > ceiling)
-            setPoint = ceiling;
-        return setPoint;
     }
 
     /** Returns the current angle of the elbow in degrees, CW+. */
@@ -236,22 +174,12 @@ public class Crane extends SubsystemBase {
 
     /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
     public double getExtenderPosition() {
-        return CraneConstants.kExtenderStart - degreesToInches(extenderMotor.getEncoder().getPosition());
-    }
-
-    //Returns the speed of extension
-    public double getExtenderVelocity(){
-        return extenderMotor.getEncoder().getVelocity();
+        return extenderMotor.getEncoder().getPosition();
     }
 
     /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
         return wristMotor.getEncoder().getPosition();
-    }
-
-    //Returns the speed of wrist rotation
-    public double getWristVelocity(){
-        return wristMotor.getEncoder().getVelocity();
     }
 
     /** Returns the angle of the sucker in degrees, CCW+. */
@@ -261,5 +189,25 @@ public class Crane extends SubsystemBase {
 
     public double getSuckerCurrent() {
         return suckerMotor.getOutputCurrent();
+    }
+
+    public Command ReefStationCommand(double elbowSetpoint, double extenderSetpoint, double wristSetpoint) {
+        //Simultaneously move elbow, extender, and wrist to the appropriate setpoints
+
+        return Commands.runOnce(() -> {
+            timer.reset();
+            timer.start();
+        })
+        .andThen(Commands.runOnce(() -> setElbowPosition(elbowSetpoint)))
+        .alongWith(Commands.runOnce(() -> setWristPosition(wristSetpoint)))
+        .alongWith(Commands.runOnce(() -> setExtenderPosition(extenderSetpoint)))
+        .until(() -> 
+            (Math.abs(getElbowPosition() - elbowSetpoint) < CraneConstants.rotationMargin || 
+            timer.get() > 0.5 && Math.abs(getElbowVelocity()) < 0.01)
+            && (Math.abs(getExtenderPosition() - extenderSetpoint) < CraneConstants.extendMargin  || 
+            timer.get() > 0.5 && Math.abs(getElbowVelocity()) < 0.01)
+            && (Math.abs(getWristPosition() - elbowSetpoint) < CraneConstants.rotationMargin  || 
+            timer.get() > 0.5 && Math.abs(getElbowVelocity()) < 0.01)
+        );
     }
 }

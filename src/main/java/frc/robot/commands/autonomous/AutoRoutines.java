@@ -22,7 +22,7 @@ import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.CraneState;
 import frc.robot.commands.autonomous.commands.AutoSnapToZero;
-import frc.robot.commands.autonomous.commands.IntakeCommand;
+import frc.robot.commands.autonomous.commands.IntakeCommands;
 import frc.robot.commands.crane.actions.ReefStationCommand;
 import frc.robot.commands.crane.actions.StowCommand;
 import frc.robot.commands.drivetrain.DrivetrainXCommand;
@@ -109,8 +109,8 @@ public final class AutoRoutines {
       CraneConstants.kWristHigh,
       135));
     NamedCommands.registerCommand("AutoCraneStow", new StowCommand());
-    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommand(2, CraneConstants.kSuckerIntake));
-    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommand(0.5, CraneConstants.kSuckerEject));
+    NamedCommands.registerCommand("AutoSuckerSuck", new IntakeCommands(2, CraneConstants.kSuckerIntake));
+    NamedCommands.registerCommand("AutoSuckerEject", new IntakeCommands(0.5, CraneConstants.kSuckerEject));
     NamedCommands.registerCommand("AutoSnap", new AutoSnapToZero());
   }
 

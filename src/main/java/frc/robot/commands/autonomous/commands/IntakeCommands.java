@@ -4,7 +4,7 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class IntakeCommand extends Command {
+public class IntakeCommands extends Command {
     private final Timer timer = new Timer();
     private double volts;
     private double duration;
@@ -15,7 +15,7 @@ public class IntakeCommand extends Command {
      * @param duration Time in seconds to run the command.
      * @param volts Voltage to run the sucker.
      */
-    public IntakeCommand(double duration, double volts) {
+    public IntakeCommands(double duration, double volts) {
         this.duration = duration;
         this.volts = volts;
     }
