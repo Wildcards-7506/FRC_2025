@@ -67,7 +67,8 @@ public class RobotContainer {
                 slewLimiter.calculate(ySpeed), 
                 applyAxisDeadband(-controller0.getRightX()), 
                 true);
-            }
+            },
+            drivetrain
     ));
 
     controller0.rightTrigger().whileTrue(
@@ -79,7 +80,8 @@ public class RobotContainer {
                     applyAxisDeadband(controller0.getLeftX())), 
                 applyAxisDeadband(-controller0.getRightX()), 
                 true)
-    ));
+                )
+    );
 
     controller0.leftTrigger().whileTrue(
         Commands.runOnce(

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.autonomous.AutoRoutines;
 
@@ -22,7 +23,7 @@ import frc.robot.commands.autonomous.AutoRoutines;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  public static RobotContainer robotContainer;
+  public static RobotContainer robotContainer = new RobotContainer();
   public static Field2d field = new Field2d();
   public static Optional<Alliance> teamColor;
   public AutoRoutines autoMode = new AutoRoutines();
@@ -31,7 +32,8 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {    
+  public Robot() {   
+    SmartDashboard.putData("Field", field); 
   }
   
   /**
@@ -100,6 +102,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
+    teamColor = DriverStation.getAlliance();
     robotContainer.led.allianceFlow();
   }
 
