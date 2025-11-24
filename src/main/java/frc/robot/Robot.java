@@ -23,9 +23,24 @@ import frc.robot.commands.autonomous.AutoRoutines;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+  /* Declare systems critical to non-robot operation in this file.
+   * This file contains instructions for each operational mode:
+   * Disabled, Autonomous, Teleoperated, Test
+   * Each operational mode is made of an initialize step 
+   * (runs once at the beginning of each mode) and a periodic step 
+   * (runs continuously while the mode is enabled)
+   * Save robot-specific systems in the RobotContainer file. 
+   * Adding everything to Robot.java does work, but can make code hard to read with 
+   * multiple hundreds of lines in one file.
+  */
+  
+  //Creates our robot in memory on the RoboRIO.
   public static RobotContainer robotContainer = new RobotContainer();
+  //Creates a graphical representation of the field in the Shuffleboard app.
   public static Field2d field = new Field2d();
+  //Creates an object that can poll the driverstation for alliance color.
   public static Optional<Alliance> teamColor;
+  //Creates an object that holds our autonomous routine.
   public AutoRoutines autoMode = new AutoRoutines();
 
   /**
@@ -33,6 +48,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {   
+    //Put the graphical field on the shuffleboard app
     SmartDashboard.putData("Field", field); 
   }
   
@@ -45,24 +61,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    /*Update where the robot is on the field every clock cycle.
+      If pose estimation is enabled with a limelight, this will 
+      also work when the robot is disabled.
+    */
     field.setRobotPose(robotContainer.drivetrain.getPose());
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select between different
-   * autonomous modes using the dashboard. The sendable chooser code works with the Java
-   * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and
-   * uncomment the getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to the switch structure
-   * below with additional strings. If using the SendableChooser make sure to add them to the
-   * chooser code above as well.
-   */
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance().cancelAll();
 
-    // Set robot state
+    /*  These lines do the following:
+    Poll the driver station for color
+    Reset the robot's pose to the starting position of the chosen autonomous routine
+    Starts the autonomous routine
+    Sets the drivetrain to brake mode so we can't be shoved if not moving
+    */
     teamColor = DriverStation.getAlliance();
     autoMode.resetAutoHeading();
     autoMode.getAutonomousCommand().schedule();
@@ -72,6 +87,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    /*Every clock cycle in autonomous, continue running the autonomous routine
+    and run the led rainbow function*/
     CommandScheduler.getInstance().run();
     robotContainer.led.rainbow();
   }
@@ -96,6 +113,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
+    //Set the drivetrain to coast mode so it can be moved by hand
     robotContainer.drivetrain.idleSwerve(IdleMode.kCoast);
   }
 
@@ -110,6 +128,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
+    //Disable climber software limits so it can be retracted under motor power
     robotContainer.climber.testModeConfig();
   }
 

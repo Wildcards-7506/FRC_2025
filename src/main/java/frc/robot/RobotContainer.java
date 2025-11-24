@@ -21,7 +21,8 @@ import frc.robot.subsystems.LED;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // Controllers
+    // Controllers - Note the change to CommandXboxController
+    // These controller object allow binding of commands to individual buttons.
     public final CommandXboxController controller0 = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
     public final CommandXboxController controller1 = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
     private static SlewRateLimiter slewLimiter = new SlewRateLimiter(1);
@@ -33,7 +34,7 @@ public class RobotContainer {
     public final Climber climber;
     public final LED led;
 
-    //Commands
+    //Commands - Note the seperate object from the crane subsystem object.
     public final CraneCommands craneCommands;
 
   /** The container for the robot. Contains subsystems, IO devices, and commands. */
@@ -55,9 +56,18 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    /*
+     * This file uses a data object called a lambda to save blocks of code for use at a later time.
+     * Anything in the format () -> {code} is saving the code in the brackets for use in a command step.
+     * This format allows the engineer to chain steps together to create individual commands and sequences.
+     * Users may use methods such as repeatingSequence, either, andThen, or along with to create custom 
+     * logic loops and bind them to sontroller buttons.
+    */
+
     // Drivetrain
     // Default command, normal field-relative drive
     drivetrain.setDefaultCommand(
+        //runOnce creates a command that runs a lambda once and then exits.
         Commands.runOnce(
             () -> {
                 double xSpeed = applyAxisDeadband(controller0.getLeftX()) * Constants.DriveConstants.standardSpeed * (climbMode ? 0.25 : 1.0);
@@ -71,6 +81,13 @@ public class RobotContainer {
             drivetrain
     ));
 
+    /*
+    * Controller triggers have a variety of button detection cases such as the
+    * press, release, change or pure button status to determine when a command is run.
+    * Use the .and method to chain buttons together
+    * example: pressing the right bumper to shoot a ball only works if the right trigger is also being
+    * held down to spin up the shooter.
+    */
     controller0.rightTrigger().whileTrue(
         Commands.runOnce(
             () -> drivetrain.drive(
@@ -116,7 +133,8 @@ public class RobotContainer {
         Commands.runOnce(() -> drivetrain.setX())
     );
 
-    //Intake
+    // Intake - runEnd runs a command until an end condition is triggered, then runs a second command once.
+    // In this case, the second command stops the intake wheels when the button is released.
     controller1.leftTrigger().whileTrue(Commands.runEnd(() -> crane.spinSucker(CraneConstants.kSuckerIntake), () -> crane.spinSucker(0)));
     controller1.leftBumper().whileTrue(Commands.runEnd(() -> crane.spinSucker(CraneConstants.kSuckerEject), () -> crane.spinSucker(0)));
 
@@ -136,12 +154,14 @@ public class RobotContainer {
 
     //Climber and Crane Fine Control
     controller1.rightTrigger().whileTrue(
+        //either runs one of two commands depending on a supplied boolean
         Commands.either(
             Commands.runOnce(() -> {
                 climber.setAnchorVoltage(12 * controller1.getRightY());
                 climber.setWinchPosition(climber.getWinchPosition() - controller1.getLeftY() * 15); 
                 climber.setTensionerVoltage(4);
             }).alongWith(
+                //repeating sequence runs a sequence of commands repeatedly until the end condition is met.
                 Commands.repeatingSequence(
                     Commands.either(
                         Commands.runOnce(() -> led.solid(60, 255, 255)),

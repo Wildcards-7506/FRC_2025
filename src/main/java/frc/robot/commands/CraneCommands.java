@@ -9,6 +9,12 @@ import frc.robot.Constants.CraneConstants;
 import frc.robot.subsystems.Crane;
 
 public class CraneCommands{
+    /* This class uses the methods created in Crane.java to construct sequences of commands that
+     * can execute complex movements. In the case of the crane, this file creates movement sequences
+     * for each level of the reef. This allows the controller to be bound to individual movements that can be
+     * commanded at any time, rather than relying on getting to a specific point in a large if statement.
+    */
+
     private Crane crane;
     private Timer elbowTimer = new Timer();
     private Timer wristTimer = new Timer();
