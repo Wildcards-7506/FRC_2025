@@ -21,8 +21,8 @@ public class Climber extends SubsystemBase {
     private final SparkMax anchorMotor;
     private final SparkMaxConfig anchorConfig;
     
-    private final SparkMax tensionerMotor;
-    private final SparkMaxConfig tensionerConfig;
+    private final SparkMax pivotMotor;
+    private final SparkMaxConfig pivotConfig;
 
     private final SparkMax winchMotor;
     private final SparkMaxConfig winchConfig;
@@ -33,8 +33,8 @@ public class Climber extends SubsystemBase {
         anchorMotor = new SparkMax(CANIDS.ANCHOR, MotorType.kBrushless);
         anchorConfig = new SparkMaxConfig();
 
-        tensionerMotor = new SparkMax(CANIDS.TENSIONER, MotorType.kBrushless);
-        tensionerConfig = new SparkMaxConfig();
+        pivotMotor = new SparkMax(CANIDS.PIVOT, MotorType.kBrushless);
+        pivotConfig = new SparkMaxConfig();
         
         winchMotor = new SparkMax(CANIDS.WINCH, MotorType.kBrushless);
         winchConfig = new SparkMaxConfig();
@@ -53,7 +53,7 @@ public class Climber extends SubsystemBase {
         anchorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
             
-        tensionerConfig
+        pivotConfig
             .smartCurrentLimit(20)
             .idleMode(IdleMode.kCoast);
         
@@ -73,7 +73,7 @@ public class Climber extends SubsystemBase {
             .pid(0.05, 0.0, 0.1);
           
         anchorMotor.configure(anchorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        tensionerMotor.configure(tensionerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        pivotMotor.configure(pivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         winchMotor.configure(winchConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
@@ -81,8 +81,8 @@ public class Climber extends SubsystemBase {
         anchorMotor.setVoltage(volts);
     }
 
-    public void setTensionerVoltage(double volts) {
-        tensionerMotor.setVoltage(volts);
+    public void setPivotVoltage(double volts) {
+        pivotMotor.setVoltage(volts);
     }
 
     public void setWinchPosition(double setPoint) {

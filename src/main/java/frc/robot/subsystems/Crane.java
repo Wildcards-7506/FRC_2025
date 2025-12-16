@@ -15,81 +15,96 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.CraneConstants;
-import frc.robot.Constants.CraneState;
 
-public class Crane extends SubsystemBase {
-    public CraneState craneState = CraneState.STOW; // stow is the starting configuration
-    /** Degree of angleMargin so that the crane can progress to the next position. */
-    public static boolean climbMode = false;
-    public boolean runSetpoint = false;
+public class Crane extends SubsystemBase {   
+
+    // Crane States - Set States here, then pass the states around the rest of code
+    public enum CraneState {
+        CLIMB(131.0, 6.25, 30.0),
+        STOW_PREP(13.0, 9, 0.0),
+        STOW(3.0, 25.5, 0.0),
+        STATION(25.0, 9.4, 53.0),
+        SHELF(32.0, 10.7, 105.0),
+        LOW(73.6, 9.0, 185.0),
+        MID(97.6, 15.0, 200.0),
+        HIGH_PREP(125.5, 9.0, 30.0),
+        HIGH(125.5, 26.0, 30.0),
+        ALGAE_HIGH(73.6, 10.5, 150.0),
+        ALGAE_LOW(25.0, 10.5, 100.0);
+
+        public double boomAngle;
+        public double extension;
+        public double wristAngle;
+
+        CraneState(double boomAngle, double extension, double wristAngle){
+            this.boomAngle = boomAngle;
+            this.extension = extension;
+            this.wristAngle = wristAngle;
+        }
+    }
+    // Wrist Rotator
+    private final SparkMax wristRotatorMotor;
+    private final SparkMaxConfig wristRotatorConfig;
+    public final SparkClosedLoopController wristRotatorPID;
     
-    // Wrist
-    private final SparkMax wristMotor;
-    private final SparkMaxConfig wristConfig;
-    public final SparkClosedLoopController wristPID;
-    public double wristSetpoint;
-    
-    // Elbow
-    private final SparkMax elbowMotor;
-    private final SparkMaxConfig elbowConfig;
-    public final SparkClosedLoopController elbowPID;
-    public double elbowSetpoint;
+    // Boom Rotator
+    private final SparkMax boomRotatorMotor;
+    private final SparkMaxConfig boomRotatorConfig;
+    public final SparkClosedLoopController boomRotatorPID;
     
     //Extender
     private final SparkMax extenderMotor;
     private final SparkMaxConfig extenderConfig;
     public final SparkClosedLoopController extenderPID;
-    public double extenderSetpoint;
 
-    //Sucker
-    private final SparkMax suckerMotor;
-    private final SparkMaxConfig suckerConfig;
-    public double suckerSetpoint;
+    //Intake
+    private final SparkMax intakeMotor;
+    private final SparkMaxConfig intakeConfig;
     
     public Crane() {
-        wristMotor = new SparkMax(CANIDS.WRIST, MotorType.kBrushless);
-        wristConfig = new SparkMaxConfig();
-        wristPID = wristMotor.getClosedLoopController();
+        wristRotatorMotor = new SparkMax(CANIDS.WRIST, MotorType.kBrushless);
+        wristRotatorConfig = new SparkMaxConfig();
+        wristRotatorPID = wristRotatorMotor.getClosedLoopController();
 
-        elbowMotor = new SparkMax(CANIDS.ELBOW, MotorType.kBrushless);
-        elbowConfig = new SparkMaxConfig();
-        elbowPID = elbowMotor.getClosedLoopController();
+        boomRotatorMotor = new SparkMax(CANIDS.BOOM, MotorType.kBrushless);
+        boomRotatorConfig = new SparkMaxConfig();
+        boomRotatorPID = boomRotatorMotor.getClosedLoopController();
 
         extenderMotor = new SparkMax(CANIDS.EXTENDER, MotorType.kBrushless);
         extenderConfig = new SparkMaxConfig();
         extenderPID = extenderMotor.getClosedLoopController();
 
-        suckerMotor = new SparkMax(CANIDS.SUCKER, MotorType.kBrushless);
-        suckerConfig = new SparkMaxConfig();
+        intakeMotor = new SparkMax(CANIDS.INTAKE, MotorType.kBrushless);
+        intakeConfig = new SparkMaxConfig();
 
-        wristConfig
+        wristRotatorConfig
             .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake);
-        wristConfig.softLimit
+        wristRotatorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(CraneConstants.kWristMax)
-            .reverseSoftLimit(CraneConstants.kWristMin);
-        wristConfig.encoder
-            .positionConversionFactor(CraneConstants.kWristEncoderDistancePerPulse)
-            .velocityConversionFactor(CraneConstants.kWristEncoderDistancePerPulse);
-        wristConfig.closedLoop
+            .forwardSoftLimit(CraneConstants.kWristRotatorMax)
+            .reverseSoftLimit(CraneConstants.kWristRotatorMin);
+        wristRotatorConfig.encoder
+            .positionConversionFactor(CraneConstants.kWristRotatorEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kWristRotatorEncoderDistancePerPulse);
+        wristRotatorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.005, 0.0, 0.1);
             
-        elbowConfig
+        boomRotatorConfig
             .smartCurrentLimit(80)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
-        elbowConfig.softLimit
+        boomRotatorConfig.softLimit
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimitEnabled(true)
-            .forwardSoftLimit(CraneConstants.kElbowMax)
-            .reverseSoftLimit(CraneConstants.kElbowMin);
-        elbowConfig.encoder
-            .positionConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse)
-            .velocityConversionFactor(CraneConstants.kElbowEncoderDistancePerPulse);
-        elbowConfig.closedLoop
+            .forwardSoftLimit(CraneConstants.kBoomRotatorMax)
+            .reverseSoftLimit(CraneConstants.kBoomRotatorMin);
+        boomRotatorConfig.encoder
+            .positionConversionFactor(CraneConstants.kBoomRotatorEncoderDistancePerPulse)
+            .velocityConversionFactor(CraneConstants.kBoomRotatorEncoderDistancePerPulse);
+        boomRotatorConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.007, 0.0, 0.05);
             
@@ -97,6 +112,11 @@ public class Crane extends SubsystemBase {
             .smartCurrentLimit(40)
             .inverted(true)
             .idleMode(IdleMode.kBrake);
+            extenderConfig.softLimit
+            .forwardSoftLimitEnabled(true)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimit(CraneConstants.kExtenderMax)
+            .reverseSoftLimit(CraneConstants.kExtenderMin);
         extenderConfig.encoder
             .positionConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse)
             .velocityConversionFactor(CraneConstants.kExtenderEncoderDistancePerPulse);
@@ -104,85 +124,90 @@ public class Crane extends SubsystemBase {
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(0.005, 0.0, 0.1);
             
-        suckerConfig
-            .smartCurrentLimit(40)
+        intakeConfig
+            .smartCurrentLimit(20)
             .idleMode(IdleMode.kBrake);
         
-        wristMotor.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        elbowMotor.configure(elbowConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        wristRotatorMotor.configure(wristRotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        boomRotatorMotor.configure(boomRotatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         extenderMotor.configure(extenderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        suckerMotor.configure(suckerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
         
     /**
-     * This method spins the sucker motor based on voltage and the direction 
+     * This method spins the intake motor based on voltage and the direction 
      * provided by a sign (e.g. -12).
      * 
-     * @param volts The volts to spin the sucker motor, max around (+/-) 12 volts.
+     * @param volts The volts to spin the intake motor, max around (+/-) 12 volts.
      */
-    public void spinSucker(double volts) {
-        suckerMotor.setVoltage(volts);
+    public void spinIntake(double volts) {
+        intakeMotor.setVoltage(volts);
     }
 
     /**
-     * Sets the angle of the wrist, shaft CCW+.
-     * 
-     * @param setPoint The desired angle of the wrist in degrees
+     * Sets the angle of the wristRotator, shaft CCW+.
+     * @param setPoint The desired angle of the wristRotator in degrees
      */
-    public void setWristPosition(double setPoint) {
-        wristPID.setReference(setPoint, ControlType.kPosition);
+    public void setWristRotatorPosition(double setPoint) {
+        wristRotatorPID.setReference(setPoint, ControlType.kPosition);
     }
 
     /**
-     * Sets the angle of the elbow, shaft CW+.
-     * 
-     * @param setPoint The desired angle of the elbow in degrees
+     * Sets the angle of the boomRotator, shaft CW+.
+     * @param setPoint The desired angle of the boomRotator in degrees
      */
-    public void setElbowPosition(double setPoint) {
-        elbowPID.setReference(setPoint, ControlType.kPosition);
+    public void setBoomRotatorPosition(double setPoint) {
+        boomRotatorPID.setReference(setPoint, ControlType.kPosition);
     }
 
     /**
      * Sets the extension of the extender, setpoint and actual position are flipped.
-     * Full extension is setpoint = ceiling, motor = 0.
-     * Full retraction is setpoint = 0, motor = ceiling.
+     * Full extension is setpoint = Max Extension, motor = 0.
+     * Full retraction is setpoint = 0, motor = Max Extension.
      * 
      * @param setPoint The desired extension of the extender in inches
      */
     public void setExtenderPosition(double setPoint) {
-        extenderPID.setReference(setPoint, ControlType.kPosition);
+        extenderPID.setReference(CraneConstants.kExtenderMax - setPoint, ControlType.kPosition);
     }
 
+    //Stops extension motor output 
     public void neutralExtend(){
         extenderMotor.stopMotor();
     }
 
-    /** Returns the current angle of the elbow in degrees, CW+. */
-    public double getElbowPosition() {
-        return elbowMotor.getEncoder().getPosition();
+    /** Returns the current angle of the boom in degrees, CW+. */
+    public double getBoomPosition() {
+        return boomRotatorMotor.getEncoder().getPosition();
     }
 
-    //Returns the speed of elbow rotation
-    public double getElbowVelocity(){
-        return elbowMotor.getEncoder().getVelocity();
+    //Returns the speed of boom rotation
+    public double getBoomVelocity(){
+        return boomRotatorMotor.getEncoder().getVelocity();
     }
 
-    /** Returns the extension of the extender in inches, 0 = retracted, ceiling = extended, CCW+. */
-    public double getExtenderPosition() {
+    /** Returns the extension of the extender in inches, CCW+. */
+    public double getExtensionPosition() {
         return extenderMotor.getEncoder().getPosition();
+    }
+
+    //Returns the speed of extension
+    public double getExtensionVelocity(){
+        return extenderMotor.getEncoder().getVelocity();
     }
 
     /** Returns the angle of the wrist in degrees, CCW+. */
     public double getWristPosition() {
-        return wristMotor.getEncoder().getPosition();
+        return wristRotatorMotor.getEncoder().getPosition();
     }
 
-    /** Returns the angle of the sucker in degrees, CCW+. */
-    public double getSuckerPosition() {
-        return suckerMotor.getEncoder().getPosition();
+    //Returns the speed of wrist rotation
+    public double getWristVelocity(){
+        return wristRotatorMotor.getEncoder().getVelocity();
     }
 
-    public double getSuckerCurrent() {
-        return suckerMotor.getOutputCurrent();
+    //Returns the current draw of the intake motor
+    public double getIntakeCurrent() {
+        return intakeMotor.getOutputCurrent();
     }
 }

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.CraneConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.commands.CraneCommands;
 import frc.robot.subsystems.Climber;
@@ -14,18 +13,12 @@ import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LED;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
     // Controllers - Note the change to CommandXboxController
     // These controller object allow binding of commands to individual buttons.
-    public final CommandXboxController controller0 = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
-    public final CommandXboxController controller1 = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
-    private static SlewRateLimiter slewLimiter = new SlewRateLimiter(1);
+    private final CommandXboxController driveController = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_0);
+    private final CommandXboxController opController = new CommandXboxController(Constants.IOConstants.DRIVER_CONTROLLER_1);
+    private static SlewRateLimiter driveSlewLimiter = new SlewRateLimiter(1);
     private boolean climbMode = false;
 
     // Subsystems
@@ -70,13 +63,14 @@ public class RobotContainer {
         //runOnce creates a command that runs a lambda once and then exits.
         Commands.runOnce(
             () -> {
-                double xSpeed = applyAxisDeadband(controller0.getLeftX()) * Constants.DriveConstants.standardSpeed * (climbMode ? 0.25 : 1.0);
-                double ySpeed = applyAxisDeadband(controller0.getLeftY()) * Constants.DriveConstants.standardSpeed * (climbMode ? 0.25 : 1.0);
+                double xSpeed = applyAxisDeadband(driveController.getLeftX()) * Constants.DriveConstants.standardSpeed * (climbMode ? 0.25 : 1.0);
+                double ySpeed = applyAxisDeadband(driveController.getLeftY()) * Constants.DriveConstants.standardSpeed * (climbMode ? 0.25 : 1.0);
                 drivetrain.drive(
-                slewLimiter.calculate(xSpeed), 
-                slewLimiter.calculate(ySpeed), 
-                applyAxisDeadband(-controller0.getRightX()), 
-                true);
+                    driveSlewLimiter.calculate(xSpeed), 
+                    driveSlewLimiter.calculate(ySpeed), 
+                    applyAxisDeadband(-driveController.getRightX()), 
+                    true
+                );
             },
             drivetrain
     ));
@@ -88,78 +82,78 @@ public class RobotContainer {
     * example: pressing the right bumper to shoot a ball only works if the right trigger is also being
     * held down to spin up the shooter.
     */
-    controller0.rightTrigger().whileTrue(
+    driveController.rightTrigger().whileTrue(
         Commands.runOnce(
             () -> drivetrain.drive(
-                slewLimiter.calculate(
-                    applyAxisDeadband(controller0.getLeftX())), 
-                slewLimiter.calculate(
-                    applyAxisDeadband(controller0.getLeftX())), 
-                applyAxisDeadband(-controller0.getRightX()), 
+                driveSlewLimiter.calculate(
+                    applyAxisDeadband(driveController.getLeftX())), 
+                driveSlewLimiter.calculate(
+                    applyAxisDeadband(driveController.getLeftX())), 
+                applyAxisDeadband(-driveController.getRightX()), 
                 true)
                 )
     );
 
-    controller0.leftTrigger().whileTrue(
+    driveController.leftTrigger().whileTrue(
         Commands.runOnce(
             () -> drivetrain.drive(
-                slewLimiter.calculate(
-                    applyAxisDeadband(controller0.getLeftX()) * Constants.DriveConstants.fineSpeed), 
-                slewLimiter.calculate(
-                    applyAxisDeadband(controller0.getLeftX()) * Constants.DriveConstants.fineSpeed), 
-                applyAxisDeadband(-controller0.getRightX()), 
+                driveSlewLimiter.calculate(
+                    applyAxisDeadband(driveController.getLeftX()) * Constants.DriveConstants.fineSpeed), 
+                driveSlewLimiter.calculate(
+                    applyAxisDeadband(driveController.getLeftX()) * Constants.DriveConstants.fineSpeed), 
+                applyAxisDeadband(-driveController.getRightX()), 
                 true)
     ));
 
-    controller1.povLeft().whileTrue(
+    opController.povLeft().whileTrue(
         Commands.runOnce(
             () -> drivetrain.drive(-Constants.DriveConstants.microSpeed, 0, 0, false)
         )
     );
 
-    controller1.povRight().whileTrue(
+    opController.povRight().whileTrue(
         Commands.runOnce(
             () -> drivetrain.drive(Constants.DriveConstants.microSpeed, 0, 0, false)
         )
     );
 
-    controller0.b().onTrue(
+    driveController.b().onTrue(
         Commands.runOnce(
             () -> drivetrain.zeroHeading()
         )
     );
 
-    controller0.x().onTrue(
+    driveController.x().onTrue(
         Commands.runOnce(() -> drivetrain.setX())
     );
 
     // Intake - runEnd runs a command until an end condition is triggered, then runs a second command once.
     // In this case, the second command stops the intake wheels when the button is released.
-    controller1.leftTrigger().whileTrue(Commands.runEnd(() -> crane.spinSucker(CraneConstants.kSuckerIntake), () -> crane.spinSucker(0)));
-    controller1.leftBumper().whileTrue(Commands.runEnd(() -> crane.spinSucker(CraneConstants.kSuckerEject), () -> crane.spinSucker(0)));
+    opController.leftTrigger().whileTrue(Commands.runEnd(() -> crane.spinIntake(6), () -> crane.spinIntake(0)));
+    opController.leftBumper().whileTrue(Commands.runEnd(() -> crane.spinIntake(-12), () -> crane.spinIntake(0)));
 
     //Crane
-    controller0.start().onTrue(
+    driveController.start().onTrue(
         Commands.runOnce(() -> climbMode = true)
         .andThen(craneCommands.climbPrepCommand)
     );
-    controller1.rightBumper().onTrue(craneCommands.stationCommand);
-    controller1.x().onTrue(craneCommands.shelfCommand);
-    controller1.a().onTrue(craneCommands.lowCommand);
-    controller1.b().onTrue(craneCommands.midCommand);
-    controller1.y().onTrue(craneCommands.highCommand);
-    controller1.start().onTrue(craneCommands.stowCommand);
-    controller1.povUp().onTrue(craneCommands.algaeHighCommand);
-    controller1.povDown().onTrue(craneCommands.algaeLowCommand);
+    opController.rightBumper().onTrue(craneCommands.stationCommand);
+    opController.x().onTrue(craneCommands.shelfCommand);
+    opController.a().onTrue(craneCommands.lowCommand);
+    opController.b().onTrue(craneCommands.midCommand);
+    opController.y().onTrue(craneCommands.highCommand);
+    opController.start().onTrue(craneCommands.stowCommand);
+    opController.povUp().onTrue(craneCommands.algaeHighCommand);
+    opController.povDown().onTrue(craneCommands.algaeLowCommand);
 
     //Climber and Crane Fine Control
-    controller1.rightTrigger().whileTrue(
+    opController.rightTrigger().whileTrue(
         //either runs one of two commands depending on a supplied boolean
         Commands.either(
             Commands.runOnce(() -> {
-                climber.setAnchorVoltage(12 * controller1.getRightY());
-                climber.setWinchPosition(climber.getWinchPosition() - controller1.getLeftY() * 15); 
-                climber.setTensionerVoltage(4);
+                climber.setAnchorVoltage(12 * opController.getRightY());
+                climber.setWinchPosition(climber.getWinchPosition() - opController.getLeftY() * 15); 
+                climber.setPivotVoltage(4);
             }).alongWith(
                 //repeating sequence runs a sequence of commands repeatedly until the end condition is met.
                 Commands.repeatingSequence(
@@ -173,8 +167,8 @@ public class RobotContainer {
                     new WaitCommand(0.5))
             ),
             Commands.runOnce(() -> {
-                crane.setElbowPosition(crane.getElbowPosition() - controller1.getLeftY() * 20);
-                crane.setWristPosition(crane.getWristPosition() + controller1.getRightY() * 20);
+                crane.setBoomRotatorPosition(crane.getBoomPosition() - opController.getLeftY() * 20);
+                crane.setWristRotatorPosition(crane.getWristPosition() + opController.getRightY() * 20);
             }),
             () -> climbMode)
     );

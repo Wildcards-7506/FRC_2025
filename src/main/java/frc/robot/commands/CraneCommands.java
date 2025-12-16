@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.subsystems.Crane;
+import frc.robot.subsystems.Crane.CraneState;
 
 public class CraneCommands{
     /* This class uses the methods created in Crane.java to construct sequences of commands that
@@ -16,8 +17,8 @@ public class CraneCommands{
     */
 
     private Crane crane;
-    private Timer elbowTimer = new Timer();
-    private Timer wristTimer = new Timer();
+    private Timer boomRotatorTimer = new Timer();
+    private Timer wristRotatorTimer = new Timer();
     private Timer extendTimer = new Timer();
 
     public CraneCommands(Crane crane) {
@@ -25,88 +26,65 @@ public class CraneCommands{
     }
 
     public Command stowCommand = new SequentialCommandGroup(
-        new ParallelCommandGroup(
-            setWristCommand(CraneConstants.kWristMin),
-            setExtenderCommand(CraneConstants.kExtenderLimit1),
-            setElbowCommand(CraneConstants.kElbowMin + 10)),
-        setExtenderCommand(CraneConstants.kExtenderStow),
-        setElbowCommand(CraneConstants.kElbowMin)
+        craneMovementCommand(CraneState.STOW_PREP),
+        craneMovementCommand(CraneState.STOW)
     );
+    public Command stationCommand = craneMovementCommand(CraneState.STATION);
+    public Command shelfCommand = craneMovementCommand(CraneState.SHELF);
+    public Command lowCommand = craneMovementCommand(CraneState.LOW);
+    public Command midCommand = craneMovementCommand(CraneState.MID);
+    public Command highCommand = new SequentialCommandGroup(
+        craneMovementCommand(CraneState.HIGH_PREP),
+        craneMovementCommand(CraneState.HIGH)
+    );
+    public Command algaeHighCommand = craneMovementCommand(CraneState.ALGAE_HIGH);
+    public Command algaeLowCommand = craneMovementCommand(CraneState.ALGAE_LOW);
 
-    public Command stationCommand = new ParallelCommandGroup(
-      setElbowCommand(CraneConstants.kElbowStation),
-      setExtenderCommand(CraneConstants.kExtenderStation),
-      setWristCommand(CraneConstants.kWristStation));
-
-    public Command shelfCommand = new ParallelCommandGroup(
-      setElbowCommand(CraneConstants.kElbowShelf),
-      setExtenderCommand(CraneConstants.kExtenderShelf),
-      setWristCommand(CraneConstants.kWristShelf));
-
-    public Command lowCommand = new ParallelCommandGroup(
-        setElbowCommand(CraneConstants.kElbowLow),
-        setExtenderCommand(CraneConstants.kExtenderLow),
-        setWristCommand(CraneConstants.kWristLow));
-
-    public Command midCommand = new ParallelCommandGroup(
-    setElbowCommand(CraneConstants.kElbowMid),
-    setExtenderCommand(CraneConstants.kExtenderMid),
-    setWristCommand(CraneConstants.kWristMid));
-
-    public Command highCommand = new ParallelCommandGroup(
-    setElbowCommand(CraneConstants.kElbowHigh),
-    setExtenderCommand(CraneConstants.kExtenderHigh),
-    setWristCommand(CraneConstants.kWristHigh));
-
-    public Command algaeHighCommand = new ParallelCommandGroup(
-    setElbowCommand(CraneConstants.kElbowAlgaeHigh),
-    setExtenderCommand(CraneConstants.kExtenderAlgaeHigh),
-    setWristCommand(CraneConstants.kWristAlgaeHigh));
-
-    public Command algaeLowCommand = new ParallelCommandGroup(
-    setElbowCommand(CraneConstants.kElbowAlgaeLow),
-    setExtenderCommand(CraneConstants.kExtenderAlgaeLow),
-    setWristCommand(CraneConstants.kWristAlgaeLow));
-
-    public Command climbPrepCommand = new ParallelCommandGroup(
-        setWristCommand(CraneConstants.kWristHigh),
-        setExtenderCommand(CraneConstants.kExtenderMin - 0.25),
-        setElbowCommand(CraneConstants.kElbowClimb),
+    public Command climbPrepCommand = new SequentialCommandGroup(
+        craneMovementCommand(CraneState.CLIMB),
         Commands.runOnce(() -> crane.neutralExtend())
     );
 
-    public Command setElbowCommand(double setPoint){
-        return Commands.runOnce(() -> {
-            elbowTimer.reset();
-            elbowTimer.start();
-        })
-        .andThen(Commands.runOnce(() -> crane.setElbowPosition(setPoint)))
-        .until(() -> Math.abs(crane.getElbowPosition() - setPoint) < CraneConstants.rotationMargin || 
-            elbowTimer.get() > 0.5 && Math.abs(crane.getElbowVelocity()) < 0.01
+    public Command craneMovementCommand(CraneState state){
+        return new ParallelCommandGroup(
+            setWristRotatorCommand(state.wristAngle),
+            setExtenderCommand(state.extension),
+            setBoomRotatorCommand(state.wristAngle)
         );
     }
 
-    public Command setExtenderCommand(double setPoint) {
+    private Command setBoomRotatorCommand(double setPoint){
+        return Commands.runOnce(() -> {
+            boomRotatorTimer.reset();
+            boomRotatorTimer.start();
+        })
+        .andThen(Commands.runOnce(() -> crane.setBoomRotatorPosition(setPoint)))
+        .until(() -> Math.abs(crane.getBoomPosition() - setPoint) < CraneConstants.rotationMargin || 
+            boomRotatorTimer.get() > 0.5 && Math.abs(crane.getBoomVelocity()) < 0.01
+        );
+    }
+
+    private Command setExtenderCommand(double setPoint) {
         return Commands.runOnce(() -> {
             extendTimer.reset();
             extendTimer.start();
         })
         .andThen(Commands.runOnce(() -> crane.setExtenderPosition(setPoint)))
         .until(() -> 
-            (Math.abs(crane.getExtenderPosition() - setPoint) < CraneConstants.extendMargin  || 
-            extendTimer.get() > 0.5 && Math.abs(crane.getElbowVelocity()) < 0.01)
+            (Math.abs(crane.getExtensionPosition() - setPoint) < CraneConstants.extendMargin  || 
+            extendTimer.get() > 0.5 && Math.abs(crane.getExtensionVelocity()) < 0.01)
         );
     }
 
-    public Command setWristCommand(double setPoint) {
+    private Command setWristRotatorCommand(double setPoint) {
         return Commands.runOnce(() -> {
-            wristTimer.reset();
-            wristTimer.start();
+            wristRotatorTimer.reset();
+            wristRotatorTimer.start();
         })
-        .andThen(Commands.runOnce(() -> crane.setWristPosition(setPoint)))
+        .andThen(Commands.runOnce(() -> crane.setWristRotatorPosition(setPoint)))
         .until(() -> 
             (Math.abs(crane.getWristPosition() - setPoint) < CraneConstants.rotationMargin  || 
-            wristTimer.get() > 0.5 && Math.abs(crane.getElbowVelocity()) < 0.01)
+            wristRotatorTimer.get() > 0.5 && Math.abs(crane.getWristVelocity()) < 0.01)
         );
     }
 

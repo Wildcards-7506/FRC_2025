@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.autonomous.AutoRoutines;
 
-
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -68,6 +67,7 @@ public class Robot extends TimedRobot {
     field.setRobotPose(robotContainer.drivetrain.getPose());
   }
 
+  /** This function is called once when autonomous control begins. */
   @Override
   public void autonomousInit() {
     CommandScheduler.getInstance().cancelAll();
@@ -87,16 +87,20 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    /*Every clock cycle in autonomous, continue running the autonomous routine
-    and run the led rainbow function*/
+    /*Every clock cycle in autonomous, continue running the autonomous routine and run the led rainbow function*/
     CommandScheduler.getInstance().run();
     robotContainer.led.rainbow();
+  }
+
+  /** This function is called once when autonomous control ends. */
+  @Override
+  public void autonomousExit(){
+    CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    CommandScheduler.getInstance().cancelAll();
     teamColor = DriverStation.getAlliance();
 
     // Default subsystem states
@@ -109,10 +113,15 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
   }
 
-  /** This function is called once when the robot is disabled. */
+  /** This function is called once when operator control ends. */
+  @Override
+  public void teleopExit(){
+    CommandScheduler.getInstance().cancelAll();
+  }
+
+  /** This function is called once when the robot is first disabled. */
   @Override
   public void disabledInit() {
-    CommandScheduler.getInstance().cancelAll();
     //Set the drivetrain to coast mode so it can be moved by hand
     robotContainer.drivetrain.idleSwerve(IdleMode.kCoast);
   }
@@ -120,8 +129,15 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
+    //Every clock cycle, get our team color and set the LEDs accordingly.
     teamColor = DriverStation.getAlliance();
     robotContainer.led.allianceFlow();
+  }
+
+  /** This function is called once when a disabled state ends. */
+  @Override
+  public void disabledExit(){
+    CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called once when test mode is enabled. */
@@ -138,11 +154,9 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
   }
 
-  /** This function is called once when the robot is first started up. */
+  /** This function is called once when test control ends. */
   @Override
-  public void simulationInit() {}
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
+  public void testExit(){
+    CommandScheduler.getInstance().cancelAll();
+  }
 }

@@ -23,7 +23,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final class CANIDS {
-    // SPARK MAX CAN IDs
+    // Drivetrain
     public static final int LEFT_FRONT_TURN = 1;
     public static final int LEFT_FRONT_DRIVE = 2;
     public static final int RIGHT_FRONT_TURN = 3;
@@ -33,93 +33,39 @@ public final class Constants {
     public static final int LEFT_REAR_TURN = 7;
     public static final int LEFT_REAR_DRIVE = 8;
 
-    // Claw: consists of gripper (grabby grabby) and wrist
-    public static final int GRIPPER = 9;
-    public static final int SUCKER = 15;
+    // Crane
+    public static final int INTAKE = 15;
     public static final int WRIST = 10;
-    public static final int ELBOW = 11;
+    public static final int BOOM = 11;
     public static final int EXTENDER = 12;
 
-    // Climber: consists of rotator and extender
-    public static final int WINCH = 21; // Actual motor that rotates the winch (drum and rope) in the climber
-    public static final int TENSIONER = 22; // Motor that keeps tension on the climber winch as it unwinds
-    public static final int ANCHOR = 25; // Motor that lifts up robot
-  }
-
-  // Crane States
-  public enum CraneState {
-    CLIMB,
-    STOW,
-    STATION,
-    SHELF,
-    LOW_REEF,
-    MID_REEF,
-    HIGH_REEF,
-    ALGAE_HIGH,
-    ALGAE_LOW
+    // Climber
+    public static final int WINCH = 21;
+    public static final int PIVOT = 22; 
+    public static final int ANCHOR = 25;
   }
 
   public static final class CraneConstants{
-    // Arm Feedforward constants
-    // public static double kSVolts = 0.0; // Volts
-    public static final double kGVolts = 1.74; // Volts
-    public static final double kVVoltSecsPerDeg = 2.44 * Math.PI / 180.0; // V*s/rad to V*s/deg
-    public static final double kAVoltSecsSquaredPerDeg = 0.16 * Math.PI / 180.0; // V*s^2/rad to V*s^2/deg
-    public static final double kDefaultErrorMargin = 1.0; // degrees
-
-    // Encoder distance per pulse (gear ratio * unit of revolution, 360 deg or 2pi rad)
-    public static final double kWristEncoderDistancePerPulse = 360.0 * 1/64; // tested 2/15/2025
-    public static final double kExtenderEncoderDistancePerPulse = 360.0 * 1/4 * 1/3 * 1/3; // tested 2/15/2025
-    public static final double kElbowEncoderDistancePerPulse = 360.0 * 1/5 * 1/5 * 1/5; // tested 2/15/2025
+    // Encoder distance per pulse
+    // Convert from rotatations of the motor shaft to the desired output unit (Radians, Degrees, Inches for example)
+    // Typically in the format Rotations  * U / Gear Ratio
+    // where U = 360 degrees, 2pi radians, or Pulley Circumference inches)
+    public static final double kWristRotatorEncoderDistancePerPulse = 360.0 / 64.0;
+    public static final double kPulleyCircumferenceInches = 2.25 * Math.PI; //The pulley on the extender is 2.25 inches wide -> approx 7 inches per rotation
+    public static final double kExtenderEncoderDistancePerPulse = kPulleyCircumferenceInches / 36.0;
+    public static final double kBoomRotatorEncoderDistancePerPulse = 360.0 / 125.0;
     
     // Extender limits
-    // Extender setpoints are measured with 2 inch soft limit included
-    public static final double kExtenderOffset = 3.5;
     public static final double kExtenderMin = 1;
-    public static final double kExtenderStation = 3.91;
-    public static final double kExtenderHigh = 26.044;
-    public static final double kExtenderMid = 9.44;
-    public static final double kExtenderLow = 3.46;
-    public static final double kExtenderAlgaeLow = 5;
-    public static final double kExtenderAlgaeHigh = 5;
-    public static final double kExtenderStart = 21; // starts retracted by 4 inches from maximum
-    public static final double kExtenderStow = 20;
-    public static final double kExtenderShelf = 5.16;
-    public static final double kExtenderMax = 26.5; // starting + tail end offset - 2 inch margin
-    public static final double kExtensionCap = 17; // 17 inches
-    public static final double kPulleyCircumferenceInches = 2.25 * Math.PI; // 2.25 inches diameter
-    /** Keep extender butt-side within extension cap. */
-    public static final double kExtenderLimit1 = kExtenderLow; // 2 inches from soft limit offset
-    // /** Keep extender claw-side within extension cap. */
+    public static final double kExtenderMax = 26.5;
 
-    // Elbow limits
-    public static final double kElbowMin = 3.0;
-    public static final double kElbowShelf = 32.0;
-    public static final double kElbowStation = 25.0;
-    public static final double kElbowHigh = 125.516;
-    public static final double kElbowAlgaeLow = 25.0;
-    public static final double kElbowAlgaeHigh = 73.571;
-    public static final double kElbowClimb = 131.0;
-    public static final double kElbowMid = 97.604;
-    public static final double kElbowLow = 73.571;
-    public static final double kElbowMax = 143.0;
+    // Boom Rotator limits
+    public static final double kBoomRotatorMin = 3.0;
+    public static final double kBoomRotatorMax = 143.0;
 
-    // Wrist limits
-    public static final double kWristShelf = 105;
-    public static final double kWristLow = 185.749;
-    public static final double kWristMid = 200;
-    public static final double kWristHigh = 30.693; 
-    public static final double kWristAlgaeLow = 100.0; 
-    public static final double kWristAlgaeHigh = 149.62; 
-    public static final double kWristMin = 0.0;
-    public static final double kWristStation = 53.014;
-    public static final double kWristStow = 0.0;
-    public static final double kWristMax = 310.0;
-    public static final double kWristClimb = 20.0;
-
-    // Sucker limits
-    public static final double kSuckerIntake = 6;
-    public static final double kSuckerEject = -12;
+    // Wrist Rotator limits
+    public static final double kWristRotatorMin = 0.0;
+    public static final double kWristRotatorMax = 310.0;
 
     //Margins
     public static final double rotationMargin = 8;
@@ -127,8 +73,8 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    public static final double kWinchEncoderDistancePerPulse = 360.0 * 1/5 * 1/3 * 1/3 * 1/3; // degrees
-    public static final double kAnchorEncoderDistancePerPulse = 1.0/4.0/8.0; // inches
+    public static final double kWinchEncoderDistancePerPulse = 360.0 / 135.0; // degrees
+    public static final double kAnchorEncoderDistancePerPulse = 1.0 / 32.0; // inches
 
     // Climber limits
     public static final double kAnchorMin = 0.25;
@@ -136,8 +82,8 @@ public final class Constants {
 
     // Winch limits
     public static final double kWinchMax = 780; // Bringing the climber out limit in degrees
-    public static final double kWinchMin = 0; // Retraction limit when cage is coming into the robot
-    public static final double kWinchHoldLimit = 300; // The final retraction limit
+    public static final double kWinchMin = 0; // Absolute retraction limit
+    public static final double kWinchHoldLimit = 300; // Retraction limit to prevent tipping
   }
 
   public static final class IOConstants {
@@ -151,13 +97,6 @@ public final class Constants {
   }
 
   public static final class DriveConstants {
-    // Snap constants for reef
-    // Angles are relative to the DPAD (CW +), will be inverted in snap method to drive robot (CCW +)
-    public static final double SNAP_UP_RIGHT = 60;
-    public static final double SNAP_DOWN_RIGHT = 120;
-    public static final double SNAP_DOWN_LEFT = -120;
-    public static final double SNAP_UP_LEFT = -60;
-
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;

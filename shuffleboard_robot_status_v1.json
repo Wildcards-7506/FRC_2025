@@ -161,8 +161,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elbow SetP",
-              "_title": "Elbow SetP",
+              "_source0": "network_table:///SmartDashboard/Boom Rotator SetP",
+              "_title": "Boom Rotator SetP",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -174,8 +174,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elbow Pos",
-              "_title": "Elbow Pos",
+              "_source0": "network_table:///SmartDashboard/Boom Rotator Pos",
+              "_title": "Boom Rotator Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -295,8 +295,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elbow",
-              "_title": "Elbow",
+              "_source0": "network_table:///SmartDashboard/Boom Rotator",
+              "_title": "Boom Rotator",
               "_glyph": 148,
               "_showGlyph": false
             }
