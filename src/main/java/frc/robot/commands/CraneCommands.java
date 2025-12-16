@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
 import frc.robot.Constants.CraneConstants;
 import frc.robot.subsystems.Crane;
 import frc.robot.subsystems.Crane.CraneState;
@@ -50,7 +51,7 @@ public class CraneCommands{
             setWristRotatorCommand(state.wristAngle),
             setExtenderCommand(state.extension),
             setBoomRotatorCommand(state.wristAngle)
-        );
+        ).andThen(Commands.runOnce(() -> Robot.robotContainer.led.solid((int)state.boomAngle,255,255)));
     }
 
     private Command setBoomRotatorCommand(double setPoint){
