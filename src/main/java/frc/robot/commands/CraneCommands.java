@@ -27,6 +27,7 @@ public class CraneCommands{
     }
 
     public Command stowCommand = new SequentialCommandGroup(
+        //Move to the stow position with the extender retracted so as to not slam the wrist into the drivebase
         craneMovementCommand(CraneState.STOW_PREP),
         craneMovementCommand(CraneState.STOW)
     );
@@ -35,6 +36,8 @@ public class CraneCommands{
     public Command lowCommand = craneMovementCommand(CraneState.LOW);
     public Command midCommand = craneMovementCommand(CraneState.MID);
     public Command highCommand = new SequentialCommandGroup(
+        //Rotate the crane up with the extender retracted, then extend upwards
+        //Rotating with a fully extended mechanism is almost always a bad idea
         craneMovementCommand(CraneState.HIGH_PREP),
         craneMovementCommand(CraneState.HIGH)
     );
@@ -42,11 +45,14 @@ public class CraneCommands{
     public Command algaeLowCommand = craneMovementCommand(CraneState.ALGAE_LOW);
 
     public Command climbPrepCommand = new SequentialCommandGroup(
+        //Set the crane into climb state, then end output to the extender
+        //The extender sinks the rest of the way to safely retract the wrist as far as possible with gravity
         craneMovementCommand(CraneState.CLIMB),
         Commands.runOnce(() -> crane.neutralExtend())
     );
 
     public Command craneMovementCommand(CraneState state){
+        //Set all three parts of the crane into motion, then indicate on the LED strip when all three have finished
         return new ParallelCommandGroup(
             setWristRotatorCommand(state.wristAngle),
             setExtenderCommand(state.extension),
@@ -55,6 +61,7 @@ public class CraneCommands{
     }
 
     private Command setBoomRotatorCommand(double setPoint){
+        //Keep setting the boom position until we are within the margin or the boom has stopped moving
         return Commands.runOnce(() -> {
             boomRotatorTimer.reset();
             boomRotatorTimer.start();
@@ -66,6 +73,7 @@ public class CraneCommands{
     }
 
     private Command setExtenderCommand(double setPoint) {
+        //Keep setting the extender position until we are within the margin or the extender has stopped moving
         return Commands.runOnce(() -> {
             extendTimer.reset();
             extendTimer.start();
@@ -78,6 +86,7 @@ public class CraneCommands{
     }
 
     private Command setWristRotatorCommand(double setPoint) {
+        //Keep setting the wrist position until we are within the margin or the wrist has stopped moving
         return Commands.runOnce(() -> {
             wristRotatorTimer.reset();
             wristRotatorTimer.start();

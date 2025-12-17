@@ -5,15 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RightStart"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoCraneStation"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightStart"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoCraneStation"
+                }
+              }
+            ]
           }
         },
         {
@@ -25,7 +32,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoIntakeEject"
+            "name": "AutoEject"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
@@ -35,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RightSource"
+                  "pathName": "RightEnd"
                 }
               },
               {
@@ -45,6 +58,30 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneStation"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoCraneStow"
           }
         }
       ]

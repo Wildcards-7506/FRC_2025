@@ -88,7 +88,7 @@ public class RobotContainer {
                 driveSlewLimiter.calculate(
                     applyAxisDeadband(driveController.getLeftX())), 
                 driveSlewLimiter.calculate(
-                    applyAxisDeadband(driveController.getLeftX())), 
+                    applyAxisDeadband(driveController.getLeftY())), 
                 applyAxisDeadband(-driveController.getRightX()), 
                 true)
                 )
@@ -100,10 +100,20 @@ public class RobotContainer {
                 driveSlewLimiter.calculate(
                     applyAxisDeadband(driveController.getLeftX()) * Constants.DriveConstants.fineSpeed), 
                 driveSlewLimiter.calculate(
-                    applyAxisDeadband(driveController.getLeftX()) * Constants.DriveConstants.fineSpeed), 
+                    applyAxisDeadband(driveController.getLeftY()) * Constants.DriveConstants.fineSpeed), 
                 applyAxisDeadband(-driveController.getRightX()), 
                 true)
     ));
+
+    driveController.b().onTrue(
+        Commands.runOnce(
+            () -> drivetrain.zeroHeading()
+        )
+    );
+
+    driveController.x().onTrue(
+        Commands.runOnce(() -> drivetrain.setX())
+    );
 
     opController.povLeft().whileTrue(
         Commands.runOnce(
@@ -117,20 +127,16 @@ public class RobotContainer {
         )
     );
 
-    driveController.b().onTrue(
-        Commands.runOnce(
-            () -> drivetrain.zeroHeading()
-        )
-    );
-
-    driveController.x().onTrue(
-        Commands.runOnce(() -> drivetrain.setX())
-    );
-
     // Intake - runEnd runs a command until an end condition is triggered, then runs a second command once.
     // In this case, the second command stops the intake wheels when the button is released.
-    opController.leftTrigger().whileTrue(Commands.runEnd(() -> crane.spinIntake(6), () -> crane.spinIntake(0)));
-    opController.leftBumper().whileTrue(Commands.runEnd(() -> crane.spinIntake(-12), () -> crane.spinIntake(0)));
+    opController.leftTrigger().whileTrue(
+        Commands.runEnd(() -> crane.spinIntake(6), () -> crane.spinIntake(0))
+        .alongWith(Commands.runEnd(() -> led.allianceFlow(), () -> led.solid(0, 0, 255)))
+    );
+    opController.leftBumper().whileTrue(
+        Commands.runEnd(() -> crane.spinIntake(-12), () -> crane.spinIntake(0))
+        .alongWith(Commands.runEnd(() -> led.allianceFlow(), () -> led.solid(150, 255, 255)))
+    );
 
     //Crane
     driveController.start().onTrue(

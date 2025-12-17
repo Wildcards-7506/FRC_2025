@@ -79,10 +79,9 @@ public final class AutoRoutines {
     //pre-defined commands and place them at specific points while moving.
     NamedCommands.registerCommand("AutoCraneStation", Robot.robotContainer.craneCommands.stationCommand);
     NamedCommands.registerCommand("AutoCraneShelf", Robot.robotContainer.craneCommands.shelfCommand);
-    NamedCommands.registerCommand("AutoCraneLow", Robot.robotContainer.craneCommands.lowCommand);
     NamedCommands.registerCommand("AutoCraneStow", Robot.robotContainer.craneCommands.stowCommand);
-    NamedCommands.registerCommand("AutoIntakeSuck", Commands.run(() -> Robot.robotContainer.crane.spinIntake(6)).withTimeout(1));
-    NamedCommands.registerCommand("AutoIntakeEject", Commands.run(() -> Robot.robotContainer.crane.spinIntake(-12)).withTimeout(2));
+    NamedCommands.registerCommand("AutoEject", Commands.run(() -> Robot.robotContainer.crane.spinIntake(-12)).withTimeout(0.25));
+    NamedCommands.registerCommand("AutoIntake", Commands.run(() -> Robot.robotContainer.crane.spinIntake(6)).withTimeout(1));
   }
 
   /**

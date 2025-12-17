@@ -14,10 +14,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.CANIDS;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -120,36 +118,6 @@ public class Drivetrain extends SubsystemBase {
             m_gyro.getRotation2d())
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     setStates(swerveModuleStates);
-  }
-
-  /**
-   * Stops the robot.
-   *
-   * 
-   * @param angle
-   */
-  public void stop() {
-    drive(0, 0, 0, false);
-  }
-
-  /**
-   * Method to snap robot heading to a specific angle.
-   * The robot's angle is considered to be zero when it is facing directly 
-   * away from the alliance station wall. Remember that this should be CW positive.
-   * 
-   * Flips 180 degrees if alliance color is red.
-   * 
-   * @param angle The desired angle in degrees.
-   */
-  public void snap(double xSpeed, double ySpeed, double angle) {
-    // If alliance color is red then add 180 to the angle then subtract 360 if the angle is greater than 180
-    // Default color is blue, so 0 is up, then clockwise, 90 is right, 180 is down, 270/-90 is left
-    if (Robot.teamColor.get() == Alliance.Red) {
-      angle += 180;
-    }
-    if (angle > 180) angle -= 360;
-    if (angle < -180) angle += 360;
-    drive(xSpeed, ySpeed, 0.5 * (getHeading() - angle), true);
   }
 
   public void setStates(SwerveModuleState[] targetStates) {
